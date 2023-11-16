@@ -1,11 +1,13 @@
 <?php
-	// Add RSS links to <head> section
-  add_theme_support( 'automatic-feed-links' );
+require_once 'inc/functions_php/wp_core/wp-core-utils.php';
+WPCoreUtils::init();
+
+
 
   // If IS WP Admin load wp-admin.js
-  if ( is_admin() ) {
-    wp_enqueue_script('custom_admin_script', get_bloginfo('template_url').'/js/wp-admin.min.js', array('jquery'));
-  }
+  // if ( is_admin() ) {
+  //   wp_enqueue_script('custom_admin_script', get_bloginfo('template_url').'/js/wp-admin.min.js', array('jquery'));
+  // }
 	
 	// Clean up the <head>
 	function removeHeadLinks() {
@@ -27,8 +29,7 @@
     	));
     }
 	
-	// Add Custom Menu
-	add_theme_support( 'menus' );
+
 	
 	/**
 	 * My extended menu walker
@@ -89,16 +90,16 @@
 		return $output;
 	}
 	add_filter('wp_nav_menu', 'add_slug_class_to_menu_item');	
-	 
+
 	// Add styles to the WYSIWYG editor. Function finds stylesheet from the root of the current theme's folder.
 	add_editor_style('style.css');
 
   // CSS for WP Admin only
-  function wp_admin_style() {
-    wp_register_style( 'custom_wp_admin_css', get_template_directory_uri() . '/wp-admin.css', false, '1.0.0' );
-    wp_enqueue_style( 'custom_wp_admin_css' );
-  }
-  add_action( 'admin_enqueue_scripts', 'wp_admin_style' );
+  // function wp_admin_style() {
+  //   wp_register_style( 'custom_wp_admin_css', get_template_directory_uri() . '/wp-admin.css', false, '1.0.0' );
+  //   wp_enqueue_style( 'custom_wp_admin_css' );
+  // }
+  // add_action( 'admin_enqueue_scripts', 'wp_admin_style' );
 
 	//Limit Words in any WordPress Function	
 	function limit_words($string, $word_limit) {
@@ -130,7 +131,13 @@
 	add_filter('body_class', 'add_slug_to_body_class');
 	function add_slug_to_body_class($classes) {
 		global $post;
+
+		if(isset($post->post_name)) {
 			$classes[] = $post->post_name;
+		}
+
+		$classes[] = '';
+
 		return $classes;
 	}
 
@@ -164,51 +171,56 @@
 		';
 	}
 	
-function improved_trim_excerpt($text) {
+
+
+
+	function improved_trim_excerpt($text) {
         global $post;
         if ( '' == $text ) {
                 $text = get_the_content('');
                 $text = apply_filters('the_content', $text);
                 $text = str_replace('\]\]\>', ']]&gt;', $text);
                 $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $text);
-                $text = strip_tags($text, '<p> <em> <strong> <h2> <h3> <a>');
-                $excerpt_length = 20;
-                $words = explode(' ', $text, $excerpt_length + 1);
-                if (count($words)> $excerpt_length) {
-                        array_pop($words);
-                        array_push($words, '<br /><a class="moretag" href="'. get_permalink($post->ID) . '">Read more...</a>');
-                        $text = implode(' ', $words);
-                }
-        }
-        return $text;
-}
-remove_filter('get_the_excerpt', 'wp_trim_excerpt');
-add_filter('get_the_excerpt', 'improved_trim_excerpt');
+$text = strip_tags($text, '<p> <em> <strong>
+   <h2>
+    <h3> <a>');
+      $excerpt_length = 20;
+      $words = explode(' ', $text, $excerpt_length + 1);
+      if (count($words)> $excerpt_length) {
+      array_pop($words);
+      array_push($words, '<br /><a class="moretag" href="'. get_permalink($post->ID) . '">Read more...</a>');
+      $text = implode(' ', $words);
+      }
+      }
+      return $text;
+      }
+      remove_filter('get_the_excerpt', 'wp_trim_excerpt');
+      add_filter('get_the_excerpt', 'improved_trim_excerpt');
 
 
-//Add post thumbnails to theme
-add_theme_support( 'post-thumbnails' );
+      //Add post thumbnails to theme
+      add_theme_support( 'post-thumbnails' );
 
-//Exclude categories from sidebar widget
-function exclude_widget_categories($args){
-	$exclude = "37"; // The IDs of the excluding categories
-	$args["exclude"] = $exclude;
-	return $args;
-}
-add_filter("widget_categories_args","exclude_widget_categories");
+      //Exclude categories from sidebar widget
+      function exclude_widget_categories($args){
+      $exclude = "37"; // The IDs of the excluding categories
+      $args["exclude"] = $exclude;
+      return $args;
+      }
+      add_filter("widget_categories_args","exclude_widget_categories");
 
-// Get Custom Post Type Template for a Single Post
-function my_single_template($single) {
-	if(file_exists(get_template_directory() . '/single-' . get_the_ID() . '.php'))
-		return get_template_directory() . '/single-' . get_the_ID() . '.php';
-	return $single;
-}
-add_filter('single_template', 'my_single_template');
+      // Get Custom Post Type Template for a Single Post
+      function my_single_template($single) {
+      if(file_exists(get_template_directory() . '/single-' . get_the_ID() . '.php'))
+      return get_template_directory() . '/single-' . get_the_ID() . '.php';
+      return $single;
+      }
+      add_filter('single_template', 'my_single_template');
 
-/********************************************************/
-// Adding Dashicons in WordPress Front-end
-/********************************************************/
-add_action( 'wp_enqueue_scripts', 'load_dashicons_front_end' );
-function load_dashicons_front_end() {
-    wp_enqueue_style( 'dashicons' );
-}
+      /********************************************************/
+      // Adding Dashicons in WordPress Front-end
+      /********************************************************/
+      add_action( 'wp_enqueue_scripts', 'load_dashicons_front_end' );
+      function load_dashicons_front_end() {
+      wp_enqueue_style( 'dashicons' );
+      }
