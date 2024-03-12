@@ -1,6 +1,6 @@
 <?php include 'inc/global.php'; ?>
 <p id="to-top" class="hide-override">
-  <a id="to-top-link" href="#">To Top &uarr;</a>
+ <a id="to-top-link" href="#">To Top &uarr;</a>
 </p>
 
 <?php
@@ -14,26 +14,24 @@ elseif( is_404() ) {
   echo '';
 }
 ?>
-      
-</div><!-- #site-content-container -->   
-             
+
+</div><!-- #site-content-container -->
+
 <div id="footer" role="contentinfo">
-<p>&copy;2007 - <?php echo date("Y"); ?> Matt Jennings. All rights reserved.</p>
+ <p>&copy;2007 - <?php echo date("Y"); ?> Matt Jennings. All rights reserved.</p>
 </div>
 
-</div><!-- #site-content-inner-line -->	
+</div><!-- #site-content-inner-line -->
 </div><!-- #site-content-mid-line -->
 </div><!-- #site-content -->
-	  
+
 </div><!-- .container-narrow -->
 
 <!-- Displays on mobile & tablet devices only -->
 <div id="mobile-site-footer-inner-line"></div>
 <div id="mobile-site-footer-mid-line"></div>
 <div id="mobile-site-footer"></div>
-	<?php wp_footer(); ?>
-    <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/local.min.js"></script>
-	<!-- Don't forget analytics -->
+<?php wp_footer(); ?>
+</body>
 
-  </body>
 </html>

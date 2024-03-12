@@ -1,13 +1,6 @@
 <?php
 require_once 'inc/functions_php/wp_core/wp-core-utils.php';
 WPCoreUtils::init();
-
-
-
-  // If IS WP Admin load wp-admin.js
-  // if ( is_admin() ) {
-  //   wp_enqueue_script('custom_admin_script', get_bloginfo('template_url').'/js/wp-admin.min.js', array('jquery'));
-  // }
 	
 	// Clean up the <head>
 	function removeHeadLinks() {
@@ -93,13 +86,6 @@ WPCoreUtils::init();
 
 	// Add styles to the WYSIWYG editor. Function finds stylesheet from the root of the current theme's folder.
 	add_editor_style('style.css');
-
-  // CSS for WP Admin only
-  // function wp_admin_style() {
-  //   wp_register_style( 'custom_wp_admin_css', get_template_directory_uri() . '/wp-admin.css', false, '1.0.0' );
-  //   wp_enqueue_style( 'custom_wp_admin_css' );
-  // }
-  // add_action( 'admin_enqueue_scripts', 'wp_admin_style' );
 
 	//Limit Words in any WordPress Function	
 	function limit_words($string, $word_limit) {
@@ -216,11 +202,3 @@ $text = strip_tags($text, '<p> <em> <strong>
       return $single;
       }
       add_filter('single_template', 'my_single_template');
-
-      /********************************************************/
-      // Adding Dashicons in WordPress Front-end
-      /********************************************************/
-      add_action( 'wp_enqueue_scripts', 'load_dashicons_front_end' );
-      function load_dashicons_front_end() {
-      wp_enqueue_style( 'dashicons' );
-      }
