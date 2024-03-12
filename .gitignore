@@ -9,7 +9,6 @@
 /wp-content/*
 !/wp-content/themes
 /wp-content/themes/*
-!/wp-content/themes/BLANK-Theme
 !/wp-content/themes/MJ-net-2012
 
 # Inside themes inside themes listed above

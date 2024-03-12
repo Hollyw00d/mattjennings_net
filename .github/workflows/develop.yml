@@ -1,0 +1,36 @@
+name: Deploy to develop
+on:
+  push:
+    branches:
+     - develop
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{matrix.node-version}}
+    - name: Use ${{matrix.node-version}} to run webpack on child theme for JS & CSS as needed 
+      id: build
+      working-directory: ./wp-content/themes/MJ-net-2012
+      run: |
+          npm install
+          npm run build
+          rm -rf node_modules
+    - name: GitHub Action Deploy to WP Engine
+      if: steps.build.outcome == 'success'
+      uses: wpengine/github-action-wpe-site-deploy@v3
+      with:
+      # Deploy vars
+        WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
+        WPE_ENV: mjnetdev
+        # Deploy Options
+        PHP_LINT: TRUE
+        CACHE_CLEAR: TRUE
