@@ -231,19 +231,11 @@ const Module = (() => {
   };
 
   const toTopLinkPrivate = () => {
-    // If the #to-top-link anchor tag exists
-    // execute scroll to top of page function
-    const $toTopLink = jQuery('#to-top-link');
-
-    if ($toTopLink.length > 0) {
-      $toTopLink.on('click', (e) => {
+    const toTopLink = document.getElementById('to-top-link') ?? null;
+    if (toTopLink) {
+      toTopLink.addEventListener('click', (e) => {
         e.preventDefault();
-        jQuery('html, body').animate(
-          {
-            scrollTop: 0
-          },
-          700
-        );
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
 
