@@ -4,6 +4,7 @@ class WPCoreUtils {
  public static function init() {
   $self = new self();
   add_action('wp_loaded', array($self, 'enqueue_dequeue_styles_scripts'));
+		add_action('body_class', array($self, 'append_body_class'));
 
 		// Add RSS links to <head> section
   add_theme_support( 'automatic-feed-links' );
@@ -26,7 +27,22 @@ class WPCoreUtils {
 
 		// Enqueue JS
 		wp_enqueue_script('theme-scripts', get_stylesheet_directory_uri().'/build/js/theme.min.js', '', $query_string, true);
-	} 
+	}
+	
+	public function append_body_class($classes) {
+		$new_classes = $classes;
+		$blog_class = 'blog';
+
+		if((
+			is_archive() ||
+			(is_single() && 'post' == get_post_type()) ||
+			is_search() 
+			) && !in_array($blog_class, $new_classes)) {
+			$new_classes[] = $blog_class;
+		}
+
+			return $new_classes;
+	}
 
  // Utilities
  private function query_string_from_timestamp() {

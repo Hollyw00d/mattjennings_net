@@ -25,7 +25,7 @@ const Module = (() => {
     //  Blog page functions to be called later
     const makeSidebarFitInsideDivOnBlogPagesDocumentReady = () => {
       if (windowWidth > windowWidth1005 && !mobileSize) {
-        blogSiteContentContainer.css('min-height', `${sideBarHeight}20px`);
+        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
       } else if (windowWidth <= windowWidth1005 && mobileSize) {
         blogSiteContentContainer.removeAttr('min-height');
       }
@@ -34,12 +34,12 @@ const Module = (() => {
     const blogPageSidebarResize = () => {
       if (windowWidth > windowWidth1005) {
         sideBarHeight = jQuery('#sidebar').height();
-        blogSiteContentContainer.css('min-height', `${sideBarHeight}20px`);
+        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
       }
 
       if (windowWidth <= windowWidth1005) {
         sideBarHeight = jQuery('#sidebar').height();
-        blogSiteContentContainer.css('min-height', `${sideBarHeight}20px`);
+        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
         blogSiteContentContainer.removeAttr('min-height');
       }
     };
