@@ -160,11 +160,10 @@ $danger-border: #ebccd1;
   }
 
   #to-top {
-    display: block;
+    display: none;
     padding: 20px 0 0;
     margin: 0;
-    position: absolute;
-    bottom: 0;
+    text-align: left;
   }
 
   .float-left {
@@ -819,7 +818,7 @@ $danger-border: #ebccd1;
     max-width: 635px;
     min-height: 100px;
     margin: 0 auto;
-    padding: 0 0 40px;
+    padding: 0;
     overflow: auto;
     overflow-x: hidden;
     -ms-overflow-x: hidden;
