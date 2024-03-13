@@ -25,7 +25,7 @@ const Module = (() => {
     //  Blog page functions to be called later
     const makeSidebarFitInsideDivOnBlogPagesDocumentReady = () => {
       if (windowWidth > windowWidth1005 && !mobileSize) {
-        blogSiteContentContainer.css('min-height', `${sideBarHeight}20px`);
+        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
       } else if (windowWidth <= windowWidth1005 && mobileSize) {
         blogSiteContentContainer.removeAttr('min-height');
       }
@@ -34,12 +34,12 @@ const Module = (() => {
     const blogPageSidebarResize = () => {
       if (windowWidth > windowWidth1005) {
         sideBarHeight = jQuery('#sidebar').height();
-        blogSiteContentContainer.css('min-height', `${sideBarHeight}20px`);
+        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
       }
 
       if (windowWidth <= windowWidth1005) {
         sideBarHeight = jQuery('#sidebar').height();
-        blogSiteContentContainer.css('min-height', `${sideBarHeight}20px`);
+        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
         blogSiteContentContainer.removeAttr('min-height');
       }
     };
@@ -231,19 +231,11 @@ const Module = (() => {
   };
 
   const toTopLinkPrivate = () => {
-    // If the #to-top-link anchor tag exists
-    // execute scroll to top of page function
-    const $toTopLink = jQuery('#to-top-link');
-
-    if ($toTopLink.length > 0) {
-      $toTopLink.on('click', (e) => {
+    const toTopLink = document.getElementById('to-top-link') ?? null;
+    if (toTopLink) {
+      toTopLink.addEventListener('click', (e) => {
         e.preventDefault();
-        jQuery('html, body').animate(
-          {
-            scrollTop: 0
-          },
-          700
-        );
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
 
