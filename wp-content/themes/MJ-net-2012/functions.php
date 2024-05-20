@@ -1,5 +1,5 @@
 <?php
-require_once 'inc/functions_php/wp_core/wp-core-utils.php';
+require_once 'inc/wp-core-utils/wp-core-utils.php';
 WPCoreUtils::init();
 	
 	// Clean up the <head>
