@@ -3,9 +3,10 @@
 class WPCoreUtils {
  public static function init() {
   $self = new self();
-  add_action('init', array($self, 'cleanUpActions'));
+  add_action('init', array($self, 'clean_up_actions'));
   add_action('wp_loaded', array($self, 'enqueue_dequeue_styles_scripts'));
 		add_action('body_class', array($self, 'append_body_class'));
+		add_filter ('wp_nav_menu', array($self, 'current_to_active'));
 
 		// Add RSS links to <head> section
   add_theme_support( 'automatic-feed-links' );
@@ -13,7 +14,7 @@ class WPCoreUtils {
 		add_theme_support( 'menus' );
  }
 
-	public function cleanUpActions() {
+	public function clean_up_actions() {
 		// Clean up the <head>
 		remove_action('wp_head', 'rsd_link');
 		remove_action('wp_head', 'wlwmanifest_link');
@@ -65,7 +66,20 @@ class WPCoreUtils {
 			return $new_classes;
 	}
 
- // Utilities
+	public function current_to_active($text){
+		$replace = array(
+			// List of classes to replace with "active"
+			'current_page_item' => 'active',
+			'current_page_parent' => 'active',
+			'current_page_ancestor' => 'active',
+		);
+		$text = str_replace(array_keys($replace), $replace, $text);
+		return $text;
+	}	
+		
+ /**
+		* Private methods 
+		*/ 
  private function query_string_from_timestamp() {
 		$timestamp_json_file_path = get_stylesheet_directory() . '/build/json/timestamp.json';
 		$query_string = null;

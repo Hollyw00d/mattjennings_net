@@ -1,41 +1,8 @@
 <?php
 require_once 'inc/wp-core-utils/wp-core-utils.php';
 WPCoreUtils::init();
-
-	/**
-	 * My extended menu walker
-	 * Supports separators as "ex_separator" arg to wp_nav_menu call
-	 */
-	class MyExtendedMenuWalker extends Walker_Nav_Menu {
+require_once 'inc/walker-nav-menu/walker-nav-menu.php';
 	
-		private $counter = 0;
-	
-		/**
-		 * Starting an element
-		 * If this is not the first, add separator here
-		 */
-		function start_el(&$output, $item, $depth = 0, $args = [], $id = 0) {
-	
-			if($this->counter && isset($args->ex_separator))
-				$output .= $args->ex_separator;
-			parent::start_el($output, $item, $depth, $args);
-			$this->counter ++;
-		}
-	}
-	
-	// REPLACE "current_page_" WITH CLASS "active"
-	function current_to_active($text){
-		$replace = array(
-			// List of classes to replace with "active"
-			'current_page_item' => 'active',
-			'current_page_parent' => 'active',
-			'current_page_ancestor' => 'active',
-		);
-		$text = str_replace(array_keys($replace), $replace, $text);
-			return $text;
-		}
-	add_filter ('wp_nav_menu','current_to_active');
-
 	// Add page/post slug class to menu item classes	
 	function add_slug_class_to_menu_item($output){
 		$ps = get_option('permalink_structure');
