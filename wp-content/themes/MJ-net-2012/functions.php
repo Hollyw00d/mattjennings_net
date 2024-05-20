@@ -3,59 +3,6 @@ require_once 'inc/wp-core-utils/wp-core-utils.php';
 WPCoreUtils::init();
 require_once 'inc/walker-nav-menu/walker-nav-menu.php';
 	
-	// Add styles to the WYSIWYG editor. Function finds stylesheet from the root of the current theme's folder.
-	add_editor_style('style.css');
-
-	//Limit Words in any WordPress Function	
-	function limit_words($string, $word_limit) {
-		// creates an array of words from $string (this will be our excerpt)
-		// explode divides the excerpt up by using a space character
-		$words = explode(' ', $string);
-		// this next bit chops the $words array and sticks it back together
-		// starting at the first word '0' and ending at the $word_limit
-		// the $word_limit which is passed in the function will be the number
-		// of words we want to use
-		// implode glues the chopped up array back together using a space character
-		return implode(' ', array_slice($words, 0, $word_limit));
-	}	 
-	
-	// Limit the the_excerpt() to 20 words
-	function custom_excerpt_length( $length ) {
-		return 20;
-	}
-	add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );	
-	
-	// Replaces the excerpt "more" text by a link
-	function new_excerpt_more($more) {
-		   global $post;
-		return '...<br /><a class="moretag" href="'. get_permalink($post->ID) . '">Read more</a>';
-	}
-	add_filter('excerpt_more', 'new_excerpt_more');
-	
-	//Add Post or Page Name to Body Classes
-	add_filter('body_class', 'add_slug_to_body_class');
-	function add_slug_to_body_class($classes) {
-		global $post;
-
-		if(isset($post->post_name)) {
-			$classes[] = $post->post_name;
-		}
-
-		$classes[] = '';
-
-		return $classes;
-	}
-
-	//Add category name to body tag
-	function add_category_name($classes = '') {
-		if(is_single()) {
-			$category = get_the_category();
-			$classes[] = 'category-'.$category[0]->slug; 
-		}
-			return $classes;
-	}
-	add_filter('body_class','add_category_name');
-
 	//Style first post differently
 	add_filter( 'post_class', 'mark_first_post' );
 	function mark_first_post( $classes )

@@ -5,8 +5,9 @@ class WPCoreUtils {
   $self = new self();
   add_action('init', array($self, 'clean_up_actions'));
   add_action('wp_loaded', array($self, 'enqueue_dequeue_styles_scripts'));
-		add_action('body_class', array($self, 'append_body_class'));
+		add_action('body_class', array($self, 'customize_body_class'));
 		add_filter ('wp_nav_menu', array($self, 'customize_nav_menu_output'));
+		add_filter( 'excerpt_length', array($self, 'custom_excerpt_length'), 999 );	
 
 		// Add RSS links to <head> section
   add_theme_support( 'automatic-feed-links' );
@@ -19,6 +20,8 @@ class WPCoreUtils {
 		remove_action('wp_head', 'rsd_link');
 		remove_action('wp_head', 'wlwmanifest_link');
 		remove_action('wp_head', 'wp_generator');
+		// Add styles to the WYSIWYG editor. Function finds stylesheet from the root of the current theme's folder.
+		add_editor_style('style.css');
 
 		// Register sidebar
 		if (function_exists('register_sidebar')) {
@@ -51,16 +54,32 @@ class WPCoreUtils {
 		wp_enqueue_script('theme-scripts', get_stylesheet_directory_uri().'/build/js/theme.min.js', '', $query_string, true);
 	}
 	
-	public function append_body_class($classes) {
+	/* 
+	Update BODY tag classes including:
+ - If on blog archive page (posts page) or single post add `blog` as a class
+	- If on any post (including custom post type) or page add `$post->post_name` value as a class	
+	- On single posts add category as body class (if present)
+	*/
+	
+	public function customize_body_class($classes) {
+		global $post;
 		$new_classes = $classes;
 		$blog_class = 'blog';
-
-		if((
+		
+		if(
+			(
 			is_archive() ||
 			(is_single() && 'post' == get_post_type()) ||
 			is_search() 
 			) && !in_array($blog_class, $new_classes)) {
 			$new_classes[] = $blog_class;
+		}
+		else if (isset($post->post_name)) {
+			$new_classes[] = $post->post_name;
+		}
+		else if(is_single()) {
+			$category = get_the_category();
+			$classes[] = 'category-'.$category[0]->slug; 
 		}
 
 			return $new_classes;
@@ -96,6 +115,11 @@ class WPCoreUtils {
 		);
 		$output = str_replace(array_keys($replace), $replace, $output);
 		return $output;
+	}
+
+	// Limit the the_excerpt() to 20 words
+	public function custom_excerpt_length( $length ) {
+		return 20;
 	}
 	
  /**
