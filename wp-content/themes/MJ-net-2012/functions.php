@@ -3,32 +3,6 @@ require_once 'inc/wp-core-utils/wp-core-utils.php';
 WPCoreUtils::init();
 require_once 'inc/walker-nav-menu/walker-nav-menu.php';
 	
-	// Add page/post slug class to menu item classes	
-	function add_slug_class_to_menu_item($output){
-		$ps = get_option('permalink_structure');
-		if(!empty($ps)){
-			$idstr = preg_match_all('/<li id="menu-item-(\d+)/', $output, $matches);
-
-      $counter = 0;
-
-			foreach($matches[1] as $mid){
-        $counter++;
-
-				$id = get_post_meta($mid, '_menu_item_object_id', true);
-				if( $counter == 1 ) {
-          $slug = 'home';
-        }
-        else {
-          $slug = basename(get_permalink($id));
-        }
-
-				$output = preg_replace('/menu-item-'.$mid.'">/', 'menu-item-'.$mid.' menu-item-'.$slug.'">', $output, 1);
-			}
-		}
-		return $output;
-	}
-	add_filter('wp_nav_menu', 'add_slug_class_to_menu_item');	
-
 	// Add styles to the WYSIWYG editor. Function finds stylesheet from the root of the current theme's folder.
 	add_editor_style('style.css');
 

@@ -6,7 +6,7 @@ class WPCoreUtils {
   add_action('init', array($self, 'clean_up_actions'));
   add_action('wp_loaded', array($self, 'enqueue_dequeue_styles_scripts'));
 		add_action('body_class', array($self, 'append_body_class'));
-		add_filter ('wp_nav_menu', array($self, 'current_to_active'));
+		add_filter ('wp_nav_menu', array($self, 'customize_nav_menu_output'));
 
 		// Add RSS links to <head> section
   add_theme_support( 'automatic-feed-links' );
@@ -66,17 +66,38 @@ class WPCoreUtils {
 			return $new_classes;
 	}
 
-	public function current_to_active($text){
+	// Add page/post slug class to menu item classes AND
+	// replace current classes with "active"
+	public function customize_nav_menu_output($output) {
+		$ps = get_option('permalink_structure');
+		if (!empty($ps)) {
+			$idstr = preg_match_all('/<li id="menu-item-(\d+)/', $output, $matches);
+			$counter = 0;
+
+			foreach ($matches[1] as $mid) {
+							$counter++;
+							$id = get_post_meta($mid, '_menu_item_object_id', true);
+							
+							if ($counter == 1) {
+											$slug = 'home';
+							} else {
+											$slug = basename(get_permalink($id));
+							}
+
+							$output = preg_replace('/menu-item-' . $mid . '">/', 'menu-item-' . $mid . ' menu-item-' . $slug . '">', $output, 1);
+			}
+		}
+
+		// Replace current classes with "active"
 		$replace = array(
-			// List of classes to replace with "active"
-			'current_page_item' => 'active',
-			'current_page_parent' => 'active',
-			'current_page_ancestor' => 'active',
+						'current_page_item' => 'active',
+						'current_page_parent' => 'active',
+						'current_page_ancestor' => 'active',
 		);
-		$text = str_replace(array_keys($replace), $replace, $text);
-		return $text;
-	}	
-		
+		$output = str_replace(array_keys($replace), $replace, $output);
+		return $output;
+	}
+	
  /**
 		* Private methods 
 		*/ 
