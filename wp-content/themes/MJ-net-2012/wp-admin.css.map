@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,mCAAmC;AAGnC,KAAM;EACJ,OAAO,EAAE,IAAI;;AAGf,KAAM;EACJ,OAAO,EAAE,KAAK;;AAGhB,OAAQ;EACN,KAAK,EAAE,IAAI;;AAGb,MAAO;EACL,KAAK,EAAE,GAAG;;AAIZ,gDAAiD;EAC/C,OAAO,EAAE,IAAI;;AAGf,gDAAiD;EAC/C,OAAO,EAAE,KAAK",
-"sources": ["wp-admin.scss"],
-"names": [],
-"file": "wp-admin.css"
-}

@@ -7,9 +7,7 @@
   "scripts": {
     "format": "prettier --write \"assets/**/*.js\"",
     "lint": "eslint \"assets/**/*.js\"",
-    "buildtimestamp": "node nodejs-scripts/write-timestamp-json.js",
-    "buildwebpack": "webpack --mode production",
-    "build": "run-s buildtimestamp buildwebpack",
+    "build": "webpack --mode production",
     "start": "webpack --watch --progress --mode development"
   },
   "keywords": [],
