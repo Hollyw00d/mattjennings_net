@@ -24,7 +24,7 @@ class WPCoreUtils {
 		* - Add RSS links to <head> section
 		* - Add Custom Menu
 		* - Add post thumbnails to theme
-		* - Remove xmlrpc.php pingback link, like:
+		* - Disable xmlrpc.php pingback link, like:
 	 * `<link rel="pingback" href="https://example.com/xmlrpc.php" />`
 	 */
 	public function set_up_actions() {
