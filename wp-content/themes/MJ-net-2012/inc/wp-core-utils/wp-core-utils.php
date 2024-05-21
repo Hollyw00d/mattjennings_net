@@ -3,14 +3,15 @@
 class WPCoreUtils {
  public static function init() {
   $self = new self();
-  add_action('init', array($self, 'clean_up_actions'));
+  add_action('init', array($self, 'set_up_actions'));
   add_action('wp_loaded', array($self, 'enqueue_dequeue_styles_scripts'));
+		add_filter( 'style_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
+		add_filter( 'script_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_action('body_class', array($self, 'customize_body_class'));
 		add_filter ('wp_nav_menu', array($self, 'customize_nav_menu_output'));
 		add_filter( 'post_class', array($self, 'mark_first_post') );	
 		remove_filter('get_the_excerpt', 'wp_trim_excerpt');
 		add_filter( 'get_the_excerpt', array($self, 'improved_excerpt') );	
-
  }
 
 	/*
@@ -23,7 +24,7 @@ class WPCoreUtils {
 		* - Add Custom Menu
 		* - Add post thumbnails to theme
 	 */
-	public function clean_up_actions() {
+	public function set_up_actions() {
 		// Clean up the <head>
 		remove_action('wp_head', 'rsd_link');
 		remove_action('wp_head', 'wlwmanifest_link');
@@ -49,7 +50,9 @@ class WPCoreUtils {
 	}
 
 	/*
-	 * Enqueue or dequeue styles and scripts
+	 * Update CSS and JS including:
+		* - Dequeueing & enqueueing CSS and JS
+		* - Removing query strings from CSS and JS
 	 */	
 	public function enqueue_dequeue_styles_scripts() {
 		// Dequeue WP block library CSS from WP Core
@@ -65,7 +68,14 @@ class WPCoreUtils {
 		// Enqueue JS
 		wp_enqueue_script('theme-scripts', get_stylesheet_directory_uri().'/build/js/theme.min.js', '', '', true);
 	}
-	
+
+	public function remove_query_string_from_css_js( $src ) {
+		if ( strpos( $src, 'ver=' ) ) {
+			$src = remove_query_arg( 'ver', $src );
+		}
+		return $src;
+	}
+
 	/* 
 	 * Update BODY tag classes including:
   * - If on blog archive page (posts page) or single post add `blog` as a class
