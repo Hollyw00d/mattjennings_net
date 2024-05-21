@@ -51,7 +51,6 @@ class WPCoreUtils {
 		add_theme_support( 'menus' );
 		add_theme_support( 'post-thumbnails' );
 
-		$this->remove_pingback_link();
   $this->prevent_xmlrpc_access();
 	}
 
@@ -193,16 +192,6 @@ class WPCoreUtils {
  	$content = preg_replace('/<h[1-6][^>]*>(.*?)<\/h[1-6]>/', '', $content);
   return $content;
  }
-
-	private function remove_pingback_link() {
-    remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
-    remove_action('wp_head', 'rsd_link');
-    remove_action('wp_head', 'wlwmanifest_link');
-    remove_action('wp_head', 'wp_resource_hints', 2);
-    remove_action('wp_head', 'rest_output_link_wp_head', 10);
-    remove_action('wp_head', 'wp_oembed_add_discovery_links');
-    remove_action('template_redirect', 'wp_shortlink_header', 11);
-	}
 
 	private function prevent_xmlrpc_access() {
 			if (strpos($_SERVER['REQUEST_URI'], '/xmlrpc.php') !== false) {
