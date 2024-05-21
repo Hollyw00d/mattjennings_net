@@ -51,7 +51,7 @@ class WPCoreUtils {
 		add_theme_support( 'menus' );
 		add_theme_support( 'post-thumbnails' );
 
-		// $this->remove_pingback_link();
+		$this->remove_pingback_link();
   $this->prevent_xmlrpc_access();
 	}
 
