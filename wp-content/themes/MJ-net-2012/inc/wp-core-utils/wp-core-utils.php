@@ -4,6 +4,7 @@ class WPCoreUtils {
  public static function init() {
   $self = new self();
   add_action('init', array($self, 'set_up_actions'));
+  add_filter('xmlrpc_enabled', '__return_false');
   add_action('wp_loaded', array($self, 'enqueue_dequeue_styles_scripts'));
 		add_filter( 'style_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_filter( 'script_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
@@ -23,6 +24,8 @@ class WPCoreUtils {
 		* - Add RSS links to <head> section
 		* - Add Custom Menu
 		* - Add post thumbnails to theme
+		* - Remove xmlrpc.php pingback link, like:
+	 * `<link rel="pingback" href="https://example.com/xmlrpc.php" />`
 	 */
 	public function set_up_actions() {
 		// Clean up the <head>
@@ -47,6 +50,9 @@ class WPCoreUtils {
   add_theme_support( 'automatic-feed-links' );
 		add_theme_support( 'menus' );
 		add_theme_support( 'post-thumbnails' );
+
+		// $this->remove_pingback_link();
+  $this->prevent_xmlrpc_access();
 	}
 
 	/*
@@ -188,4 +194,21 @@ class WPCoreUtils {
   return $content;
  }
 
+	private function remove_pingback_link() {
+    remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
+    remove_action('wp_head', 'rsd_link');
+    remove_action('wp_head', 'wlwmanifest_link');
+    remove_action('wp_head', 'wp_resource_hints', 2);
+    remove_action('wp_head', 'rest_output_link_wp_head', 10);
+    remove_action('wp_head', 'wp_oembed_add_discovery_links');
+    remove_action('template_redirect', 'wp_shortlink_header', 11);
 	}
+
+	private function prevent_xmlrpc_access() {
+			if (strpos($_SERVER['REQUEST_URI'], '/xmlrpc.php') !== false) {
+							http_response_code(403);
+							exit;
+			}
+	}
+
+}
