@@ -43,7 +43,8 @@ Instead check out my latest front-end development work/code at:
 - [codepen.io/hollyw00d](https://codepen.io/hollyw00d/) (my CodePen)
 
 ## Setup
-1. To update CSS or JS in the WP active theme (both are located at __wp-content/themes/MJ-net-2012/assets__ and I use [SCSS](https://sass-lang.com/documentation/syntax/#scss), which is enhanced CSS), in your terminal go to __wp-content/themes/MJ-net-2012__
+1. To update CSS or JS in the WP active theme (both are located at __wp-content/themes/MJ-net-2012/assets__ and I use [SCSS](https://sass-lang.com/documentation/syntax/#scss), which is enhanced CSS), in your terminal go to:  
+  __wp-content/themes/MJ-net-2012__
 
 2. Then install npm packages (including [webpack](https://webpack.js.org/)) do:  
    `npm i`
@@ -55,7 +56,7 @@ Instead check out my latest front-end development work/code at:
    `npm start`
 
 5. Additional useful terminal commands in the active theme are below:
-   - Lint WP theme JS located at __wp-content/themes/MJ-net-2012/assets__ by running:  
+   - Lint WP theme JS located at __wp-content/themes/MJ-net-2012/assets/js__ by running:  
      `npm run lint`
-   - Reformat JS located at __wp-content/themes/MJ-net-2012/assets__ by running:  
+   - Reformat JS located at __wp-content/themes/MJ-net-2012/assets/js__ by running:  
      `npm run format`
