@@ -14,7 +14,7 @@ Currently the website is a WordPress (WP) site at [mattjennings.net](https://www
    `npm start`
 
 5. Additional useful terminal commands in the active theme are below:
-   - Lint WP theme JS located at __wp-content/themes/MJ-net-2012/assets__ by running:
+   - Lint WP theme JS located at __wp-content/themes/MJ-net-2012/assets__ by running:  
      `npm run lint`
-   - Reformat JS located at __wp-content/themes/MJ-net-2012/assets__ by running:
+   - Reformat JS located at __wp-content/themes/MJ-net-2012/assets__ by running:  
      `npm run format`
