@@ -824,6 +824,8 @@ $danger-border: #ebccd1;
     -ms-overflow-x: hidden;
 
     img {
+      max-width: 100%;
+      height: auto;
       border: 2px solid $light-gray;
     }
   }

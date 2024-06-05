@@ -1,0 +1,15 @@
+/* IE8 Styles */
+	#nav-bar .container-narrow {  
+		display: block;
+		overflow: hidden;
+	} 
+
+	.home #site-content, .blog #site-content, .archive #site-content, .category #site-content, .single #site-content, .single-post #site-content, .search #site-content
+	{
+		margin: -27px 0 0;	
+	}
+
+	#site-content-inner-line
+	{
+		margin: 27px 6px 6px;
+	}
