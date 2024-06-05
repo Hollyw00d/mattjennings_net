@@ -31,7 +31,7 @@ $is_first_post = 1;
 
 	<?php endwhile; ?>
 
-	<?php include (TEMPLATEPATH . '/inc/nav.php' ); ?>
+	<?php include (TEMPLATEPATH . '/inc/nav/nav.php' ); ?>
 
 	<?php else : ?>
 
