@@ -24,7 +24,7 @@ $wp_query->query('showposts=5&post_type=post'.'&paged='.$paged);
 
             <hr <?php post_class(); ?> />
             
-			<?php include (TEMPLATEPATH . '/inc/meta.php' ); ?>
+			<?php include (TEMPLATEPATH . '/inc/meta/meta.php' ); ?>
                                     
             <?php the_excerpt(); ?>
 
