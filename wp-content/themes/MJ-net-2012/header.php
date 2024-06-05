@@ -1,4 +1,4 @@
-<?php include 'inc/global.php'; ?>
+<?php include 'inc/globals/globals.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 

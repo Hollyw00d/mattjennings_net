@@ -1,4 +1,4 @@
-<?php include 'inc/global.php'; ?>
+<?php include 'inc/globals/globals.php'; ?>
 <p id="to-top" class="hide-override">
  <a id="to-top-link" href="#">To Top &uarr;</a>
 </p>

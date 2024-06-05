@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,gBAAgB;AACf,0BAA2B;EAC1B,OAAO,EAAE,KAAK;EACd,QAAQ,EAAE,MAAM;;AAGjB,mKACA;EACC,MAAM,EAAE,SAAS;;AAGlB,wBACA;EACC,MAAM,EAAE,YAAY",
-"sources": ["style-ie8.scss"],
-"names": [],
-"file": "style-ie8.css"
-}
