@@ -8,7 +8,7 @@
 
         <div class="post-wrapper" role="article">
 			                        
-			<?php include (TEMPLATEPATH . '/inc/meta.php' ); ?>
+			<?php include (TEMPLATEPATH . '/inc/meta/meta.php' ); ?>
 
 			<?php the_content(); ?>
 

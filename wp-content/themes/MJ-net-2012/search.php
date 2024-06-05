@@ -4,7 +4,7 @@
     
 		<h2><em>Search Results for <strong><?php echo get_search_query(); ?></strong></em></h2>
 
-		<?php include (TEMPLATEPATH . '/inc/nav.php' ); ?>
+		<?php include (TEMPLATEPATH . '/inc/nav/nav.php' ); ?>
 
 		<?php while (have_posts()) : the_post(); ?>
 
@@ -12,7 +12,7 @@
 			
                     <hr <?php post_class(); ?> />
                     
-                    <?php include (TEMPLATEPATH . '/inc/meta.php' ); ?>
+                    <?php include (TEMPLATEPATH . '/inc/meta/meta.php' ); ?>
                                             
                     <?php the_excerpt(); ?>
                 
@@ -20,7 +20,7 @@
 
 		<?php endwhile; ?>
 
-		<?php include (TEMPLATEPATH . '/inc/nav.php' ); ?>
+		<?php include (TEMPLATEPATH . '/inc/nav/nav.php' ); ?>
 
 	<?php else : ?>
     
