@@ -32,7 +32,5 @@ elseif( is_404() ) {
 <div id="mobile-site-footer-mid-line"></div>
 <div id="mobile-site-footer"></div>
 <?php wp_footer(); ?>
-<!-- MJ was here -->
 </body>
-
 </html>
