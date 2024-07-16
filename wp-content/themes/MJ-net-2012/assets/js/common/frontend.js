@@ -45,7 +45,7 @@ export default class FrontEndUtils {
 
   youtubeEmbedResize() {
     const youtubeResponsive = $('.youtube-responsive');
-    if (youtubeEmbedResponsive.length === 0) return;
+    if (youtubeResponsive.length === 0) return;
 
     // Function to make YouTube embeds responsive
     const youtubeEmbedResponsive = (event) => {
