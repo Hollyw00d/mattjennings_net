@@ -1,4 +1,5 @@
 import $ from 'jquery'; // eslint-disable-line import/no-extraneous-dependencies
+import debounce from 'debounce'; // eslint-disable-line import/no-extraneous-dependencies
 
 export default class FrontEndUtils {
   init() {
@@ -23,29 +24,35 @@ export default class FrontEndUtils {
   }
 
   sidebar() {
-    const blogSiteContentContainer = $('.blog-site-content-container');
-    const windowWidth = $(window).width();
-    const windowWidth1005 = 1005;
-    const sideBarHeight = $('#sidebar').height();
-    const mobileSize = '';
-
     //  Blog page functions to be called later
-    if (windowWidth > windowWidth1005 && !mobileSize) {
-      blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
-    } else if (windowWidth <= windowWidth1005 && mobileSize) {
-      blogSiteContentContainer.removeAttr('min-height');
+    function resizeBlogActions() {
+      const blogSiteContentContainer = $('.blog-site-content-container');
+      if (blogSiteContentContainer.length === 0) return;
+
+      const windowWidth = $(window).width();
+      const windowWidth1005 = 1005;
+      const sideBarHeight = $('#sidebar').height();
+
+      if (windowWidth > windowWidth1005) {
+        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
+      } else if (windowWidth <= windowWidth1005) {
+        blogSiteContentContainer.removeAttr('style');
+      }
     }
+    resizeBlogActions();
+    window.onresize = debounce(resizeBlogActions, 300);
   }
 
   youtubeEmbedResize() {
+    const youtubeResponsive = $('.youtube-responsive');
+    if (youtubeEmbedResponsive.length === 0) return;
+
     // Function to make YouTube embeds responsive
     const youtubeEmbedResponsive = (event) => {
       $('#site-content-container')
         .find(event.currentTarget)
         .wrap('<div class="youtube-responsive-container"></div>');
     };
-
-    const youtubeResponsive = $('.youtube-responsive');
 
     // Call to execute make_youtubeEmbedResponsive() on .youtube-responsive class
     if (youtubeResponsive.length > 0) {
@@ -55,13 +62,15 @@ export default class FrontEndUtils {
 
   portfolioChooser(isVertificalScrollbarActions) {
     // Variables for the hash change and SELECT tag JS
+    const portfolioProjectChooser = $('#portfolio-project-chooser');
+    if (portfolioProjectChooser.length === 0) return;
+
     const showOverrideClass = 'show-override';
     const hideOverrideClass = 'hide-override';
     const hashSelectedClass = 'hash-selected';
     const featuredProjectsDataAttr = 'featured-projects';
     const featuredProjectsSection = $(`#${featuredProjectsDataAttr}-section`);
     const allProjectsSection = $('#all-projects-section');
-    const portfolioProjectChooser = $('#portfolio-project-chooser');
     const portfolioUpdateText = $('#portfolio-update-text');
 
     // Push in  values to empty array 'data-project-category' values
