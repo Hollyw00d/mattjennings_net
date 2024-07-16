@@ -26,15 +26,8 @@ class WPCoreUtils {
 		* - Add post thumbnails to theme
 		* - Disable xmlrpc.php pingback link, like:
 	 * `<link rel="pingback" href="https://example.com/xmlrpc.php" />`
-		* - Other actions
 	 */
 	public function set_up_actions() {
-		// Remove jQuery WP core or loaded from scripts
-		if(!is_admin()) {
-			wp_deregister_script('jquery');
-			wp_register_script('jquery', false);			
-		}
-
 		// Clean up the <head>
 		remove_action('wp_head', 'rsd_link');
 		remove_action('wp_head', 'wlwmanifest_link');
