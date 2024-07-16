@@ -1,4 +1,4 @@
-<?php include 'inc/globals/globals.php'; ?>
+<?php include 'inc/global-vars/global-vars.php'; ?>
 <p id="to-top" class="hide-override">
  <a id="to-top-link" href="#">To Top &uarr;</a>
 </p>
@@ -32,7 +32,5 @@ elseif( is_404() ) {
 <div id="mobile-site-footer-mid-line"></div>
 <div id="mobile-site-footer"></div>
 <?php wp_footer(); ?>
-<!-- MJ was here -->
 </body>
-
 </html>

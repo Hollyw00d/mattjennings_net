@@ -1,4 +1,4 @@
-<?php include 'inc/globals/globals.php'; ?>
+<?php include 'inc/global-vars/global-vars.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,14 +39,7 @@
 
      <div id="social-networks-wrapper">
       <div id="social-networks-inner">
-       <a class="linkedin-icon" href="https://www.linkedin.com/in/mattpjennings" target="_blank"
-        aria-label="LinkedIn Profile for Matt Jennings">
-        <i class="fa fa-linkedin-square"></i>
-       </a>
-       <a class="github-icon" href="https://github.com/Hollyw00d" target="_blank"
-        aria-label="GitHub Profile for Matt Jennings">
-        <i class="fa fa-github"></i>
-       </a>
+         <?php include 'template-parts/social-networks/social-networks.php'; ?>
       </div>
      </div>
 

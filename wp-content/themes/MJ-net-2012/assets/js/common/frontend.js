@@ -1,108 +1,88 @@
-// Wrap code in variable to make private
-const Module = (() => {
-  // 'pageHasVerticalScrollbar' displays true when page has vertical scrollbar
-  // and false when page doesn't have vertical scrollbar
-  const findOutIfPageHasVerticalScrollBar = () => {
-    const $toTopParagraph = jQuery('#to-top');
+import $ from 'jquery'; // eslint-disable-line import/no-extraneous-dependencies
+import debounce from 'debounce'; // eslint-disable-line import/no-extraneous-dependencies
 
-    const pageHasVerticalScrollbar =
-      jQuery('body').height() > window.innerHeight;
+export default class FrontEndUtils {
+  init() {
+    const isVertificalScrollbarActions = () => {
+      const $toTopParagraph = jQuery('#to-top');
 
-    if (pageHasVerticalScrollbar) {
-      $toTopParagraph.removeClass('hide-override');
-    } else {
-      $toTopParagraph.addClass('hide-override');
-    }
-  };
+      const pageHasVerticalScrollbar =
+        jQuery('body').height() > window.innerHeight;
 
-  const sidebarOnBlogPagePrivate = () => {
-    const blogSiteContentContainer = jQuery('.blog-site-content-container');
-    const windowWidth = jQuery(window).width();
-    const windowWidth1005 = 1005;
-    let sideBarHeight = jQuery('#sidebar').height();
-    let mobileSize = '';
+      if (pageHasVerticalScrollbar) {
+        $toTopParagraph.removeClass('hide-override');
+      } else {
+        $toTopParagraph.addClass('hide-override');
+      }
+    };
 
+    this.sidebar();
+    this.youtubeEmbedResize();
+    this.portfolioChooser(isVertificalScrollbarActions);
+    this.toTopLink(isVertificalScrollbarActions);
+    this.twitterQuotes();
+  }
+
+  sidebar() {
     //  Blog page functions to be called later
-    const makeSidebarFitInsideDivOnBlogPagesDocumentReady = () => {
-      if (windowWidth > windowWidth1005 && !mobileSize) {
-        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
-      } else if (windowWidth <= windowWidth1005 && mobileSize) {
-        blogSiteContentContainer.removeAttr('min-height');
-      }
-    };
+    function resizeBlogActions() {
+      const blogSiteContentContainer = $('.blog-site-content-container');
+      if (blogSiteContentContainer.length === 0) return;
 
-    const blogPageSidebarResize = () => {
+      const windowWidth = $(window).width();
+      const windowWidth1005 = 1005;
+      const sideBarHeight = $('#sidebar').height();
+
       if (windowWidth > windowWidth1005) {
-        sideBarHeight = jQuery('#sidebar').height();
         blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
-      }
-
-      if (windowWidth <= windowWidth1005) {
-        sideBarHeight = jQuery('#sidebar').height();
-        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
-        blogSiteContentContainer.removeAttr('min-height');
-      }
-    };
-
-    // If on Blog page, single post, category page, search page, archive page
-    // create window width variable
-    if (blogSiteContentContainer.length > 0) {
-      if (windowWidth > windowWidth1005) {
-        mobileSize = false;
       } else if (windowWidth <= windowWidth1005) {
-        mobileSize = true;
+        blogSiteContentContainer.removeAttr('style');
       }
-
-      makeSidebarFitInsideDivOnBlogPagesDocumentReady();
-
-      // Window resize event
-      jQuery(window).resize(blogPageSidebarResize);
     }
-  };
+    resizeBlogActions();
+    window.onresize = debounce(resizeBlogActions, 300);
+  }
 
-  const youtubeEmbedResizePrivate = () => {
+  youtubeEmbedResize() {
+    const youtubeResponsive = $('.youtube-responsive');
+    if (youtubeEmbedResponsive.length === 0) return;
+
     // Function to make YouTube embeds responsive
     const youtubeEmbedResponsive = (event) => {
-      jQuery('#site-content-container')
+      $('#site-content-container')
         .find(event.currentTarget)
         .wrap('<div class="youtube-responsive-container"></div>');
     };
-
-    const youtubeResponsive = jQuery('.youtube-responsive');
 
     // Call to execute make_youtubeEmbedResponsive() on .youtube-responsive class
     if (youtubeResponsive.length > 0) {
       youtubeResponsive.each(youtubeEmbedResponsive);
     }
-  };
+  }
 
-  const portfolioChooserPrivate = () => {
+  portfolioChooser(isVertificalScrollbarActions) {
     // Variables for the hash change and SELECT tag JS
+    const portfolioProjectChooser = $('#portfolio-project-chooser');
+    if (portfolioProjectChooser.length === 0) return;
+
     const showOverrideClass = 'show-override';
     const hideOverrideClass = 'hide-override';
     const hashSelectedClass = 'hash-selected';
     const featuredProjectsDataAttr = 'featured-projects';
-    const featuredProjectsSection = jQuery(
-      `#${featuredProjectsDataAttr}-section`
-    );
-    const allProjectsSection = jQuery('#all-projects-section');
-    const portfolioProjectChooser = jQuery('#portfolio-project-chooser');
-    const portfolioUpdateText = jQuery('#portfolio-update-text');
+    const featuredProjectsSection = $(`#${featuredProjectsDataAttr}-section`);
+    const allProjectsSection = $('#all-projects-section');
+    const portfolioUpdateText = $('#portfolio-update-text');
 
     // Push in  values to empty array 'data-project-category' values
     // into empty array
     const allDataProjectCategoryValuesArr = [];
-    jQuery('#portfolio-project-chooser > option').each((iterator, item) => {
-      allDataProjectCategoryValuesArr.push(
-        jQuery(item).data('project-category')
-      );
+    $('#portfolio-project-chooser > option').each((iterator, item) => {
+      allDataProjectCategoryValuesArr.push($(item).data('project-category'));
     });
 
     // Show featured items only
     const showFeatured = (featuredId) => {
-      jQuery(featuredId)
-        .removeClass(hideOverrideClass)
-        .addClass(showOverrideClass);
+      $(featuredId).removeClass(hideOverrideClass).addClass(showOverrideClass);
     };
 
     const hashChange = (getSelectTag) => {
@@ -111,10 +91,7 @@ const Module = (() => {
       // If loaded page to get a hash and
       // hash exists in allDataProjectCategoryValuesArr
       // then execute code below
-      if (
-        hash &&
-        jQuery.inArray(hash, allDataProjectCategoryValuesArr) !== -1
-      ) {
+      if (hash && $.inArray(hash, allDataProjectCategoryValuesArr) !== -1) {
         getSelectTag
           .find(`option[data-project-category=${hash}]`)
           .prop('selected', 'selected')
@@ -153,14 +130,14 @@ const Module = (() => {
 
     // Portfolio page (front page) code to show and hide project categories AND
     // code runs ONLY if on Portfolio page (front page)
-    if (jQuery('body.home').length > 0) {
+    if ($('body.home').length > 0) {
       showFeatured('#featured-projects-section');
 
       portfolioProjectChooser.on('change', (event) => {
-        const chosenOptionTagDataAttr = jQuery(event.currentTarget)
+        const chosenOptionTagDataAttr = $(event.currentTarget)
           .find('option:selected')
           .attr('data-project-category');
-        const chosenOptionTagVal = jQuery(event.currentTarget)
+        const chosenOptionTagVal = $(event.currentTarget)
           .find('option:selected')
           .val();
         portfolioProjectChooser.find('option').removeClass(hashSelectedClass);
@@ -221,16 +198,16 @@ const Module = (() => {
         // If on change event scrollbar area is high enough
         // show scrollbar if not hide scrollbar
         // on project chooser change
-        findOutIfPageHasVerticalScrollBar();
+        isVertificalScrollbarActions();
       });
 
       const getHashChange = hashChange(portfolioProjectChooser);
 
-      jQuery(window).on('hashchange', getHashChange);
+      $(window).on('hashchange', getHashChange);
     }
-  };
+  }
 
-  const toTopLinkPrivate = () => {
+  toTopLink(isVertificalScrollbarActions) {
     const toTopLink = document.getElementById('to-top-link') ?? null;
     if (toTopLink) {
       toTopLink.addEventListener('click', (e) => {
@@ -239,62 +216,48 @@ const Module = (() => {
       });
     }
 
-    findOutIfPageHasVerticalScrollBar();
+    isVertificalScrollbarActions();
 
-    jQuery(window).on('resize', findOutIfPageHasVerticalScrollBar);
-  };
+    $(window).on('resize', isVertificalScrollbarActions);
+  }
 
-  // Make quotes click to Tweet
-  const twitterQuotesToClick = () => {
-    // Get quote to add to Twitter from
-    // 'blockquote' tag
-    const $postQuote = jQuery('blockquote');
-    const postQuoteText = $postQuote.text();
-    const postQuoteTextNoSpaces = postQuoteText.replace(/ /g, '%20');
+  twitterQuotes() {
+    // Make quotes click to Tweet
+    const twitterQuotesToClick = () => {
+      // Get quote to add to Twitter from
+      // 'blockquote' tag
+      const $postQuote = $('blockquote');
+      const postQuoteText = $postQuote.text();
+      const postQuoteTextNoSpaces = postQuoteText.replace(/ /g, '%20');
 
-    let twitterHashtagsTextNoHashes;
+      let twitterHashtagsTextNoHashes;
 
-    if (jQuery('#twitter-hashtags').length > 0) {
-      const twitterHashtagsText = jQuery('#twitter-hashtags').text();
-      const twitterHashtagsTextReplace = twitterHashtagsText
-        .replace(/#/g, '%23')
-        .replace(/ /g, '%20');
+      if ($('#twitter-hashtags').length > 0) {
+        const twitterHashtagsText = $('#twitter-hashtags').text();
+        const twitterHashtagsTextReplace = twitterHashtagsText
+          .replace(/#/g, '%23')
+          .replace(/ /g, '%20');
 
-      twitterHashtagsTextNoHashes = `%20${twitterHashtagsTextReplace}%20`;
-    } else {
-      twitterHashtagsTextNoHashes = '%20';
-    }
+        twitterHashtagsTextNoHashes = `%20${twitterHashtagsTextReplace}%20`;
+      } else {
+        twitterHashtagsTextNoHashes = '%20';
+      }
 
-    $postQuote.wrap(
-      `<a class="no-link-underline" onclick="window.open('https://twitter.com/intent/tweet?text=${postQuoteTextNoSpaces}${twitterHashtagsTextNoHashes}${window.location}', '_blank', 'width=500,height=500'); return false;" href="#"></a>"`
-    );
-    $postQuote.prepend(
-      '<span class="dashicons dashicons-format-quote twitter-blue"></span>'
-    );
-    $postQuote.append(
-      '<p class="click-to-tweet twitter-blue"><i class="fa fa-twitter" style="padding-right: 5px;"></i>Click to Tweet</p>'
-    );
-  };
+      $postQuote.wrap(
+        `<a class="no-link-underline" onclick="window.open('https://twitter.com/intent/tweet?text=${postQuoteTextNoSpaces}${twitterHashtagsTextNoHashes}${window.location}', '_blank', 'width=500,height=500'); return false;" href="#"></a>"`
+      );
+      $postQuote.prepend(
+        '<span class="dashicons dashicons-format-quote twitter-blue"></span>'
+      );
+      $postQuote.append(
+        '<p class="click-to-tweet twitter-blue"><i class="fa fa-twitter" style="padding-right: 5px;"></i>Click to Tweet</p>'
+      );
+    };
 
-  const twitterQuotes = () => {
     // Run click to Tweet twitter code
     // ONLY if a 'blockquote' tag is found on website
-    if (jQuery('blockquote').length > 0) {
+    if ($('blockquote').length > 0) {
       twitterQuotesToClick();
     }
-  };
-
-  const publicMethod = () => {
-    sidebarOnBlogPagePrivate();
-    youtubeEmbedResizePrivate();
-    portfolioChooserPrivate();
-    toTopLinkPrivate();
-    twitterQuotes();
-  };
-
-  return {
-    publicMethod
-  };
-})();
-
-export default Module;
+  }
+}

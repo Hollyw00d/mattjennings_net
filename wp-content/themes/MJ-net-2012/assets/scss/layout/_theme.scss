@@ -622,18 +622,24 @@ $danger-border: #ebccd1;
       a {
         margin: 0 0 0 10px;
         display: inline-block;
+        width: 40px;
+        height: 40px;
       }
 
-      i {
-        font-size: 45px;
-      }
-
-      .linkedin-icon i {
-        color: $linkedin-blue;
+      .linkedin-icon {
+        svg {
+          path {
+            fill: $linkedin-blue;
+          }
+        }
       }
 
       .github-icon {
-        color: $github-black;
+        svg {
+          fill {
+            color: $github-black;
+          }
+        }
       }
     }
   }
@@ -1201,6 +1207,8 @@ $danger-border: #ebccd1;
     width: 100%;
 
     #social-networks-inner {
+      display: grid;
+      gap: 5px;
       margin: 0;
       width: 41px;
       position: absolute;
