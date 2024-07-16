@@ -67,8 +67,13 @@ class WPCoreUtils {
 			wp_deregister_style( 'wp-block-library' );
 		}
 
-		// If not on single 'post' then dequeue/deregister scripts below
+		// If not on single 'post' then dequeue/deregister styles/scripts below
 		if( !is_singular( 'post' ) ) {
+			// Styles
+			wp_dequeue_style('enlighterjs');
+			wp_deregister_style('enlighterjs');
+
+			// Scripts
 			wp_dequeue_script('comment-reply');
 			wp_deregister_script('comment-reply');
 
