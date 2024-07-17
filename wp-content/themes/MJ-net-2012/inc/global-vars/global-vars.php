@@ -5,3 +5,4 @@
 
 // If URL has "portfolio-feed"
 $portfolio_feed_url = substr($_SERVER['REQUEST_URI'],1,14);
+$site_title = get_bloginfo( 'name' );

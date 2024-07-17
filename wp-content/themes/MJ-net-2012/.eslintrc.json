@@ -9,7 +9,8 @@
   },
   "rules": {
     "semi": "error",
-    "no-console": "warn"
+    "no-console": "warn",
+    "class-methods-use-this": "off"
   },
   "ignorePatterns": [
     "node_modules",
