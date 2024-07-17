@@ -5,7 +5,7 @@ class WPCoreUtils {
   $self = new self();
   add_action('init', array($self, 'set_up_actions'));
   add_filter('xmlrpc_enabled', '__return_false');
-  add_action('wp_loaded', array($self, 'enqueue_dequeue_styles_scripts'));
+  add_action('wp_enqueue_scripts', array($self, 'enqueue_dequeue_styles_scripts'), 100);
 		add_filter( 'style_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_filter( 'script_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_action('body_class', array($self, 'customize_body_class'));
@@ -65,6 +65,20 @@ class WPCoreUtils {
 		if ( !is_admin() ) {
 			wp_dequeue_style( 'wp-block-library' );
 			wp_deregister_style( 'wp-block-library' );
+		}
+
+		// If not on single 'post' then dequeue/deregister styles/scripts below
+		if( !is_singular( 'post' ) ) {
+			// Styles
+			wp_dequeue_style('enlighterjs');
+			wp_deregister_style('enlighterjs');
+
+			// Scripts
+			wp_dequeue_script('comment-reply');
+			wp_deregister_script('comment-reply');
+
+			wp_dequeue_script('enlighterjs');
+			wp_deregister_script('enlighterjs');
 		}
 
 		// Enqueue CSS
