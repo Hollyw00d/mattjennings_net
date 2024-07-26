@@ -26,17 +26,19 @@ export default class FrontEndUtils {
   sidebar() {
     //  Blog page functions to be called later
     function resizeBlogActions() {
-      const blogSiteContentContainer = $('.blog-site-content-container');
+      const blogSiteContentContainer = document.querySelector(
+        '.blog-site-content-container'
+      );
       if (blogSiteContentContainer.length === 0) return;
 
-      const windowWidth = $(window).width();
+      const windowWidth = window.innerWidth;
       const windowWidth1005 = 1005;
-      const sideBarHeight = $('#sidebar').height();
+      const sideBarHeight = document.getElementById('sidebar').offsetHeight;
 
       if (windowWidth > windowWidth1005) {
-        blogSiteContentContainer.css('min-height', `${sideBarHeight + 20}px`);
+        blogSiteContentContainer.style.minHeight = `${sideBarHeight + 20}px`;
       } else if (windowWidth <= windowWidth1005) {
-        blogSiteContentContainer.removeAttr('style');
+        blogSiteContentContainer.removeAttribute('style');
       }
     }
     resizeBlogActions();
