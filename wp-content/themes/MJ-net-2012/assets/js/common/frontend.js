@@ -4,15 +4,15 @@ import debounce from 'debounce'; // eslint-disable-line import/no-extraneous-dep
 export default class FrontEndUtils {
   init() {
     const isVertificalScrollbarActions = () => {
-      const $toTopParagraph = jQuery('#to-top');
+      const toTopParagraph = document.getElementById('to-top');
 
       const pageHasVerticalScrollbar =
-        jQuery('body').height() > window.innerHeight;
+        document.body.offsetHeight > window.innerHeight;
 
       if (pageHasVerticalScrollbar) {
-        $toTopParagraph.removeClass('hide-override');
+        toTopParagraph.classList.remove('hide-override');
       } else {
-        $toTopParagraph.addClass('hide-override');
+        toTopParagraph.classList.add('hide-override');
       }
     };
 
