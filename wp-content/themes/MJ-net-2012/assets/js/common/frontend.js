@@ -220,7 +220,7 @@ export default class FrontEndUtils {
 
     isVertificalScrollbarActions();
 
-    $(window).on('resize', isVertificalScrollbarActions);
+    window.addEventListener('resize', isVertificalScrollbarActions);
   }
 
   twitterQuotes() {
