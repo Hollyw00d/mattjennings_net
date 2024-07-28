@@ -3,23 +3,9 @@ import debounce from 'debounce'; // eslint-disable-line import/no-extraneous-dep
 
 export default class FrontEndUtils {
   init() {
-    const isVertificalScrollbarActions = () => {
-      const toTopParagraph = document.getElementById('to-top');
-
-      const pageHasVerticalScrollbar =
-        document.body.offsetHeight > window.innerHeight;
-
-      if (pageHasVerticalScrollbar) {
-        toTopParagraph.classList.remove('hide-override');
-      } else {
-        toTopParagraph.classList.add('hide-override');
-      }
-    };
-
     this.sidebar();
     this.youtubeEmbedResize();
-    this.portfolioChooser(isVertificalScrollbarActions);
-    this.toTopLink(isVertificalScrollbarActions);
+    this.portfolioChooser();
     this.twitterQuotes();
   }
 
@@ -29,7 +15,7 @@ export default class FrontEndUtils {
       const blogSiteContentContainer = document.querySelector(
         '.blog-site-content-container'
       );
-      if (blogSiteContentContainer.length === 0) return;
+      if (!blogSiteContentContainer) return;
 
       const windowWidth = window.innerWidth;
       const windowWidth1005 = 1005;
@@ -196,31 +182,12 @@ export default class FrontEndUtils {
         portfolioUpdateText.text(
           `Page updated to show ${chosenOptionTagVal} portfolio items`
         );
-
-        // If on change event scrollbar area is high enough
-        // show scrollbar if not hide scrollbar
-        // on project chooser change
-        isVertificalScrollbarActions();
       });
 
       const getHashChange = hashChange(portfolioProjectChooser);
 
       $(window).on('hashchange', getHashChange);
     }
-  }
-
-  toTopLink(isVertificalScrollbarActions) {
-    const toTopLink = document.getElementById('to-top-link') ?? null;
-    if (toTopLink) {
-      toTopLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
-
-    isVertificalScrollbarActions();
-
-    window.addEventListener('resize', isVertificalScrollbarActions);
   }
 
   twitterQuotes() {
