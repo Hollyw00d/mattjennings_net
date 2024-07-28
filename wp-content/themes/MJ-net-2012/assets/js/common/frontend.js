@@ -4,7 +4,6 @@ import debounce from 'debounce'; // eslint-disable-line import/no-extraneous-dep
 export default class FrontEndUtils {
   init() {
     this.sidebar();
-    this.youtubeEmbedResize();
     this.portfolioChooser();
     this.twitterQuotes();
   }
@@ -31,24 +30,7 @@ export default class FrontEndUtils {
     window.onresize = debounce(resizeBlogActions, 300);
   }
 
-  youtubeEmbedResize() {
-    const youtubeResponsive = $('.youtube-responsive');
-    if (youtubeResponsive.length === 0) return;
-
-    // Function to make YouTube embeds responsive
-    const youtubeEmbedResponsive = (event) => {
-      $('#site-content-container')
-        .find(event.currentTarget)
-        .wrap('<div class="youtube-responsive-container"></div>');
-    };
-
-    // Call to execute make_youtubeEmbedResponsive() on .youtube-responsive class
-    if (youtubeResponsive.length > 0) {
-      youtubeResponsive.each(youtubeEmbedResponsive);
-    }
-  }
-
-  portfolioChooser(isVertificalScrollbarActions) {
+  portfolioChooser() {
     // Variables for the hash change and SELECT tag JS
     const portfolioProjectChooser = $('#portfolio-project-chooser');
     if (portfolioProjectChooser.length === 0) return;
