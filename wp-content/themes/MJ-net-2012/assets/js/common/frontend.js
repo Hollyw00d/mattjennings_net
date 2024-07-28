@@ -39,16 +39,21 @@ export default class FrontEndUtils {
     const hideOverrideClass = 'hide-override';
     const hashSelectedClass = 'hash-selected';
     const featuredProjectsDataAttr = 'featured-projects';
-    const featuredProjectsSection = $(`#${featuredProjectsDataAttr}-section`);
+    const featuredProjectsSection = document.getElementById(
+      `${featuredProjectsDataAttr}-section`
+    );
     const allProjectsSection = $('#all-projects-section');
     const portfolioUpdateText = $('#portfolio-update-text');
 
     // Push in  values to empty array 'data-project-category' values
     // into empty array
-    const allDataProjectCategoryValuesArr = [];
-    $('#portfolio-project-chooser > option').each((iterator, item) => {
-      allDataProjectCategoryValuesArr.push($(item).data('project-category'));
-    });
+    const projectCategoriesArr = [];
+    const portfolioProjectChooserOptions = document.querySelectorAll(
+      '#portfolio-project-chooser > option'
+    );
+    portfolioProjectChooserOptions.forEach((option) =>
+      projectCategoriesArr.push(option.getAttribute('data-project-category'))
+    );
 
     // Show featured items only
     const showFeatured = (featuredId) => {
@@ -59,9 +64,9 @@ export default class FrontEndUtils {
       const hash = window.location.hash.slice(1);
 
       // If loaded page to get a hash and
-      // hash exists in allDataProjectCategoryValuesArr
+      // hash exists in projectCategoriesArr
       // then execute code below
-      if (hash && $.inArray(hash, allDataProjectCategoryValuesArr) !== -1) {
+      if (hash && $.inArray(hash, projectCategoriesArr) !== -1) {
         getSelectTag
           .find(`option[data-project-category=${hash}]`)
           .prop('selected', 'selected')
@@ -69,13 +74,11 @@ export default class FrontEndUtils {
 
         if (hash === featuredProjectsDataAttr) {
           allProjectsSection.removeClass(showOverrideClass);
-          featuredProjectsSection
-            .removeClass(hideOverrideClass)
-            .addClass(showOverrideClass);
+          featuredProjectsSection.classList.remove(hideOverrideClass);
+          featuredProjectsSection.classList.add(showOverrideClass);
         } else {
-          featuredProjectsSection
-            .removeClass(showOverrideClass)
-            .addClass(hideOverrideClass);
+          featuredProjectsSection.classList.remove(showOverrideClass);
+          featuredProjectsSection.classList.add(hideOverrideClass);
           allProjectsSection.addClass(showOverrideClass);
 
           allProjectsSection
@@ -88,7 +91,7 @@ export default class FrontEndUtils {
             .addClass('show-inlineblock-override');
         }
       }
-      // Else if hash does not exist in allDataProjectCategoryValuesArr
+      // Else if hash does not exist in projectCategoriesArr
       // assign hash to #featured-projects
       else {
         window.location.hash = `#${featuredProjectsDataAttr}`;
@@ -115,10 +118,9 @@ export default class FrontEndUtils {
         // If OPTION tag chosen is NOT 'featured-projects' then
         // ONLY display portfolio projects from chosen portfolio projects, like 'JavaScript and jQuery'
         if (chosenOptionTagDataAttr !== featuredProjectsDataAttr) {
-          if (featuredProjectsSection.hasClass(showOverrideClass)) {
-            featuredProjectsSection
-              .removeClass(showOverrideClass)
-              .addClass(hideOverrideClass);
+          if (featuredProjectsSection.classList.contains(showOverrideClass)) {
+            featuredProjectsSection.classList.remove(showOverrideClass);
+            featuredProjectsSection.classList.add(hideOverrideClass);
           }
 
           allProjectsSection
@@ -144,9 +146,8 @@ export default class FrontEndUtils {
         // ONLY display 'Featured Projects' portfolio item
         else {
           if (featuredProjectsSection.hasClass(hideOverrideClass)) {
-            featuredProjectsSection
-              .removeClass(hideOverrideClass)
-              .addClass(showOverrideClass);
+            featuredProjectsSection.classList.remove(hideOverrideClass);
+            featuredProjectsSection.classList.add(showOverrideClass);
           }
 
           allProjectsSection
