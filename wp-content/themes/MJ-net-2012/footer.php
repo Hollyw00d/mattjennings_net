@@ -1,9 +1,6 @@
-<?php include 'inc/global-vars/global-vars.php'; ?>
-<p id="to-top" class="hide-override">
- <a id="to-top-link" href="#">To Top &uarr;</a>
-</p>
-
 <?php
+include 'inc/global-vars/global-vars.php';
+
 if ( $portfolio_feed_url == 'portfolio-feed' ) {
   echo '';
 }
