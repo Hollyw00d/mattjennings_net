@@ -12,14 +12,15 @@ export default class FrontEndUtils {
       const blogSiteContentContainer = document.querySelector(
         '.blog-site-content-container'
       );
-      if (!blogSiteContentContainer) return;
+      const sidebar = document.getElementById('sidebar');
+      if (!blogSiteContentContainer || !sidebar) return;
 
       const windowWidth = window.innerWidth;
       const windowWidth1005 = 1005;
-      const sideBarHeight = document.getElementById('sidebar').offsetHeight;
+      const sidebarHeight = sidebar.offsetHeight;
 
       if (windowWidth > windowWidth1005) {
-        blogSiteContentContainer.style.minHeight = `${sideBarHeight + 20}px`;
+        blogSiteContentContainer.style.minHeight = `${sidebarHeight + 20}px`;
       } else if (windowWidth <= windowWidth1005) {
         blogSiteContentContainer.removeAttribute('style');
       }
