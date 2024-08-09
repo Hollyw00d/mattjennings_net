@@ -5,7 +5,6 @@ export default class FrontEndUtils {
   init() {
     this.sidebar();
     this.portfolioChooser();
-    this.twitterQuotes();
   }
 
   sidebar() {
@@ -170,46 +169,6 @@ export default class FrontEndUtils {
       const getHashChange = hashChange(portfolioProjectChooser);
 
       $(window).on('hashchange', getHashChange);
-    }
-  }
-
-  twitterQuotes() {
-    // Make quotes click to Tweet
-    const twitterQuotesToClick = () => {
-      // Get quote to add to Twitter from
-      // 'blockquote' tag
-      const $postQuote = $('blockquote');
-      const postQuoteText = $postQuote.text();
-      const postQuoteTextNoSpaces = postQuoteText.replace(/ /g, '%20');
-
-      let twitterHashtagsTextNoHashes;
-
-      if ($('#twitter-hashtags').length > 0) {
-        const twitterHashtagsText = $('#twitter-hashtags').text();
-        const twitterHashtagsTextReplace = twitterHashtagsText
-          .replace(/#/g, '%23')
-          .replace(/ /g, '%20');
-
-        twitterHashtagsTextNoHashes = `%20${twitterHashtagsTextReplace}%20`;
-      } else {
-        twitterHashtagsTextNoHashes = '%20';
-      }
-
-      $postQuote.wrap(
-        `<a class="no-link-underline" onclick="window.open('https://twitter.com/intent/tweet?text=${postQuoteTextNoSpaces}${twitterHashtagsTextNoHashes}${window.location}', '_blank', 'width=500,height=500'); return false;" href="#"></a>"`
-      );
-      $postQuote.prepend(
-        '<span class="dashicons dashicons-format-quote twitter-blue"></span>'
-      );
-      $postQuote.append(
-        '<p class="click-to-tweet twitter-blue"><i class="fa fa-twitter" style="padding-right: 5px;"></i>Click to Tweet</p>'
-      );
-    };
-
-    // Run click to Tweet twitter code
-    // ONLY if a 'blockquote' tag is found on website
-    if ($('blockquote').length > 0) {
-      twitterQuotesToClick();
     }
   }
 }
