@@ -1,4 +1,3 @@
-import $ from 'jquery'; // eslint-disable-line import/no-extraneous-dependencies
 import debounce from 'debounce'; // eslint-disable-line import/no-extraneous-dependencies
 
 export default class FrontEndUtils {
