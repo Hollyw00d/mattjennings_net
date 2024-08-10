@@ -79,6 +79,15 @@ class WPCoreUtils {
 
 			wp_dequeue_script('enlighterjs');
 			wp_deregister_script('enlighterjs');
+
+			if ( !is_admin() ) {
+				// Dequeue/deregister jQuery core & migrate
+				wp_dequeue_script('jquery-core');
+				wp_deregister_script('jquery-core');	
+
+				wp_dequeue_script('jquery-migrate');
+				wp_deregister_script('jquery-migrate');		
+			}
 		}
 
 		// Enqueue CSS
