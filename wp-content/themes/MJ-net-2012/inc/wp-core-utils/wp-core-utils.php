@@ -14,6 +14,7 @@ class WPCoreUtils {
 		add_filter( 'post_class', array($self, 'mark_first_post') );	
 		remove_filter('get_the_excerpt', 'wp_trim_excerpt');
 		add_filter( 'get_the_excerpt', array($self, 'improved_excerpt') );	
+		add_filter('the_content', array($self, 'update_content'));
  }
 
 	/*
@@ -198,6 +199,15 @@ class WPCoreUtils {
   return $text;
  }
 
+	/* 
+	 * Update the_content including:
+		* - Replace an email to protect it spam harvesters
+	 */	
+	public function update_content($content) {
+		$new_content = $this->replace_email_in_content_with_encrypted_str($content);
+		return $new_content;
+	}
+
 	/*
 	* Post updates including:
 	* - Styling first post differently
@@ -224,4 +234,40 @@ class WPCoreUtils {
 			}
 	}
 
+	private function xorEncryptDecrypt($string, $key) {
+		$output = '';
+		$keyLength = strlen($key);
+
+		for ($i = 0; $i < strlen($string); $i++) {
+						$output .= $string[$i] ^ $key[$i % $keyLength];
+		}
+
+		return $output;
+	}
+
+	private function replace_email_in_content_with_encrypted_str($the_content) {
+		$json_url = get_template_directory() . '/json/basic-encryption.json';
+		$json_file = file_get_contents($json_url);
+		$json = json_decode($json_file, true);
+		define('XORKEY', $json['xorKey']);
+
+		$email_link_or_text_regex = '/(?:<a\s+href=["\']mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})["\']>(.*?)<\/a>)|([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/'; 
+
+		$str_replaced = preg_replace_callback($email_link_or_text_regex, function ($matches) {
+			$class_name = '';
+			if (!empty($matches[1])) {
+							// Matches an email within an anchor tag
+							$class_name = 'email-mj-protect-with-anchor-tag';
+							$email = $matches[1];
+							$email_encrypted = bin2hex($this->xorEncryptDecrypt($email, XORKEY));
+			} else {
+							// Matches a plain email without an anchor tag
+							$class_name = 'email-mj-protect-no-anchor-tag';
+							$email = $matches[3];
+							$email_encrypted = bin2hex($this->xorEncryptDecrypt($email, XORKEY));
+			}
+			return "<span class=\"{$class_name}\">{$email_encrypted}</span>";
+	}, $the_content);
+		return $str_replaced;
+	}
 }
