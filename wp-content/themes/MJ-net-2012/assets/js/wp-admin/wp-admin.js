@@ -30,6 +30,8 @@ export default class WPAdminUtils {
         );
 
         for (let i = 0; i < gutenbergEditor.length; i++) {
+          if (i > 0) break;
+
           const editor = gutenbergEditor[i];
 
           editor.addEventListener('keydown', (e) => {
