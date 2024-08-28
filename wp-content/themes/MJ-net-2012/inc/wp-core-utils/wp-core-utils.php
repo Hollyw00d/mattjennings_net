@@ -9,12 +9,10 @@ class WPCoreUtils {
 		add_filter( 'style_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_filter( 'script_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_action('body_class', array($self, 'customize_body_class'));
-		add_action('enqueue_block_editor_assets', array($self, 'gutenberg_editor_custom_scripts_styles'));
 		add_filter ('wp_nav_menu', array($self, 'customize_nav_menu_output'));
 		add_filter( 'post_class', array($self, 'mark_first_post') );	
 		remove_filter('get_the_excerpt', 'wp_trim_excerpt');
 		add_filter( 'get_the_excerpt', array($self, 'improved_excerpt') );	
-		add_filter( 'block_editor_settings_all', array($self, 'make_paragraph_default_block'), 10, 2 );	
  }
 
 	/*
@@ -136,16 +134,6 @@ class WPCoreUtils {
 			return $new_classes;
 	}
 
-	public function gutenberg_editor_custom_scripts_styles() {
-		wp_enqueue_script(
-			'gutenberg-custom-js',
-			get_template_directory_uri() . '/assets/js/wp-admin/gutenberg-custom.js', // Adjust the path as needed
-			array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ),
-			filemtime( get_template_directory() . '/assets/js/wp-admin/gutenberg-custom.js' ),
-			true
-	);	
-	}
-
 	/* 
 	 * Customize main menu out including:
   * - Add page/post slug class to menu item classes
@@ -208,15 +196,6 @@ class WPCoreUtils {
 
   return $text;
  }
-
-	public function make_paragraph_default_block($settings, $post) {
-		// Check if the default block is set to classic editor
-		if ( isset( $settings['defaultBlock'] ) && $settings['defaultBlock'] === 'core/classic-editor' ) {
-			// Change it to paragraph block
-			$settings['defaultBlock'] = 'core/paragraph';
-		}
-		return $settings;
-	}
 
 	/*
 	* Post updates including:
