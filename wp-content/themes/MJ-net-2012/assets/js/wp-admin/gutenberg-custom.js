@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('script ran');
+wp.domReady(() => {
+  if (typeof wp === 'undefined' && !wp.hasOwnProperty('blocks')) return;
 
   // Function to insert a new paragraph block
   function insertParagraphBlock(afterBlockId) {
@@ -12,24 +12,28 @@ document.addEventListener('DOMContentLoaded', () => {
     blockEditor.selectBlock(block.clientId);
   }
 
-  // Add event listener to the editor wrapper
-  const editorWrapper = document.querySelector('.block-editor-writing-flow');
+  // Delay to ensure virtual DOM elements are loaded
+  setTimeout(() => {
+    const gutenbergEditor = document.getElementsByClassName(
+      'wp-block-post-content'
+    );
 
-  if (editorWrapper) {
-    editorWrapper.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        console.log('pressed enter!');
+    for (let i = 0; i < gutenbergEditor.length; i++) {
+      const editor = gutenbergEditor[i];
 
-        const selectedBlock = wp.data
-          .select('core/block-editor')
-          .getSelectedBlock();
-        if (selectedBlock) {
-          event.preventDefault();
-          insertParagraphBlock(selectedBlock.clientId);
-
-          console.log('inserted block!');
+      editor.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          console.log('pressed enter!');
+          const selectedBlock = wp.data
+            .select('core/block-editor')
+            .getSelectedBlock();
+          if (selectedBlock) {
+            e.preventDefault();
+            insertParagraphBlock(selectedBlock.clientId);
+            console.log('inserted block!');
+          }
         }
-      }
-    });
-  }
+      });
+    }
+  }, 500);
 });

@@ -8,10 +8,13 @@ module.exports = {
     logging: 'none', // Set logging to 'none'
     errorDetails: true // Show error details
   },
-  entry: './assets/js/theme.js',
+  entry: {
+    theme: './assets/js/theme.js',
+    admin: './assets/js/admin.js'
+  },
   output: {
     path: path.join(__dirname, '/build'),
-    filename: 'js/theme.min.js'
+    filename: 'js/[name].min.js'
   },
   resolve: {
     extensions: ['.js']
