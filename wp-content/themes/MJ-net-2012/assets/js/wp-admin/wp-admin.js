@@ -1,5 +1,3 @@
-import domReady from '@wordpress/dom-ready'; // eslint-disable-line import/no-extraneous-dependencies
-
 export default class WPAdminUtils {
   init() {
     this.gutenbergEditor();
@@ -7,7 +5,7 @@ export default class WPAdminUtils {
 
   gutenbergEditor() {
     // eslint-disable-next-line no-undef
-    domReady(() => {
+    wp.domReady(() => {
       // eslint-disable-next-line no-prototype-builtins, no-undef
       if (typeof wp === 'undefined' && !wp.hasOwnProperty('blocks')) return;
 
