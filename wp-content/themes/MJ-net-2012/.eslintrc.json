@@ -10,7 +10,8 @@
   "rules": {
     "semi": "error",
     "no-console": "warn",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off", 
+    "no-plusplus": "off"
   },
   "ignorePatterns": [
     "node_modules",

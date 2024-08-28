@@ -5,7 +5,8 @@ class WPCoreUtils {
   $self = new self();
   add_action('init', array($self, 'set_up_actions'));
   add_filter('xmlrpc_enabled', '__return_false');
-  add_action('wp_enqueue_scripts', array($self, 'enqueue_dequeue_styles_scripts'), 100);
+  add_action('wp_enqueue_scripts', array($self, 'frontend_enqueue_dequeue'), 100);
+  add_action('admin_enqueue_scripts', array($self, 'wp_admin_enqueue_dequeue'));
 		add_filter( 'style_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_filter( 'script_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_action('body_class', array($self, 'customize_body_class'));
@@ -59,13 +60,10 @@ class WPCoreUtils {
 		* - Dequeueing & enqueueing CSS and JS
 		* - Removing query strings from CSS and JS
 	 */	
-	public function enqueue_dequeue_styles_scripts() {
-		// Dequeue WP block library CSS from WP Core
-		// and NOT on admin
-		if ( !is_admin() ) {
-			wp_dequeue_style( 'wp-block-library' );
-			wp_deregister_style( 'wp-block-library' );
-		}
+	public function frontend_enqueue_dequeue() {
+		// Dequeue WP block library CSS from WP Core and NOT on admin
+		wp_dequeue_style( 'wp-block-library' );
+		wp_deregister_style( 'wp-block-library' );
 
 		// If not on single 'post' then dequeue/deregister styles/scripts below
 		if( !is_singular( 'post' ) ) {
@@ -80,14 +78,12 @@ class WPCoreUtils {
 			wp_dequeue_script('enlighterjs');
 			wp_deregister_script('enlighterjs');
 
-			if ( !is_admin() ) {
-				// Dequeue/deregister jQuery core & migrate
-				wp_dequeue_script('jquery-core');
-				wp_deregister_script('jquery-core');	
+			// Dequeue/deregister jQuery core & migrate
+			wp_dequeue_script('jquery-core');
+			wp_deregister_script('jquery-core');	
 
-				wp_dequeue_script('jquery-migrate');
-				wp_deregister_script('jquery-migrate');		
-			}
+			wp_dequeue_script('jquery-migrate');
+			wp_deregister_script('jquery-migrate');		
 		}
 
 		// Enqueue CSS
@@ -95,6 +91,11 @@ class WPCoreUtils {
 
 		// Enqueue JS
 		wp_enqueue_script('theme-scripts', get_stylesheet_directory_uri().'/build/js/theme.min.js', '', '', true);
+	}
+
+	public function wp_admin_enqueue_dequeue() {
+		// Enqueue JS
+		wp_enqueue_script('wp-admin-custom', get_stylesheet_directory_uri().'/build/js/admin.min.js', '', '', true);
 	}
 
 	public function remove_query_string_from_css_js( $src ) {
