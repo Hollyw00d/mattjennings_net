@@ -229,8 +229,8 @@ class WPCoreUtils {
 
 	private function prevent_xmlrpc_access() {
 			if (strpos($_SERVER['REQUEST_URI'], '/xmlrpc.php') !== false) {
-							http_response_code(403);
-							exit;
+				http_response_code(403);
+				exit;
 			}
 	}
 
@@ -239,7 +239,7 @@ class WPCoreUtils {
 		$keyLength = strlen($key);
 
 		for ($i = 0; $i < strlen($string); $i++) {
-						$output .= $string[$i] ^ $key[$i % $keyLength];
+			$output .= $string[$i] ^ $key[$i % $keyLength];
 		}
 
 		return $output;
@@ -256,15 +256,15 @@ class WPCoreUtils {
 			$xorKey = $json['xorKey'];
 
 			if (!empty($matches[1])) {
-							// Matches an email within an anchor tag
-							$class_name = 'email-mj-protect-with-anchor-tag';
-							$email = $matches[1];
-							$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
+				// Matches an email within an anchor tag
+				$class_name = 'email-mj-protect-with-anchor-tag';
+				$email = $matches[1];
+				$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
 			} else {
-							// Matches a plain email without an anchor tag
-							$class_name = 'email-mj-protect-no-anchor-tag';
-							$email = $matches[3];
-							$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
+				// Matches a plain email without an anchor tag
+				$class_name = 'email-mj-protect-no-anchor-tag';
+				$email = $matches[3];
+				$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
 			}
 			return "<span class=\"{$class_name}\" style=\"display: none;\">{$email_encrypted}</span>";
 	}, $the_content);
