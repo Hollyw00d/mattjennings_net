@@ -234,7 +234,7 @@ class WPCoreUtils {
 			}
 	}
 
-	private function xorEncryptDecrypt($string, $key) {
+	private function xorEncryptString($string, $key) {
 		$output = '';
 		$keyLength = strlen($key);
 
@@ -246,27 +246,27 @@ class WPCoreUtils {
 	}
 
 	private function replace_email_in_content_with_encrypted_str($the_content) {
-		$json_url = get_template_directory() . '/json/insecure-encryption.json';
-		$json_file = file_get_contents($json_url);
-		$json = json_decode($json_file, true);
-		define('XORKEY', $json['xorKey']);
-
 		$email_link_or_text_regex = '/(?:<a\s+href=["\']mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})["\']>(.*?)<\/a>)|([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/'; 
 
 		$str_replaced = preg_replace_callback($email_link_or_text_regex, function ($matches) {
 			$class_name = '';
+			$json_url = get_template_directory() . '/json/insecure-encryption.json';
+			$json_file = file_get_contents($json_url);
+			$json = json_decode($json_file, true);
+			$xorKey = $json['xorKey'];
+
 			if (!empty($matches[1])) {
 							// Matches an email within an anchor tag
 							$class_name = 'email-mj-protect-with-anchor-tag';
 							$email = $matches[1];
-							$email_encrypted = bin2hex($this->xorEncryptDecrypt($email, XORKEY));
+							$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
 			} else {
 							// Matches a plain email without an anchor tag
 							$class_name = 'email-mj-protect-no-anchor-tag';
 							$email = $matches[3];
-							$email_encrypted = bin2hex($this->xorEncryptDecrypt($email, XORKEY));
+							$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
 			}
-			return "<span class=\"{$class_name}\">{$email_encrypted}</span>";
+			return "<span class=\"{$class_name}\" style=\"display: none;\">{$email_encrypted}</span>";
 	}, $the_content);
 		return $str_replaced;
 	}
