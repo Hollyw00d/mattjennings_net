@@ -246,7 +246,7 @@ class WPCoreUtils {
 	}
 
 	private function replace_email_in_content_with_encrypted_str($the_content) {
-		$json_url = get_template_directory() . '/json/basic-encryption.json';
+		$json_url = get_template_directory() . '/json/insecure-encryption.json';
 		$json_file = file_get_contents($json_url);
 		$json = json_decode($json_file, true);
 		define('XORKEY', $json['xorKey']);
