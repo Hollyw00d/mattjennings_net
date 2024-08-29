@@ -5,7 +5,8 @@ class WPCoreUtils {
   $self = new self();
   add_action('init', array($self, 'set_up_actions'));
   add_filter('xmlrpc_enabled', '__return_false');
-  add_action('wp_enqueue_scripts', array($self, 'enqueue_dequeue_styles_scripts'), 100);
+  add_action('wp_enqueue_scripts', array($self, 'frontend_enqueue_dequeue'), 100);
+  add_action('admin_enqueue_scripts', array($self, 'wp_admin_enqueue_dequeue'));
 		add_filter( 'style_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_filter( 'script_loader_src', array($self, 'remove_query_string_from_css_js'), 9999 );
 		add_action('body_class', array($self, 'customize_body_class'));
@@ -13,6 +14,7 @@ class WPCoreUtils {
 		add_filter( 'post_class', array($self, 'mark_first_post') );	
 		remove_filter('get_the_excerpt', 'wp_trim_excerpt');
 		add_filter( 'get_the_excerpt', array($self, 'improved_excerpt') );	
+		add_filter('the_content', array($self, 'update_content'));
  }
 
 	/*
@@ -59,13 +61,10 @@ class WPCoreUtils {
 		* - Dequeueing & enqueueing CSS and JS
 		* - Removing query strings from CSS and JS
 	 */	
-	public function enqueue_dequeue_styles_scripts() {
-		// Dequeue WP block library CSS from WP Core
-		// and NOT on admin
-		if ( !is_admin() ) {
-			wp_dequeue_style( 'wp-block-library' );
-			wp_deregister_style( 'wp-block-library' );
-		}
+	public function frontend_enqueue_dequeue() {
+		// Dequeue WP block library CSS from WP Core and NOT on admin
+		wp_dequeue_style( 'wp-block-library' );
+		wp_deregister_style( 'wp-block-library' );
 
 		// If not on single 'post' then dequeue/deregister styles/scripts below
 		if( !is_singular( 'post' ) ) {
@@ -80,14 +79,12 @@ class WPCoreUtils {
 			wp_dequeue_script('enlighterjs');
 			wp_deregister_script('enlighterjs');
 
-			if ( !is_admin() ) {
-				// Dequeue/deregister jQuery core & migrate
-				wp_dequeue_script('jquery-core');
-				wp_deregister_script('jquery-core');	
+			// Dequeue/deregister jQuery core & migrate
+			wp_dequeue_script('jquery-core');
+			wp_deregister_script('jquery-core');	
 
-				wp_dequeue_script('jquery-migrate');
-				wp_deregister_script('jquery-migrate');		
-			}
+			wp_dequeue_script('jquery-migrate');
+			wp_deregister_script('jquery-migrate');		
 		}
 
 		// Enqueue CSS
@@ -95,6 +92,11 @@ class WPCoreUtils {
 
 		// Enqueue JS
 		wp_enqueue_script('theme-scripts', get_stylesheet_directory_uri().'/build/js/theme.min.js', '', '', true);
+	}
+
+	public function wp_admin_enqueue_dequeue() {
+		// Enqueue JS
+		wp_enqueue_script('wp-admin-custom', get_stylesheet_directory_uri().'/build/js/admin.min.js', '', '', true);
 	}
 
 	public function remove_query_string_from_css_js( $src ) {
@@ -197,6 +199,15 @@ class WPCoreUtils {
   return $text;
  }
 
+	/* 
+	 * Update the_content including:
+		* - Replace an email to protect it spam harvesters
+	 */	
+	public function update_content($content) {
+		$new_content = $this->replace_email_in_content_with_encrypted_str($content);
+		return $new_content;
+	}
+
 	/*
 	* Post updates including:
 	* - Styling first post differently
@@ -218,9 +229,45 @@ class WPCoreUtils {
 
 	private function prevent_xmlrpc_access() {
 			if (strpos($_SERVER['REQUEST_URI'], '/xmlrpc.php') !== false) {
-							http_response_code(403);
-							exit;
+				http_response_code(403);
+				exit;
 			}
 	}
 
+	private function xorEncryptString($string, $key) {
+		$output = '';
+		$keyLength = strlen($key);
+
+		for ($i = 0; $i < strlen($string); $i++) {
+			$output .= $string[$i] ^ $key[$i % $keyLength];
+		}
+
+		return $output;
+	}
+
+	private function replace_email_in_content_with_encrypted_str($the_content) {
+		$email_link_or_text_regex = '/(?:<a\s+href=["\']mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})["\']>(.*?)<\/a>)|([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/'; 
+
+		$str_replaced = preg_replace_callback($email_link_or_text_regex, function ($matches) {
+			$class_name = '';
+			$json_url = get_template_directory() . '/json/insecure-encryption.json';
+			$json_file = file_get_contents($json_url);
+			$json = json_decode($json_file, true);
+			$xorKey = $json['xorKey'];
+
+			if (!empty($matches[1])) {
+				// Matches an email within an anchor tag
+				$class_name = 'email-mj-protect-with-anchor-tag';
+				$email = $matches[1];
+				$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
+			} else {
+				// Matches a plain email without an anchor tag
+				$class_name = 'email-mj-protect-no-anchor-tag';
+				$email = $matches[3];
+				$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
+			}
+			return "<span class=\"{$class_name}\" style=\"display: none;\">{$email_encrypted}</span>";
+	}, $the_content);
+		return $str_replaced;
+	}
 }
