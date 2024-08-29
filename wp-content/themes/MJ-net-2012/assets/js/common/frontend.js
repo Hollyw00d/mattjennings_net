@@ -194,10 +194,11 @@ export default class FrontEndUtils {
   }
 
   decryptEmailPhone() {
+    const parentElem = 'site-content-container';
     const emailClassWithAnchorTag = 'email-mj-protect-with-anchor-tag';
     const emailClassNoAnchorTag = 'email-mj-protect-no-anchor-tag';
     const elems = document.querySelectorAll(
-      `.${emailClassWithAnchorTag}, .${emailClassNoAnchorTag}`
+      `#${parentElem} .${emailClassWithAnchorTag}, #${parentElem} .${emailClassNoAnchorTag}`
     );
     if (elems.length === 0) return;
 
@@ -213,6 +214,13 @@ export default class FrontEndUtils {
               const decryptedText = this.xorDecryptString(elemContent, xorKey);
               const emailLink = document.createElement('a');
               emailLink.setAttribute('href', `mailto:${decryptedText}`);
+              emailLink.textContent = decryptedText;
+              elem.insertAdjacentElement('beforebegin', emailLink);
+              elem.remove();
+            } else if (elem.className === emailClassNoAnchorTag) {
+              const elemContent = elem.textContent;
+              const decryptedText = this.xorDecryptString(elemContent, xorKey);
+              const emailLink = document.createElement('span');
               emailLink.textContent = decryptedText;
               elem.insertAdjacentElement('beforebegin', emailLink);
               elem.remove();
