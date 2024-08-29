@@ -4,6 +4,7 @@ export default class FrontEndUtils {
   init() {
     this.sidebar();
     this.portfolioChooser();
+    this.decryptEmailPhone();
   }
 
   sidebar() {
@@ -190,5 +191,79 @@ export default class FrontEndUtils {
 
     const getHashChange = hashChange(portfolioProjectChooser);
     window.addEventListener('hashchange', getHashChange);
+  }
+
+  decryptEmailPhone() {
+    const parentElem = 'site-content-container';
+    const emailClassWithAnchorTag = 'email-mj-protect-with-anchor-tag';
+    const emailClassNoAnchorTag = 'email-mj-protect-no-anchor-tag';
+    const elems = document.querySelectorAll(
+      `#${parentElem} .${emailClassWithAnchorTag}, #${parentElem} .${emailClassNoAnchorTag}`
+    );
+    if (elems.length === 0) return;
+
+    const insecureEncryptionJson = `${document.location.origin}/wp-content/themes/MJ-net-2012/json/insecure-encryption.json`;
+
+    this.getInsecureJsonData(insecureEncryptionJson)
+      .then((data) => {
+        if (data?.xorKey) {
+          const { xorKey } = data;
+          elems.forEach((elem) => {
+            if (elem.className === emailClassWithAnchorTag) {
+              const elemContent = elem.textContent;
+              const decryptedText = this.xorDecryptString(elemContent, xorKey);
+              const emailLink = document.createElement('a');
+              emailLink.setAttribute('href', `mailto:${decryptedText}`);
+              emailLink.textContent = decryptedText;
+              elem.insertAdjacentElement('beforebegin', emailLink);
+              elem.remove();
+            } else if (elem.className === emailClassNoAnchorTag) {
+              const elemContent = elem.textContent;
+              const decryptedText = this.xorDecryptString(elemContent, xorKey);
+              const emailLink = document.createElement('span');
+              emailLink.textContent = decryptedText;
+              elem.insertAdjacentElement('beforebegin', emailLink);
+              elem.remove();
+            }
+          });
+        } else {
+          throw new Error('Data not found!');
+        }
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
+  }
+
+  async getInsecureJsonData(url) {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  hexToBinary(hex) {
+    let binary = '';
+    for (let i = 0; i < hex.length; i += 2) {
+      binary += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    }
+    return binary;
+  }
+
+  xorDecryptString(encryptedString, key) {
+    const binaryString = this.hexToBinary(encryptedString);
+    let output = '';
+    const keyLength = key.length;
+
+    for (let i = 0; i < binaryString.length; i++) {
+      output += String.fromCharCode(
+        binaryString.charCodeAt(i) ^ key.charCodeAt(i % keyLength) // eslint-disable-line no-bitwise
+      );
+    }
+
+    return output;
   }
 }
