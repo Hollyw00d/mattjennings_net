@@ -266,7 +266,7 @@ class WPCoreUtils {
 				$email = $matches[3];
 				$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
 			}
-			return "<span class=\"{$class_name}\" style=\"display: none;\">{$email_encrypted}</span>";
+			return "<span aria-hidden=\"true\" class=\"{$class_name}\" style=\"visibility: hidden;\">{$email_encrypted}</span>";
 	}, $the_content);
 		return $str_replaced;
 	}
