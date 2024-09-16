@@ -36,9 +36,9 @@ See the files below:
     __wp-content/themes/MJ-net-2012/inc/walker-nav-menu/walker-nav-menu.php__
 
 ## JS and SCSS Files in Active WP Theme
-- JS code:
+- JS code:  
   [wp-content/themes/MJ-net-2012/assets/js/theme.js](https://github.com/Hollyw00d/mattjennings_net/blob/develop/wp-content/themes/MJ-net-2012/assets/js/theme.js)
-- SCSS code:
+- SCSS code:  
   [wp-content/themes/MJ-net-2012/assets/scss/style.scss](https://github.com/Hollyw00d/mattjennings_net/blob/develop/wp-content/themes/MJ-net-2012/assets/scss/style.scss)  
   
 ## Setup
