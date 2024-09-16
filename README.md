@@ -37,9 +37,9 @@ See the files below:
 
 ## JS and SCSS Files in Active WP Theme
 - JS code:  
-  [wp-content/themes/MJ-net-2012/assets/js/theme.js](https://github.com/Hollyw00d/mattjennings_net/blob/develop/wp-content/themes/MJ-net-2012/assets/js/theme.js)
+  __[wp-content/themes/MJ-net-2012/assets/js/theme.js](https://github.com/Hollyw00d/mattjennings_net/blob/develop/wp-content/themes/MJ-net-2012/assets/js/theme.js)__
 - SCSS code:  
-  [wp-content/themes/MJ-net-2012/assets/scss/style.scss](https://github.com/Hollyw00d/mattjennings_net/blob/develop/wp-content/themes/MJ-net-2012/assets/scss/style.scss)  
+  __[wp-content/themes/MJ-net-2012/assets/scss/style.scss](https://github.com/Hollyw00d/mattjennings_net/blob/develop/wp-content/themes/MJ-net-2012/assets/scss/style.scss)__  
   
 ## Setup
 1. To update CSS or JS in the WP active theme (both are located at __wp-content/themes/MJ-net-2012/assets__ and I use [SCSS](https://sass-lang.com/documentation/syntax/#scss), which is enhanced CSS), in your terminal go to:  
