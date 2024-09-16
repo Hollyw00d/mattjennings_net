@@ -36,12 +36,11 @@ See the files below:
     __wp-content/themes/MJ-net-2012/inc/walker-nav-menu/walker-nav-menu.php__
 
 ## JS and SCSS Files in Active WP Theme
-:warning: The JS and SCSS files from older code I wrote years ago, like when I supported IE8 around 2010! So please don't hold that code against me when reviewing this repo as I haven't updated the entire website yet.
-
-Instead check out my latest front-end development work/code at:
-- [mattjennings.net](https://www.mattjennings.net/) (my portfolio)
-- [codepen.io/hollyw00d](https://codepen.io/hollyw00d/) (my CodePen)
-
+- JS code:
+  [wp-content/themes/MJ-net-2012/assets/js/theme.js](https://github.com/Hollyw00d/mattjennings_net/blob/develop/wp-content/themes/MJ-net-2012/assets/js/theme.js)
+- SCSS code:
+  [wp-content/themes/MJ-net-2012/assets/scss/style.scss](https://github.com/Hollyw00d/mattjennings_net/blob/develop/wp-content/themes/MJ-net-2012/assets/scss/style.scss)  
+  
 ## Setup
 1. To update CSS or JS in the WP active theme (both are located at __wp-content/themes/MJ-net-2012/assets__ and I use [SCSS](https://sass-lang.com/documentation/syntax/#scss), which is enhanced CSS), in your terminal go to:  
   __wp-content/themes/MJ-net-2012__
