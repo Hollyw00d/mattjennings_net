@@ -67,6 +67,7 @@ class WPCoreUtils {
 		wp_deregister_style( 'wp-block-library' );
 
 		// If not on single 'post' then dequeue/deregister styles/scripts below
+		// if( !is_user_logged_in() ) {
 		if( !is_singular( 'post' ) ) {
 			// Styles
 			wp_dequeue_style('enlighterjs');
@@ -78,14 +79,21 @@ class WPCoreUtils {
 
 			wp_dequeue_script('enlighterjs');
 			wp_deregister_script('enlighterjs');
+		}
 
-			// Dequeue/deregister jQuery core & migrate
+		// If NOT a single post, NOT logged into WP Admin, NOT on admin page
+		// DO load jquery-core & jquery-migrate 
+		// ELSE DON'T load jquery-core & jquery-migrate 
+		if ( !is_singular( 'post' ) && !is_user_logged_in() && !is_admin() ) {
 			wp_dequeue_script('jquery-core');
-			wp_deregister_script('jquery-core');	
+			wp_deregister_script('jquery-core');
 
 			wp_dequeue_script('jquery-migrate');
-			wp_deregister_script('jquery-migrate');		
-		}
+			wp_deregister_script('jquery-migrate');
+		} else {
+			wp_enqueue_script('jquery-core');
+			wp_enqueue_script('jquery-migrate');
+		}		
 
 		// Enqueue CSS
 		wp_enqueue_style( 'theme-styles', get_stylesheet_directory_uri() . '/build/css/theme.min.css', '', '', 'all');
