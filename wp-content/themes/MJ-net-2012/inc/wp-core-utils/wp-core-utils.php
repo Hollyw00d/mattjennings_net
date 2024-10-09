@@ -79,10 +79,6 @@ class WPCoreUtils {
 
 			wp_dequeue_script('enlighterjs');
 			wp_deregister_script('enlighterjs');
-
-			// Dequeue jQuery core & migrate BUT keep it registered to be used later
-			// wp_dequeue_script('jquery-core');
-			// wp_dequeue_script('jquery-migrate');
 		}
 
 		// If NOT a single post, NOT logged into WP Admin, NOT on admin page
