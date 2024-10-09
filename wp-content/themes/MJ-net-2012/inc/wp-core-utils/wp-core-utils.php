@@ -67,6 +67,7 @@ class WPCoreUtils {
 		wp_deregister_style( 'wp-block-library' );
 
 		// If not on single 'post' then dequeue/deregister styles/scripts below
+		// if( !is_user_logged_in() ) {
 		if( !is_singular( 'post' ) ) {
 			// Styles
 			wp_dequeue_style('enlighterjs');
@@ -79,12 +80,23 @@ class WPCoreUtils {
 			wp_dequeue_script('enlighterjs');
 			wp_deregister_script('enlighterjs');
 
-			// Dequeue/deregister jQuery core & migrate
+			// Dequeue jQuery core & migrate BUT keep it registered to be used later
+			// wp_dequeue_script('jquery-core');
+			// wp_dequeue_script('jquery-migrate');
+		}
+
+		// Dequeue jQuery core & migrate
+		// IF not logged into WP Admin AND
+		// NOT on a single post page (whether logged in or out of WP Admin)
+		if( is_user_logged_in() ) {
+			wp_enqueue_script('jquery-core');
+			wp_enqueue_script('jquery-migrate');
+		} elseif ( !is_singular( 'post' ) && !is_user_logged_in() ) {
 			wp_dequeue_script('jquery-core');
-			wp_deregister_script('jquery-core');	
+			wp_deregister_script('jquery-core');
 
 			wp_dequeue_script('jquery-migrate');
-			wp_deregister_script('jquery-migrate');		
+			wp_deregister_script('jquery-migrate');
 		}
 
 		// Enqueue CSS
