@@ -15,7 +15,7 @@ elseif( is_404() ) {
 </div><!-- #site-content-container -->
 
 <div id="footer" role="contentinfo">
- <p>&copy;2007 - <?php echo date("Y"); ?> Matt Jennings. All rights reserved.</p>
+ <p>&copy; <?php echo date("Y"); ?> Matt Jennings. All rights reserved.</p>
 </div>
 
 </div><!-- #site-content-inner-line -->
