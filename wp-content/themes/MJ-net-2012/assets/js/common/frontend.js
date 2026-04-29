@@ -9,66 +9,66 @@ export default class FrontEndUtils {
 
   sidebar() {
     //  Blog page functions to be called later
-    function resizeBlogActions() {
-      const blogSiteContentContainer = document.querySelector(
+    function resizeBlog() {
+      const blogContainer = document.querySelector(
         '.blog-site-content-container'
       );
       const sidebar = document.getElementById('sidebar');
-      if (!blogSiteContentContainer || !sidebar) return;
+      if (!blogContainer || !sidebar) return;
 
       const windowWidth = window.innerWidth;
-      const windowWidth1005 = 1005;
+      const windowWidthLg = 1005;
       const sidebarHeight = sidebar.offsetHeight;
 
-      if (windowWidth > windowWidth1005) {
-        blogSiteContentContainer.style.minHeight = `${sidebarHeight + 20}px`;
-      } else if (windowWidth <= windowWidth1005) {
-        blogSiteContentContainer.removeAttribute('style');
+      if (windowWidth > windowWidthLg) {
+        blogContainer.style.minHeight = `${sidebarHeight + 20}px`;
+      } else if (windowWidth <= windowWidthLg) {
+        blogContainer.removeAttribute('style');
       }
     }
-    resizeBlogActions();
-    window.onresize = debounce(resizeBlogActions, 300);
+    resizeBlog();
+    window.onresize = debounce(resizeBlog, 300);
   }
 
   portfolioChooser() {
     // Variables for the hash change and SELECT tag JS
-    const portfolioProjectChooser = document.getElementById(
+    const portfolioSelector = document.getElementById(
       'portfolio-project-chooser'
     );
-    if (!portfolioProjectChooser) return;
+    if (!portfolioSelector) return;
 
     const featuredId = document.getElementById('featured-projects-section');
-    const showOverrideClass = 'show-override';
-    const hideOverrideClass = 'hide-override';
-    const showInlineBlockOverride = 'show-inlineblock-override';
+    const showClass = 'show-override';
+    const hideClass = 'hide-override';
+    const showInlineBlockClass = 'show-inlineblock-override';
     const hashSelectedClass = 'hash-selected';
     const featuredProjectsDataAttr = 'featured-projects';
-    const featuredProjectsSection = document.getElementById(
+    const featuredProjects = document.getElementById(
       `${featuredProjectsDataAttr}-section`
     );
 
-    const allProjectsSection = document.getElementById('all-projects-section');
+    const allProjects = document.getElementById('all-projects-section');
     const portfolioUpdateText = document.getElementById(
       'portfolio-update-text'
     );
 
     // Push in  values to empty array 'data-project-category' values
     // into empty array
-    const projectCategoriesArr = [];
-    const portfolioProjectChooserOptions = document.querySelectorAll(
+    const projectCatsArr = [];
+    const portfolioSelectorOptions = document.querySelectorAll(
       '#portfolio-project-chooser > option'
     );
-    portfolioProjectChooserOptions.forEach((option) =>
-      projectCategoriesArr.push(option.getAttribute('data-project-category'))
+    portfolioSelectorOptions.forEach((option) =>
+      projectCatsArr.push(option.getAttribute('data-project-category'))
     );
 
     const hashChange = (getSelectTag) => {
       const hash = window.location.hash.slice(1);
 
       // If loaded page to get a hash and
-      // hash exists in projectCategoriesArr
+      // hash exists in projectCatsArr
       // then execute code below
-      if (hash && projectCategoriesArr.includes(hash)) {
+      if (hash && projectCatsArr.includes(hash)) {
         const option = getSelectTag.querySelector(
           `option[data-project-category="${hash}"]`
         );
@@ -78,33 +78,33 @@ export default class FrontEndUtils {
         }
 
         if (hash === featuredProjectsDataAttr) {
-          allProjectsSection.classList.remove(showOverrideClass);
-          featuredProjectsSection.classList.remove(hideOverrideClass);
-          featuredProjectsSection.classList.add(showOverrideClass);
+          allProjects.classList.remove(showClass);
+          featuredProjects.classList.remove(hideClass);
+          featuredProjects.classList.add(showClass);
         } else {
-          featuredProjectsSection.classList.remove(showOverrideClass);
-          featuredProjectsSection.classList.add(hideOverrideClass);
-          allProjectsSection.classList.add(showOverrideClass);
+          featuredProjects.classList.remove(showClass);
+          featuredProjects.classList.add(hideClass);
+          allProjects.classList.add(showClass);
 
-          const h3 = allProjectsSection.querySelectorAll(
+          const h3 = allProjects.querySelectorAll(
             `h3[data-project-category=${hash}]`
           );
-          const li = allProjectsSection.querySelectorAll(
+          const li = allProjects.querySelectorAll(
             `li[data-project-category=${hash}]`
           );
 
           h3.forEach((elem) => {
-            elem.classList.remove(hideOverrideClass);
-            elem.classList.add(showOverrideClass);
+            elem.classList.remove(hideClass);
+            elem.classList.add(showClass);
           });
 
           li.forEach((elem) => {
-            elem.classList.remove(hideOverrideClass);
-            elem.classList.add(showInlineBlockOverride);
+            elem.classList.remove(hideClass);
+            elem.classList.add(showInlineBlockClass);
           });
         }
       }
-      // Else if hash does not exist in projectCategoriesArr
+      // Else if hash does not exist in projectCatsArr
       // assign hash to #featured-projects
       else {
         window.location.hash = `#${featuredProjectsDataAttr}`;
@@ -116,10 +116,10 @@ export default class FrontEndUtils {
 
     // Portfolio page (front page) code to show and hide project categories AND
     // code runs ONLY if on Portfolio page (front page)
-    featuredId.classList.remove(hideOverrideClass);
-    featuredId.classList.add(showOverrideClass);
+    featuredId.classList.remove(hideClass);
+    featuredId.classList.add(showClass);
 
-    portfolioProjectChooser.addEventListener('change', (e) => {
+    portfolioSelector.addEventListener('change', (e) => {
       const select = e.target;
       const selectedOption = select.options[select.selectedIndex];
       const chosenOptionTagDataAttr = selectedOption.getAttribute(
@@ -128,38 +128,38 @@ export default class FrontEndUtils {
       const chosenOptionTagVal = selectedOption.text;
 
       if (chosenOptionTagDataAttr !== featuredProjectsDataAttr) {
-        if (featuredProjectsSection.classList.contains(showOverrideClass)) {
-          featuredProjectsSection.classList.remove(showOverrideClass);
-          featuredProjectsSection.classList.add(hideOverrideClass);
+        if (featuredProjects.classList.contains(showClass)) {
+          featuredProjects.classList.remove(showClass);
+          featuredProjects.classList.add(hideClass);
         }
 
-        const h3 = allProjectsSection.querySelectorAll('h3');
-        const h3Selected = allProjectsSection.querySelectorAll(
+        const h3 = allProjects.querySelectorAll('h3');
+        const h3Selected = allProjects.querySelectorAll(
           `h3[data-project-category=${chosenOptionTagDataAttr}]`
         );
-        const li = allProjectsSection.querySelectorAll('li');
-        const liSelected = allProjectsSection.querySelectorAll(
+        const li = allProjects.querySelectorAll('li');
+        const liSelected = allProjects.querySelectorAll(
           `li[data-project-category=${chosenOptionTagDataAttr}]`
         );
 
         h3.forEach((elem) => {
-          elem.classList.remove(showOverrideClass);
-          elem.classList.add(hideOverrideClass);
+          elem.classList.remove(showClass);
+          elem.classList.add(hideClass);
         });
 
         h3Selected.forEach((elem) => {
-          elem.classList.remove(hideOverrideClass);
-          elem.classList.add(showOverrideClass);
+          elem.classList.remove(hideClass);
+          elem.classList.add(showClass);
         });
 
         li.forEach((elem) => {
-          elem.classList.remove(showInlineBlockOverride);
-          elem.classList.add(hideOverrideClass);
+          elem.classList.remove(showInlineBlockClass);
+          elem.classList.add(hideClass);
         });
 
         liSelected.forEach((elem) => {
-          elem.classList.remove(hideOverrideClass);
-          elem.classList.add(showInlineBlockOverride);
+          elem.classList.remove(hideClass);
+          elem.classList.add(showInlineBlockClass);
         });
 
         window.location.hash = `#${chosenOptionTagDataAttr}`;
@@ -167,20 +167,13 @@ export default class FrontEndUtils {
       // ELSE 'featured-projects' OPTION tag IS CHOSEN  then
       // ONLY display 'Featured Projects' portfolio item
       else {
-        if (featuredProjectsSection.classList.contains(hideOverrideClass)) {
-          featuredProjectsSection.classList.remove(hideOverrideClass);
-          featuredProjectsSection.classList.add(showOverrideClass);
+        if (featuredProjects.classList.contains(hideClass)) {
+          featuredProjects.classList.remove(hideClass);
+          featuredProjects.classList.add(showClass);
         }
 
-        allProjectsSection
-          .querySelector('h3')
-          .classList.remove(showOverrideClass);
-        allProjectsSection.querySelector('h3').classList.add(hideOverrideClass);
-
-        allProjectsSection
-          .querySelector('li')
-          .classList.remove(showInlineBlockOverride);
-        allProjectsSection.querySelector('li').classList.add(hideOverrideClass);
+        allProjects.querySelector('li').classList.remove(showInlineBlockClass);
+        allProjects.querySelector('li').classList.add(hideClass);
 
         window.location.hash = `#${featuredProjectsDataAttr}`;
       }
@@ -189,7 +182,7 @@ export default class FrontEndUtils {
       portfolioUpdateText.textContent = `Page updated to show ${chosenOptionTagVal} portfolio items`;
     });
 
-    const getHashChange = hashChange(portfolioProjectChooser);
+    const getHashChange = hashChange(portfolioSelector);
     window.addEventListener('hashchange', getHashChange);
   }
 
