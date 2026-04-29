@@ -31,7 +31,7 @@ export default class FrontEndUtils {
   }
 
   portfolioChooser() {
-    // Variables for the hash change and SELECT tag JS
+    // Variables for the tab change and SELECT tag JS
     const portfolioSelector = document.getElementById(
       'portfolio-project-chooser'
     );
@@ -41,7 +41,7 @@ export default class FrontEndUtils {
     const showClass = 'show-override';
     const hideClass = 'hide-override';
     const showInlineBlockClass = 'show-inlineblock-override';
-    const hashSelectedClass = 'hash-selected';
+    const queryStringSelectedClass = 'hash-selected';
     const featuredProjectsDataAttr = 'featured-projects';
     const featuredProjects = document.getElementById(
       `${featuredProjectsDataAttr}-section`
@@ -51,6 +51,8 @@ export default class FrontEndUtils {
     const portfolioUpdateText = document.getElementById(
       'portfolio-update-text'
     );
+
+    const queryParamName = 'portfolio';
 
     // Push in  values to empty array 'data-project-category' values
     // into empty array
@@ -62,22 +64,24 @@ export default class FrontEndUtils {
       projectCatsArr.push(option.getAttribute('data-project-category'))
     );
 
-    const hashChange = (getSelectTag) => {
-      const hash = window.location.hash.slice(1);
+    const queryStringChange = (getSelectTag) => {
+      const url = new URL(window.location.href);
+      const queryString = url.searchParams.get(queryParamName);
+      window.history.pushState({}, '', url);
 
       // If loaded page to get a hash and
-      // hash exists in projectCatsArr
+      // queryString exists in projectCatsArr
       // then execute code below
-      if (hash && projectCatsArr.includes(hash)) {
+      if (queryString && projectCatsArr.includes(queryString)) {
         const option = getSelectTag.querySelector(
-          `option[data-project-category="${hash}"]`
+          `option[data-project-category="${queryString}"]`
         );
         if (option) {
           option.selected = true;
-          option.classList.add(hashSelectedClass);
+          option.classList.add(queryStringSelectedClass);
         }
 
-        if (hash === featuredProjectsDataAttr) {
+        if (queryString === featuredProjectsDataAttr) {
           allProjects.classList.remove(showClass);
           featuredProjects.classList.remove(hideClass);
           featuredProjects.classList.add(showClass);
@@ -87,10 +91,10 @@ export default class FrontEndUtils {
           allProjects.classList.add(showClass);
 
           const h3 = allProjects.querySelectorAll(
-            `h3[data-project-category=${hash}]`
+            `h3[data-project-category=${queryString}]`
           );
           const li = allProjects.querySelectorAll(
-            `li[data-project-category=${hash}]`
+            `li[data-project-category=${queryString}]`
           );
 
           h3.forEach((elem) => {
@@ -103,11 +107,6 @@ export default class FrontEndUtils {
             elem.classList.add(showInlineBlockClass);
           });
         }
-      }
-      // Else if hash does not exist in projectCatsArr
-      // assign hash to #featured-projects
-      else {
-        window.location.hash = `#${featuredProjectsDataAttr}`;
       }
 
       // If portfolio update text exists remove it
@@ -122,12 +121,12 @@ export default class FrontEndUtils {
     portfolioSelector.addEventListener('change', (e) => {
       const select = e.target;
       const selectedOption = select.options[select.selectedIndex];
-      const chosenOptionTagDataAttr = selectedOption.getAttribute(
+      const chosenOptionDataAttr = selectedOption.getAttribute(
         'data-project-category'
       );
       const chosenOptionTagVal = selectedOption.text;
 
-      if (chosenOptionTagDataAttr !== featuredProjectsDataAttr) {
+      if (chosenOptionDataAttr !== featuredProjectsDataAttr) {
         if (featuredProjects.classList.contains(showClass)) {
           featuredProjects.classList.remove(showClass);
           featuredProjects.classList.add(hideClass);
@@ -135,11 +134,11 @@ export default class FrontEndUtils {
 
         const h3 = allProjects.querySelectorAll('h3');
         const h3Selected = allProjects.querySelectorAll(
-          `h3[data-project-category=${chosenOptionTagDataAttr}]`
+          `h3[data-project-category=${chosenOptionDataAttr}]`
         );
         const li = allProjects.querySelectorAll('li');
         const liSelected = allProjects.querySelectorAll(
-          `li[data-project-category=${chosenOptionTagDataAttr}]`
+          `li[data-project-category=${chosenOptionDataAttr}]`
         );
 
         h3.forEach((elem) => {
@@ -162,7 +161,9 @@ export default class FrontEndUtils {
           elem.classList.add(showInlineBlockClass);
         });
 
-        window.location.hash = `#${chosenOptionTagDataAttr}`;
+        const url = new URL(window.location.href);
+        url.searchParams.set(queryParamName, chosenOptionDataAttr);
+        window.history.pushState({}, '', url);
       }
       // ELSE 'featured-projects' OPTION tag IS CHOSEN  then
       // ONLY display 'Featured Projects' portfolio item
@@ -175,15 +176,16 @@ export default class FrontEndUtils {
         allProjects.querySelector('li').classList.remove(showInlineBlockClass);
         allProjects.querySelector('li').classList.add(hideClass);
 
-        window.location.hash = `#${featuredProjectsDataAttr}`;
+        const url = new URL(window.location.href);
+        url.searchParams.set(queryParamName, featuredProjectsDataAttr);
+        window.history.pushState({}, '', url);
       }
 
       // Add portfolio update text inside role="alert" DIV
       portfolioUpdateText.textContent = `Page updated to show ${chosenOptionTagVal} portfolio items`;
     });
 
-    const getHashChange = hashChange(portfolioSelector);
-    window.addEventListener('hashchange', getHashChange);
+    queryStringChange(portfolioSelector);
   }
 
   decryptEmailPhone() {
