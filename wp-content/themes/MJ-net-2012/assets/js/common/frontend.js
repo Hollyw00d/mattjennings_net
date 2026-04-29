@@ -66,6 +66,7 @@ export default class FrontEndUtils {
 
     function showFeaturedProjects() {
       allProjects.classList.remove(showClass);
+      allProjects.classList.add(hideClass);
       featuredProjects.classList.remove(hideClass);
       featuredProjects.classList.add(showClass);
     }
@@ -73,23 +74,30 @@ export default class FrontEndUtils {
     function showSelectedProject(selector) {
       featuredProjects.classList.remove(showClass);
       featuredProjects.classList.add(hideClass);
+      allProjects.classList.remove(hideClass);
       allProjects.classList.add(showClass);
 
-      const h3 = allProjects.querySelectorAll(
-        `h3[data-project-category=${selector}]`
-      );
-      const li = allProjects.querySelectorAll(
-        `li[data-project-category=${selector}]`
-      );
+      const h3 = allProjects.querySelectorAll('h3');
+      const li = allProjects.querySelectorAll('li');
 
       h3.forEach((elem) => {
-        elem.classList.remove(hideClass);
-        elem.classList.add(showClass);
+        if (elem.getAttribute('data-project-category') === selector) {
+          elem.classList.remove(hideClass);
+          elem.classList.add(showClass);
+        } else {
+          elem.classList.remove(showClass);
+          elem.classList.add(hideClass);
+        }
       });
 
       li.forEach((elem) => {
-        elem.classList.remove(hideClass);
-        elem.classList.add(showInlineBlockClass);
+        if (elem.getAttribute('data-project-category') === selector) {
+          elem.classList.remove(hideClass);
+          elem.classList.add(showInlineBlockClass);
+        } else {
+          elem.classList.remove(showInlineBlockClass);
+          elem.classList.add(hideClass);
+        }
       });
     }
 
