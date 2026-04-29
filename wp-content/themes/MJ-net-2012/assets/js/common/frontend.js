@@ -126,58 +126,36 @@ export default class FrontEndUtils {
       );
       const chosenOptionTagVal = selectedOption.text;
 
-      if (chosenOptionDataAttr !== featuredProjectsDataAttr) {
-        if (featuredProjects.classList.contains(showClass)) {
-          featuredProjects.classList.remove(showClass);
-          featuredProjects.classList.add(hideClass);
-        }
+      if (chosenOptionDataAttr === featuredProjectsDataAttr) {
+        allProjects.classList.remove(showClass);
+        featuredProjects.classList.remove(hideClass);
+        featuredProjects.classList.add(showClass);
+        const url = new URL(window.location.href);
+        url.searchParams.set(queryParamName, chosenOptionDataAttr);
+        window.history.pushState({}, '', url);
+      } else {
+        featuredProjects.classList.remove(showClass);
+        featuredProjects.classList.add(hideClass);
+        allProjects.classList.add(showClass);
 
-        const h3 = allProjects.querySelectorAll('h3');
-        const h3Selected = allProjects.querySelectorAll(
+        const h3 = allProjects.querySelectorAll(
           `h3[data-project-category=${chosenOptionDataAttr}]`
         );
-        const li = allProjects.querySelectorAll('li');
-        const liSelected = allProjects.querySelectorAll(
+        const li = allProjects.querySelectorAll(
           `li[data-project-category=${chosenOptionDataAttr}]`
         );
 
         h3.forEach((elem) => {
-          elem.classList.remove(showClass);
-          elem.classList.add(hideClass);
-        });
-
-        h3Selected.forEach((elem) => {
           elem.classList.remove(hideClass);
           elem.classList.add(showClass);
         });
 
         li.forEach((elem) => {
-          elem.classList.remove(showInlineBlockClass);
-          elem.classList.add(hideClass);
-        });
-
-        liSelected.forEach((elem) => {
           elem.classList.remove(hideClass);
           elem.classList.add(showInlineBlockClass);
         });
-
         const url = new URL(window.location.href);
         url.searchParams.set(queryParamName, chosenOptionDataAttr);
-        window.history.pushState({}, '', url);
-      }
-      // ELSE 'featured-projects' OPTION tag IS CHOSEN  then
-      // ONLY display 'Featured Projects' portfolio item
-      else {
-        if (featuredProjects.classList.contains(hideClass)) {
-          featuredProjects.classList.remove(hideClass);
-          featuredProjects.classList.add(showClass);
-        }
-
-        allProjects.querySelector('li').classList.remove(showInlineBlockClass);
-        allProjects.querySelector('li').classList.add(hideClass);
-
-        const url = new URL(window.location.href);
-        url.searchParams.set(queryParamName, featuredProjectsDataAttr);
         window.history.pushState({}, '', url);
       }
 
