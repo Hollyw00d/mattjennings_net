@@ -64,6 +64,43 @@ export default class FrontEndUtils {
       projectCatsArr.push(option.getAttribute('data-project-category'))
     );
 
+    function showFeaturedProjects() {
+      allProjects.classList.remove(showClass);
+      featuredProjects.classList.remove(hideClass);
+      featuredProjects.classList.add(showClass);
+    }
+
+    function showSelectedProject(selector) {
+      featuredProjects.classList.remove(showClass);
+      featuredProjects.classList.add(hideClass);
+      allProjects.classList.add(showClass);
+
+      const h3 = allProjects.querySelectorAll(
+        `h3[data-project-category=${selector}]`
+      );
+      const li = allProjects.querySelectorAll(
+        `li[data-project-category=${selector}]`
+      );
+
+      h3.forEach((elem) => {
+        elem.classList.remove(hideClass);
+        elem.classList.add(showClass);
+      });
+
+      li.forEach((elem) => {
+        elem.classList.remove(hideClass);
+        elem.classList.add(showInlineBlockClass);
+      });
+    }
+
+    function showHideProjects(selector) {
+      if (selector === featuredProjectsDataAttr) {
+        showFeaturedProjects();
+      } else {
+        showSelectedProject(selector);
+      }
+    }
+
     const queryStringChange = (getSelectTag) => {
       const url = new URL(window.location.href);
       const queryString = url.searchParams.get(queryParamName);
@@ -81,32 +118,7 @@ export default class FrontEndUtils {
           option.classList.add(queryStringSelectedClass);
         }
 
-        if (queryString === featuredProjectsDataAttr) {
-          allProjects.classList.remove(showClass);
-          featuredProjects.classList.remove(hideClass);
-          featuredProjects.classList.add(showClass);
-        } else {
-          featuredProjects.classList.remove(showClass);
-          featuredProjects.classList.add(hideClass);
-          allProjects.classList.add(showClass);
-
-          const h3 = allProjects.querySelectorAll(
-            `h3[data-project-category=${queryString}]`
-          );
-          const li = allProjects.querySelectorAll(
-            `li[data-project-category=${queryString}]`
-          );
-
-          h3.forEach((elem) => {
-            elem.classList.remove(hideClass);
-            elem.classList.add(showClass);
-          });
-
-          li.forEach((elem) => {
-            elem.classList.remove(hideClass);
-            elem.classList.add(showInlineBlockClass);
-          });
-        }
+        showHideProjects(queryString);
       }
 
       // If portfolio update text exists remove it
@@ -126,41 +138,14 @@ export default class FrontEndUtils {
       );
       const chosenOptionTagVal = selectedOption.text;
 
-      if (chosenOptionDataAttr === featuredProjectsDataAttr) {
-        allProjects.classList.remove(showClass);
-        featuredProjects.classList.remove(hideClass);
-        featuredProjects.classList.add(showClass);
-        const url = new URL(window.location.href);
-        url.searchParams.set(queryParamName, chosenOptionDataAttr);
-        window.history.pushState({}, '', url);
-      } else {
-        featuredProjects.classList.remove(showClass);
-        featuredProjects.classList.add(hideClass);
-        allProjects.classList.add(showClass);
-
-        const h3 = allProjects.querySelectorAll(
-          `h3[data-project-category=${chosenOptionDataAttr}]`
-        );
-        const li = allProjects.querySelectorAll(
-          `li[data-project-category=${chosenOptionDataAttr}]`
-        );
-
-        h3.forEach((elem) => {
-          elem.classList.remove(hideClass);
-          elem.classList.add(showClass);
-        });
-
-        li.forEach((elem) => {
-          elem.classList.remove(hideClass);
-          elem.classList.add(showInlineBlockClass);
-        });
-        const url = new URL(window.location.href);
-        url.searchParams.set(queryParamName, chosenOptionDataAttr);
-        window.history.pushState({}, '', url);
-      }
+      showHideProjects(chosenOptionDataAttr);
 
       // Add portfolio update text inside role="alert" DIV
       portfolioUpdateText.textContent = `Page updated to show ${chosenOptionTagVal} portfolio items`;
+
+      const url = new URL(window.location.href);
+      url.searchParams.set(queryParamName, chosenOptionDataAttr);
+      window.history.pushState({}, '', url);
     });
 
     queryStringChange(portfolioSelector);
