@@ -112,7 +112,6 @@ export default class FrontEndUtils {
     const queryStringChange = (getSelectTag) => {
       const url = new URL(window.location.href);
       const queryString = url.searchParams.get(queryParamName);
-      // window.history.pushState({}, '', url);
 
       // If loaded page to get a hash and
       // queryString exists in projectCatsArr
