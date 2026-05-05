@@ -79,7 +79,7 @@ export default class FrontEndUtils {
       featuredProjects.classList.remove(cssClasses.hideClass);
       featuredProjects.classList.add(cssClasses.showClass);
       // Select "Featured Projects" or 1st option tag in selector
-      portfolioSelectorOptions[0].selected = 'selected';
+      portfolioSelector.selectedIndex = 0;
     }
 
     function showSelectedProject(selector) {
