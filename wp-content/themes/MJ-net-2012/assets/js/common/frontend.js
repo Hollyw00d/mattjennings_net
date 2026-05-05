@@ -46,25 +46,27 @@ export default class FrontEndUtils {
     const portfolioSelectorOptions = document.querySelectorAll(
       '#portfolio-project-chooser > option'
     );
-    const h3 = allProjects?.querySelectorAll('h3');
-    const li = allProjects?.querySelectorAll('li');
 
     if (
       !portfolioSelector ||
       !featuredProjects ||
       !allProjects ||
       !portfolioUpdateText ||
-      !portfolioSelectorOptions ||
-      !h3 ||
-      !li
+      !portfolioSelectorOptions.length
     ) {
       return;
     }
 
-    const showClass = 'show-override';
-    const hideClass = 'hide-override';
-    const showInlineBlockClass = 'show-inlineblock-override';
-    const queryStringSelectedClass = 'hash-selected';
+    const h3 = allProjects.querySelectorAll('h3');
+    const li = allProjects.querySelectorAll('li');
+
+    const cssClasses = {
+      showClass: 'show-override',
+      hideClass: 'hide-override',
+      showInlineBlockClass: 'show-inlineblock-override',
+      queryStringSelectedClass: 'hash-selected'
+    };
+
     const queryParamName = 'portfolio';
 
     const projectCatsArr = Array.from(portfolioSelectorOptions).map(
@@ -72,37 +74,37 @@ export default class FrontEndUtils {
     );
 
     function showFeaturedProjects() {
-      allProjects.classList.remove(showClass);
-      allProjects.classList.add(hideClass);
-      featuredProjects.classList.remove(hideClass);
-      featuredProjects.classList.add(showClass);
+      allProjects.classList.remove(cssClasses.showClass);
+      allProjects.classList.add(cssClasses.hideClass);
+      featuredProjects.classList.remove(cssClasses.hideClass);
+      featuredProjects.classList.add(cssClasses.showClass);
       // Select "Featured Projects" or 1st option tag in selector
       portfolioSelectorOptions[0].selected = 'selected';
     }
 
     function showSelectedProject(selector) {
-      featuredProjects.classList.remove(showClass);
-      featuredProjects.classList.add(hideClass);
-      allProjects.classList.remove(hideClass);
-      allProjects.classList.add(showClass);
+      featuredProjects.classList.remove(cssClasses.showClass);
+      featuredProjects.classList.add(cssClasses.hideClass);
+      allProjects.classList.remove(cssClasses.hideClass);
+      allProjects.classList.add(cssClasses.showClass);
 
       h3.forEach((elem) => {
         if (elem.getAttribute('data-project-category') === selector) {
-          elem.classList.remove(hideClass);
-          elem.classList.add(showClass);
+          elem.classList.remove(cssClasses.hideClass);
+          elem.classList.add(cssClasses.showClass);
         } else {
-          elem.classList.remove(showClass);
-          elem.classList.add(hideClass);
+          elem.classList.remove(cssClasses.showClass);
+          elem.classList.add(cssClasses.hideClass);
         }
       });
 
       li.forEach((elem) => {
         if (elem.getAttribute('data-project-category') === selector) {
-          elem.classList.remove(hideClass);
-          elem.classList.add(showInlineBlockClass);
+          elem.classList.remove(cssClasses.hideClass);
+          elem.classList.add(cssClasses.showInlineBlockClass);
         } else {
-          elem.classList.remove(showInlineBlockClass);
-          elem.classList.add(hideClass);
+          elem.classList.remove(cssClasses.showInlineBlockClass);
+          elem.classList.add(cssClasses.hideClass);
         }
       });
     }
@@ -129,7 +131,7 @@ export default class FrontEndUtils {
         );
         if (option) {
           option.selected = true;
-          option.classList.add(queryStringSelectedClass);
+          option.classList.add(cssClasses.queryStringSelectedClass);
         }
 
         chosenOptionTagVal = option.text;
