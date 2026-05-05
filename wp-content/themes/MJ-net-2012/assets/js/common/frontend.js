@@ -89,23 +89,17 @@ export default class FrontEndUtils {
       allProjects.classList.add(cssClasses.showClass);
 
       h3.forEach((elem) => {
-        if (elem.getAttribute('data-project-category') === selector) {
-          elem.classList.remove(cssClasses.hideClass);
-          elem.classList.add(cssClasses.showClass);
-        } else {
-          elem.classList.remove(cssClasses.showClass);
-          elem.classList.add(cssClasses.hideClass);
-        }
+        const isSelected = elem.dataset.projectCategory === selector;
+
+        elem.classList.toggle(cssClasses.showClass, isSelected);
+        elem.classList.toggle(cssClasses.hideClass, !isSelected);
       });
 
       li.forEach((elem) => {
-        if (elem.getAttribute('data-project-category') === selector) {
-          elem.classList.remove(cssClasses.hideClass);
-          elem.classList.add(cssClasses.showInlineBlockClass);
-        } else {
-          elem.classList.remove(cssClasses.showInlineBlockClass);
-          elem.classList.add(cssClasses.hideClass);
-        }
+        const isSelected = elem.dataset.projectCategory === selector;
+
+        elem.classList.toggle(cssClasses.showClass, isSelected);
+        elem.classList.toggle(cssClasses.hideClass, !isSelected);
       });
     }
 
