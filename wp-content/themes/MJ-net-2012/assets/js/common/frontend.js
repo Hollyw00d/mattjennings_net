@@ -110,6 +110,12 @@ export default class FrontEndUtils {
       }
     }
 
+    function projectCatsText(selectedOptionText) {
+      // Update live region text
+      const updateText = `Page updated to show ${selectedOptionText} portfolio items`;
+      portfolioUpdateText.textContent = updateText;
+    }
+
     const queryStringChange = (portfolioSelect) => {
       const url = new URL(window.location.href);
       const category = url.searchParams.get(queryParamName);
@@ -133,26 +139,21 @@ export default class FrontEndUtils {
         selectedOptionText = portfolioSelectorOptions[0].textContent;
       }
 
-      // Update live region text
-      const updateText = `Page updated to show ${selectedOptionText} portfolio items`;
-      portfolioUpdateText.textContent = updateText;
+      projectCatsText(selectedOptionText);
     };
 
     portfolioSelector.addEventListener('change', (e) => {
-      const select = e.target;
-      const selectedOption = select.options[select.selectedIndex];
-      const chosenOptionDataAttr = selectedOption.getAttribute(
-        'data-project-category'
-      );
-      const selectedOptionText = selectedOption.text;
+      const selectedOption = e.target.selectedOptions[0];
+      const category = selectedOption.dataset.projectCategory;
+      const selectedOptionText = selectedOption.textContent;
 
-      showHideProjects(chosenOptionDataAttr);
+      if (!category) return;
 
-      // Add portfolio update text inside role="alert" DIV
-      portfolioUpdateText.textContent = `Page updated to show ${selectedOptionText} portfolio items`;
+      showHideProjects(category);
+      projectCatsText(selectedOptionText);
 
       const url = new URL(window.location.href);
-      url.searchParams.set(queryParamName, chosenOptionDataAttr);
+      url.searchParams.set(queryParamName, category);
       window.history.pushState({}, '', url);
     });
 
