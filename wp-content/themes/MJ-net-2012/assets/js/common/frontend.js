@@ -69,6 +69,8 @@ export default class FrontEndUtils {
       allProjects.classList.add(hideClass);
       featuredProjects.classList.remove(hideClass);
       featuredProjects.classList.add(showClass);
+      // Select "Featured Projects" or 1st option tag in selector
+      portfolioSelectorOptions[0].selected = 'selected';
     }
 
     function showSelectedProject(selector) {
@@ -112,6 +114,7 @@ export default class FrontEndUtils {
     const queryStringChange = (getSelectTag) => {
       const url = new URL(window.location.href);
       const queryString = url.searchParams.get(queryParamName);
+      let chosenOptionTagVal = '';
 
       // If loaded page to get a hash and
       // queryString exists in projectCatsArr
@@ -125,11 +128,15 @@ export default class FrontEndUtils {
           option.classList.add(queryStringSelectedClass);
         }
 
+        chosenOptionTagVal = option.text;
+
         showHideProjects(queryString);
+      } else {
+        showFeaturedProjects();
       }
 
       // If portfolio update text exists remove it
-      portfolioUpdateText.textContent = '';
+      portfolioUpdateText.textContent = `Page updated to show ${chosenOptionTagVal} portfolio items`;
     };
 
     // Portfolio page (front page) code to show and hide project categories AND
