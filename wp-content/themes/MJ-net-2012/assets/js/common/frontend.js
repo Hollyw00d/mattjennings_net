@@ -113,26 +113,26 @@ export default class FrontEndUtils {
 
     const queryStringChange = (getSelectTag) => {
       const url = new URL(window.location.href);
-      const queryString = url.searchParams.get(queryParamName);
+      const category = url.searchParams.get(queryParamName);
       let chosenOptionTagVal = '';
 
       // If loaded page to get a hash and
-      // queryString exists in projectCatsArr
+      // category exists in projectCatsArr
       // then execute code below
-      if (queryString && projectCatsArr.includes(queryString)) {
+      if (category && projectCatsArr.includes(category)) {
         const option = getSelectTag.querySelector(
-          `option[data-project-category="${queryString}"]`
+          `option[data-project-category="${category}"]`
         );
         if (option) {
           option.selected = true;
           option.classList.add(cssClasses.queryStringSelectedClass);
+          chosenOptionTagVal = option.text;
+
+          showHideProjects(category);
         }
-
-        chosenOptionTagVal = option.text;
-
-        showHideProjects(queryString);
       } else {
         showFeaturedProjects();
+        chosenOptionTagVal = portfolioSelectorOptions[0].textContent;
       }
 
       // If portfolio update text exists remove it
