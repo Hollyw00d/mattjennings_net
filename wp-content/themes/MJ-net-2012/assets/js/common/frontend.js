@@ -63,8 +63,7 @@ export default class FrontEndUtils {
     const cssClasses = {
       showClass: 'show-override',
       hideClass: 'hide-override',
-      showInlineBlockClass: 'show-inlineblock-override',
-      queryStringSelectedClass: 'hash-selected'
+      showInlineBlockClass: 'show-inlineblock-override'
     };
 
     const queryParamName = 'portfolio';
@@ -116,7 +115,7 @@ export default class FrontEndUtils {
       const category = url.searchParams.get(queryParamName);
       let chosenOptionTagVal = '';
 
-      // If loaded page to get a hash and
+      // If loaded page to get a query string and
       // category exists in projectCatsArr
       // then execute code below
       if (category && projectCatsArr.includes(category)) {
@@ -124,9 +123,8 @@ export default class FrontEndUtils {
           `option[data-project-category="${category}"]`
         );
         if (option) {
-          option.selected = true;
-          option.classList.add(cssClasses.queryStringSelectedClass);
-          chosenOptionTagVal = option.text;
+          getSelectTag.value = option.value;
+          chosenOptionTagVal = option.textContent;
 
           showHideProjects(category);
         }
