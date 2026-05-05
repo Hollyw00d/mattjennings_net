@@ -35,69 +35,70 @@ export default class FrontEndUtils {
     const portfolioSelector = document.getElementById(
       'portfolio-project-chooser'
     );
-    if (!portfolioSelector) return;
-
-    const featuredId = document.getElementById('featured-projects-section');
-    const showClass = 'show-override';
-    const hideClass = 'hide-override';
-    const showInlineBlockClass = 'show-inlineblock-override';
-    const queryStringSelectedClass = 'hash-selected';
     const featuredProjectsDataAttr = 'featured-projects';
     const featuredProjects = document.getElementById(
       `${featuredProjectsDataAttr}-section`
     );
-
     const allProjects = document.getElementById('all-projects-section');
     const portfolioUpdateText = document.getElementById(
       'portfolio-update-text'
     );
-
-    const queryParamName = 'portfolio';
-
-    // Push in  values to empty array 'data-project-category' values
-    // into empty array
-    const projectCatsArr = [];
     const portfolioSelectorOptions = document.querySelectorAll(
       '#portfolio-project-chooser > option'
     );
-    portfolioSelectorOptions.forEach((option) =>
-      projectCatsArr.push(option.getAttribute('data-project-category'))
+
+    if (
+      !portfolioSelector ||
+      !featuredProjects ||
+      !allProjects ||
+      !portfolioUpdateText ||
+      !portfolioSelectorOptions.length
+    ) {
+      return;
+    }
+
+    const h3 = allProjects.querySelectorAll('h3');
+    const li = allProjects.querySelectorAll('li');
+
+    const cssClasses = {
+      showClass: 'show-override',
+      hideClass: 'hide-override',
+      showInlineBlockClass: 'show-inlineblock-override'
+    };
+
+    const queryParamName = 'portfolio';
+
+    const projectCatsArr = Array.from(portfolioSelectorOptions).map(
+      (option) => option.dataset.projectCategory
     );
 
     function showFeaturedProjects() {
-      allProjects.classList.remove(showClass);
-      allProjects.classList.add(hideClass);
-      featuredProjects.classList.remove(hideClass);
-      featuredProjects.classList.add(showClass);
+      allProjects.classList.remove(cssClasses.showClass);
+      allProjects.classList.add(cssClasses.hideClass);
+      featuredProjects.classList.remove(cssClasses.hideClass);
+      featuredProjects.classList.add(cssClasses.showClass);
+      // Select "Featured Projects" or 1st option tag in selector
+      portfolioSelector.selectedIndex = 0;
     }
 
     function showSelectedProject(selector) {
-      featuredProjects.classList.remove(showClass);
-      featuredProjects.classList.add(hideClass);
-      allProjects.classList.remove(hideClass);
-      allProjects.classList.add(showClass);
-
-      const h3 = allProjects.querySelectorAll('h3');
-      const li = allProjects.querySelectorAll('li');
+      featuredProjects.classList.remove(cssClasses.showClass);
+      featuredProjects.classList.add(cssClasses.hideClass);
+      allProjects.classList.remove(cssClasses.hideClass);
+      allProjects.classList.add(cssClasses.showClass);
 
       h3.forEach((elem) => {
-        if (elem.getAttribute('data-project-category') === selector) {
-          elem.classList.remove(hideClass);
-          elem.classList.add(showClass);
-        } else {
-          elem.classList.remove(showClass);
-          elem.classList.add(hideClass);
-        }
+        const isSelected = elem.dataset.projectCategory === selector;
+
+        elem.classList.toggle(cssClasses.showClass, isSelected);
+        elem.classList.toggle(cssClasses.hideClass, !isSelected);
       });
 
       li.forEach((elem) => {
-        if (elem.getAttribute('data-project-category') === selector) {
-          elem.classList.remove(hideClass);
-          elem.classList.add(showInlineBlockClass);
-        } else {
-          elem.classList.remove(showInlineBlockClass);
-          elem.classList.add(hideClass);
-        }
+        const isSelected = elem.dataset.projectCategory === selector;
+
+        elem.classList.toggle(cssClasses.showClass, isSelected);
+        elem.classList.toggle(cssClasses.hideClass, !isSelected);
       });
     }
 
@@ -109,49 +110,50 @@ export default class FrontEndUtils {
       }
     }
 
-    const queryStringChange = (getSelectTag) => {
+    function projectCatsText(selectedOptionText) {
+      // Update live region text
+      const updateText = `Page updated to show ${selectedOptionText} portfolio items`;
+      portfolioUpdateText.textContent = updateText;
+    }
+
+    const queryStringChange = (portfolioSelect) => {
       const url = new URL(window.location.href);
-      const queryString = url.searchParams.get(queryParamName);
+      const category = url.searchParams.get(queryParamName);
 
-      // If loaded page to get a hash and
-      // queryString exists in projectCatsArr
-      // then execute code below
-      if (queryString && projectCatsArr.includes(queryString)) {
-        const option = getSelectTag.querySelector(
-          `option[data-project-category="${queryString}"]`
+      let selectedOptionText = '';
+      let option = null;
+
+      if (category && projectCatsArr.includes(category)) {
+        option = portfolioSelect.querySelector(
+          `option[data-project-category="${category}"]`
         );
-        if (option) {
-          option.selected = true;
-          option.classList.add(queryStringSelectedClass);
-        }
-
-        showHideProjects(queryString);
       }
 
-      // If portfolio update text exists remove it
-      portfolioUpdateText.textContent = '';
+      if (option) {
+        portfolioSelect.value = option.value;
+        selectedOptionText = option.textContent;
+
+        showHideProjects(category);
+      } else {
+        showFeaturedProjects();
+        selectedOptionText = portfolioSelectorOptions[0].textContent;
+      }
+
+      projectCatsText(selectedOptionText);
     };
 
-    // Portfolio page (front page) code to show and hide project categories AND
-    // code runs ONLY if on Portfolio page (front page)
-    featuredId.classList.remove(hideClass);
-    featuredId.classList.add(showClass);
-
     portfolioSelector.addEventListener('change', (e) => {
-      const select = e.target;
-      const selectedOption = select.options[select.selectedIndex];
-      const chosenOptionDataAttr = selectedOption.getAttribute(
-        'data-project-category'
-      );
-      const chosenOptionTagVal = selectedOption.text;
+      const selectedOption = e.target.selectedOptions[0];
+      const category = selectedOption.dataset.projectCategory;
+      const selectedOptionText = selectedOption.textContent;
 
-      showHideProjects(chosenOptionDataAttr);
+      if (!category) return;
 
-      // Add portfolio update text inside role="alert" DIV
-      portfolioUpdateText.textContent = `Page updated to show ${chosenOptionTagVal} portfolio items`;
+      showHideProjects(category);
+      projectCatsText(selectedOptionText);
 
       const url = new URL(window.location.href);
-      url.searchParams.set(queryParamName, chosenOptionDataAttr);
+      url.searchParams.set(queryParamName, category);
       window.history.pushState({}, '', url);
     });
 
