@@ -110,31 +110,32 @@ export default class FrontEndUtils {
       }
     }
 
-    const queryStringChange = (getSelectTag) => {
+    const queryStringChange = (portfolioSelect) => {
       const url = new URL(window.location.href);
       const category = url.searchParams.get(queryParamName);
-      let chosenOptionTagVal = '';
 
-      // If loaded page to get a query string and
-      // category exists in projectCatsArr
-      // then execute code below
+      let selectedOptionText = '';
+      let option = null;
+
       if (category && projectCatsArr.includes(category)) {
-        const option = getSelectTag.querySelector(
+        option = portfolioSelect.querySelector(
           `option[data-project-category="${category}"]`
         );
-        if (option) {
-          getSelectTag.value = option.value;
-          chosenOptionTagVal = option.textContent;
-
-          showHideProjects(category);
-        }
-      } else {
-        showFeaturedProjects();
-        chosenOptionTagVal = portfolioSelectorOptions[0].textContent;
       }
 
-      // If portfolio update text exists remove it
-      portfolioUpdateText.textContent = `Page updated to show ${chosenOptionTagVal} portfolio items`;
+      if (option) {
+        portfolioSelect.value = option.value;
+        selectedOptionText = option.textContent;
+
+        showHideProjects(category);
+      } else {
+        showFeaturedProjects();
+        selectedOptionText = portfolioSelectorOptions[0].textContent;
+      }
+
+      // Update live region text
+      const updateText = `Page updated to show ${selectedOptionText} portfolio items`;
+      portfolioUpdateText.textContent = updateText;
     };
 
     portfolioSelector.addEventListener('change', (e) => {
@@ -143,12 +144,12 @@ export default class FrontEndUtils {
       const chosenOptionDataAttr = selectedOption.getAttribute(
         'data-project-category'
       );
-      const chosenOptionTagVal = selectedOption.text;
+      const selectedOptionText = selectedOption.text;
 
       showHideProjects(chosenOptionDataAttr);
 
       // Add portfolio update text inside role="alert" DIV
-      portfolioUpdateText.textContent = `Page updated to show ${chosenOptionTagVal} portfolio items`;
+      portfolioUpdateText.textContent = `Page updated to show ${selectedOptionText} portfolio items`;
 
       const url = new URL(window.location.href);
       url.searchParams.set(queryParamName, chosenOptionDataAttr);
