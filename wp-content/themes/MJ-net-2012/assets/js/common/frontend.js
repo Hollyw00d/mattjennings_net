@@ -35,33 +35,40 @@ export default class FrontEndUtils {
     const portfolioSelector = document.getElementById(
       'portfolio-project-chooser'
     );
-    if (!portfolioSelector) return;
-
-    const featuredId = document.getElementById('featured-projects-section');
-    const showClass = 'show-override';
-    const hideClass = 'hide-override';
-    const showInlineBlockClass = 'show-inlineblock-override';
-    const queryStringSelectedClass = 'hash-selected';
     const featuredProjectsDataAttr = 'featured-projects';
     const featuredProjects = document.getElementById(
       `${featuredProjectsDataAttr}-section`
     );
-
     const allProjects = document.getElementById('all-projects-section');
     const portfolioUpdateText = document.getElementById(
       'portfolio-update-text'
     );
-
-    const queryParamName = 'portfolio';
-
-    // Push in  values to empty array 'data-project-category' values
-    // into empty array
-    const projectCatsArr = [];
     const portfolioSelectorOptions = document.querySelectorAll(
       '#portfolio-project-chooser > option'
     );
-    portfolioSelectorOptions.forEach((option) =>
-      projectCatsArr.push(option.getAttribute('data-project-category'))
+    const h3 = allProjects?.querySelectorAll('h3');
+    const li = allProjects?.querySelectorAll('li');
+
+    if (
+      !portfolioSelector ||
+      !featuredProjects ||
+      !allProjects ||
+      !portfolioUpdateText ||
+      !portfolioSelectorOptions ||
+      !h3 ||
+      !li
+    ) {
+      return;
+    }
+
+    const showClass = 'show-override';
+    const hideClass = 'hide-override';
+    const showInlineBlockClass = 'show-inlineblock-override';
+    const queryStringSelectedClass = 'hash-selected';
+    const queryParamName = 'portfolio';
+
+    const projectCatsArr = Array.from(portfolioSelectorOptions).map(
+      (option) => option.dataset.projectCategory
     );
 
     function showFeaturedProjects() {
@@ -78,9 +85,6 @@ export default class FrontEndUtils {
       featuredProjects.classList.add(hideClass);
       allProjects.classList.remove(hideClass);
       allProjects.classList.add(showClass);
-
-      const h3 = allProjects.querySelectorAll('h3');
-      const li = allProjects.querySelectorAll('li');
 
       h3.forEach((elem) => {
         if (elem.getAttribute('data-project-category') === selector) {
@@ -138,11 +142,6 @@ export default class FrontEndUtils {
       // If portfolio update text exists remove it
       portfolioUpdateText.textContent = `Page updated to show ${chosenOptionTagVal} portfolio items`;
     };
-
-    // Portfolio page (front page) code to show and hide project categories AND
-    // code runs ONLY if on Portfolio page (front page)
-    featuredId.classList.remove(hideClass);
-    featuredId.classList.add(showClass);
 
     portfolioSelector.addEventListener('change', (e) => {
       const select = e.target;
