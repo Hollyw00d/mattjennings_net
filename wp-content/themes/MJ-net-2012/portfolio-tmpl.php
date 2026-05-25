@@ -137,9 +137,10 @@ Template Name: Portfolio Template
    <?php // Show featured projects only ?>
    <?php if( get_post_meta($post->ID, '_featured_project_radio', true) ): ?>
    <li class="featured-project<?php echo get_post_meta($post->ID, '_featured_project_order', true); ?>"
-    data-featured-project-category="<?php echo $featured_portfolio_category; ?>"><a
-     href="<?php the_permalink(); ?>"><img src="<?php echo $image_thumbnail; ?>" alt="<?php the_title(); ?>" width="200"
-      height="125" /><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_1', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_2', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_3', true); ?></a>
+    data-featured-project-category="<?php echo $featured_portfolio_category; ?>">
+    <a href="<?php the_permalink(); ?>" tabindex="0">
+     <img src="<?php echo $image_thumbnail; ?>" alt="<?php the_title(); ?>" width="200" height="125" /><br />
+     <?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_1', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_2', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_3', true); ?></a>
    </li>
    <?php endif; ?>
    <?php
@@ -254,9 +255,11 @@ Template Name: Portfolio Template
         ?>
    <li data-project-category="<?php echo $portfolio_category; ?>"
     class="portfolio-project<?php echo get_post_meta($post->ID, '_non_featured_project_order', true); ?> hide-override">
-    <a href="<?php the_permalink(); ?>"><img src="<?php echo $image_thumbnail; ?>" alt="<?php the_title(); ?>"
-      width="200" height="125" alt="<?php the_title(); ?>" width="200"
-      height="125" /><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_1', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_2', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_3', true); ?></a>
+    <a href="<?php the_permalink(); ?>" tabindex="0">
+     <img src="<?php echo $image_thumbnail; ?>" alt="<?php the_title(); ?>" width="200" height="125"
+      alt="<?php the_title(); ?>" width="200" height="125" /><br />
+     <?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_1', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_2', true); ?><br />
+     <?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_3', true); ?></a>
    </li>
    <?php
           endwhile;
