@@ -5,23 +5,23 @@ Template Name: Portfolio Template
 ?>
 <?php get_header(); ?>
 
-  <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-    <?php the_content(); ?>
+<?php the_content(); ?>
 
-  <?php endwhile; endif; ?>
+<?php endwhile; endif; ?>
 
-  <hr class="clear" />
+<hr class="clear" />
 
-  <div>
-    <div id="choose-project-categories">
+<div>
+ <div id="choose-project-categories">
 
-        <h2 class="clear"><label for="portfolio-project-chooser">Choose Portfolio Project Category</label></h2>
+  <h2 class="clear"><label for="portfolio-project-chooser">Choose Portfolio Project Category</label></h2>
 
-      <div id="portfolio-update-text" class="show-screenreader-only" role="alert" aria-live="polite"></div>
+  <div id="portfolio-update-text" class="show-screenreader-only" role="status" aria-live="polite"></div>
 
-      <select name="portfolio-project-chooser" id="portfolio-project-chooser">
-        <?php
+  <select name="portfolio-project-chooser" id="portfolio-project-chooser">
+   <?php
         // Category Chooser START
         $category_chooser_args = array(
               'post_type'         => 'portfoliopost',
@@ -59,7 +59,7 @@ Template Name: Portfolio Template
               $category_chooser_link[] =  $category_chooser_link_text;
             endif;
             ?>
-            <?php
+   <?php
             // If last post
             if( $category_chooser_posts_count == $category_chooser_counter ):
 
@@ -71,8 +71,8 @@ Template Name: Portfolio Template
               // and headings
               foreach($category_chooser_attr_and_headings as $key => $value):
               ?>
-                <option data-project-category="<?php echo $key; ?>"><?php echo $value; ?></option>
-              <?php
+   <option data-project-category="<?php echo $key; ?>"><?php echo $value; ?></option>
+   <?php
               endforeach;
             endif;
 
@@ -81,15 +81,15 @@ Template Name: Portfolio Template
         }
         // Category Chooser END
         ?>
-      </select>
+  </select>
 
-    </div>
+ </div>
 
-    <div id="featured-projects-section" class="show-override">
-      <h3 class="clear">Featured Projects</h3>
+ <div id="featured-projects-section" class="show-override">
+  <h3 class="clear">Featured Projects</h3>
 
-      <ul class="portfolio-list">
-        <?php
+  <ul class="portfolio-list">
+   <?php
         // Portfolio Feed Featured Project Posts Custom Post Type START
         $featured_portfolio_posts_args = array(
               'post_type'         => 'portfoliopost',
@@ -134,21 +134,25 @@ Template Name: Portfolio Template
 	            $image_thumbnail = get_the_post_thumbnail_url();
             }
         ?>
-            <?php // Show featured projects only ?>
-            <?php if( get_post_meta($post->ID, '_featured_project_radio', true) ): ?>
-              <li class="featured-project<?php echo get_post_meta($post->ID, '_featured_project_order', true); ?>" data-featured-project-category="<?php echo $featured_portfolio_category; ?>"><a href="<?php the_permalink(); ?>"><img src="<?php echo $image_thumbnail; ?>" alt="<?php the_title(); ?>" width="200" height="125" /><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_1', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_2', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_3', true); ?></a></li>
-            <?php endif; ?>
-        <?php
+   <?php // Show featured projects only ?>
+   <?php if( get_post_meta($post->ID, '_featured_project_radio', true) ): ?>
+   <li class="featured-project<?php echo get_post_meta($post->ID, '_featured_project_order', true); ?>"
+    data-featured-project-category="<?php echo $featured_portfolio_category; ?>"><a
+     href="<?php the_permalink(); ?>"><img src="<?php echo $image_thumbnail; ?>" alt="<?php the_title(); ?>" width="200"
+      height="125" /><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_1', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_2', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_3', true); ?></a>
+   </li>
+   <?php endif; ?>
+   <?php
           endwhile;
           wp_reset_postdata();
         }
         // Portfolio Feed Featured Project Posts Custom Post Type END
         ?>
-      </ul>
-    </div><?php // #featured-projects-section END ?>
+  </ul>
+ </div><?php // #featured-projects-section END ?>
 
-    <div id="all-projects-section">
-      <?php
+ <div id="all-projects-section">
+  <?php
       // Portfolio Post Categories START
       $portfolio_posts_categories_args = array(
             'post_type'         => 'portfoliopost',
@@ -186,22 +190,22 @@ Template Name: Portfolio Template
             $unique_portfolio_headings[] =  $portfolio_category_heading;
           endif;
         ?>
-              <?php
+  <?php
               // If last post
               if( $portfolio_category_posts_count == $portfolio_categories_counter ):
 
                 $portfolio_data_attr_and_headings = array_combine($unique_portfolio_posts_categories_data_attr, $unique_portfolio_headings);
               ?>
-                <?php
+  <?php
                 // Foreach loop to display portfolio category data attr
                 // and headings
                 foreach($portfolio_data_attr_and_headings as $key => $value) {
                 ?>
-                  <h3 data-project-category="<?php echo $key; ?>" class="hide-override"><?php echo $value; ?></h3>
-                <?php
+  <h3 data-project-category="<?php echo $key; ?>" class="hide-override"><?php echo $value; ?></h3>
+  <?php
                 }
                 ?>
-          <?php
+  <?php
               endif;
 
             endwhile;
@@ -210,8 +214,8 @@ Template Name: Portfolio Template
           // Portfolio Post Categories END
           ?>
 
-      <ul class="portfolio-list">
-        <?php
+  <ul class="portfolio-list">
+   <?php
         // All Portfolio Feed Posts Custom Post Type START
         $all_portfolio_posts_args = array(
               'post_type'         => 'portfoliopost',
@@ -248,16 +252,21 @@ Template Name: Portfolio Template
 	          }
 
         ?>
-          <li data-project-category="<?php echo $portfolio_category; ?>" class="portfolio-project<?php echo get_post_meta($post->ID, '_non_featured_project_order', true); ?> hide-override"><a href="<?php the_permalink(); ?>"><img src="<?php echo $image_thumbnail; ?>" alt="<?php the_title(); ?>" width="200" height="125" alt="<?php the_title(); ?>" width="200" height="125"/><br/><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_1', true); ?><br/><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_2', true); ?><br/><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_3', true); ?></a></li>
-        <?php
+   <li data-project-category="<?php echo $portfolio_category; ?>"
+    class="portfolio-project<?php echo get_post_meta($post->ID, '_non_featured_project_order', true); ?> hide-override">
+    <a href="<?php the_permalink(); ?>"><img src="<?php echo $image_thumbnail; ?>" alt="<?php the_title(); ?>"
+      width="200" height="125" alt="<?php the_title(); ?>" width="200"
+      height="125" /><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_1', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_2', true); ?><br /><?php echo get_post_meta($post->ID, '_portfolio_project_thumbnail_summary_line_3', true); ?></a>
+   </li>
+   <?php
           endwhile;
           wp_reset_postdata();
         }
         // All Portfolio Feed Posts Custom Post Type END
         ?>
-      </ul>
+  </ul>
 
-    </div><?php // #all-projects-section END ?>
-  </div><?php //section landmark END ?>
+ </div><?php // #all-projects-section END ?>
+</div><?php //section landmark END ?>
 
 <?php get_footer(); ?>
