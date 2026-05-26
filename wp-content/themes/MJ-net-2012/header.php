@@ -39,7 +39,7 @@
 
      <div id="social-networks-wrapper">
       <div id="social-networks-inner">
-         <?php include 'template-parts/social-networks/social-networks.php'; ?>
+       <?php include 'template-parts/social-networks/social-networks.php'; ?>
       </div>
      </div>
 
@@ -82,7 +82,7 @@ endif;
   <div id="site-content">
    <div id="site-content-mid-line">
     <div id="site-content-inner-line" class="clearfix">
-     <div id="site-content-container" <?php echo $blog_site_content_container; ?> role="main">
+     <div id="site-content-container" <?php echo $blog_site_content_container; ?> role="main" tabindex="-1">
 
       <?php
 if( (is_page( 'Blog' ) || is_single() || is_category() || is_search() || is_archive()) ) {
