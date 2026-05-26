@@ -217,6 +217,23 @@ cite {
   font-style: italic;
 }
 
+/***** Screen Reader Shortcut *****/
+.screen-reader-shortcut {
+  position: absolute;
+  left: 6px;
+  top: -99px;
+
+  &:focus {
+    z-index: 999;
+    font-size: 14px;
+    font-weight: 800;
+    top: 6px;
+    padding: 12px 24px;
+    text-decoration: none;
+    border: 2px solid $dark-blue;
+  }
+}
+
 /***** Home ******/
 .home h1 {
   font-size: 24px;
@@ -706,28 +723,28 @@ body {
       .menu-item-blog {
         a {
           color: $salmon;
-  
+
           &:link,
           &:visited {
             color: $salmon;
           }
-  
+
           &:hover,
           &:active {
             color: $light-yellow;
-          }        
+          }
         }
       }
-  
+
       .menu-item-home {
         a {
           color: $light-yellow;
-  
+
           &:link,
           &:visited {
             color: $light-yellow;
           }
-  
+
           &:hover,
           &:active {
             color: $light-yellow;
