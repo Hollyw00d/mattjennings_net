@@ -12,6 +12,7 @@ elseif( is_404() ) {
 }
 ?>
 
+</main>
 </div><!-- #site-content-container -->
 
 <div id="footer" role="contentinfo">
@@ -30,4 +31,5 @@ elseif( is_404() ) {
 <div id="mobile-site-footer"></div>
 <?php wp_footer(); ?>
 </body>
+
 </html>
