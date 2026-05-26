@@ -23,6 +23,8 @@
 
 <body <?php body_class(); ?>>
 
+ <a id="main-content" href="#main_content" class="screen-reader-shortcut">Skip to main content</a>
+
  <!-- Displays on mobile & tablet devices only -->
  <div id="mobile-site-header"></div>
  <div id="mobile-site-header-mid-line"></div>
@@ -82,14 +84,16 @@ endif;
   <div id="site-content">
    <div id="site-content-mid-line">
     <div id="site-content-inner-line" class="clearfix">
-     <div id="site-content-container" <?php echo $blog_site_content_container; ?> role="main" tabindex="-1">
+     <div id="site-content-container" <?php echo $blog_site_content_container; ?>>
 
-      <?php
+      <main id="main_content" tabindex="-1">
+
+       <?php
 if( (is_page( 'Blog' ) || is_single() || is_category() || is_search() || is_archive()) ) {
 ?>
-      <?php //Make space for blog in design ?>
-      <div id="blog-spacer"></div>
-      <?php
+       <?php //Make space for blog in design ?>
+       <div id="blog-spacer"></div>
+       <?php
 }
 elseif( is_404() ) {
   echo '';
@@ -97,27 +101,27 @@ elseif( is_404() ) {
 
 ?>
 
-      <?php
+       <?php
 if(is_page('Portfolio')) {
   echo '';
 }
 elseif( $portfolio_feed_url == 'portfolio-feed' ) {
 ?>
-      <h1>Portfolio</h1>
-      <h2><?php the_title(); ?></h2>
-      <?php
+       <h1>Portfolio</h1>
+       <h2><?php the_title(); ?></h2>
+       <?php
 }
 elseif(is_page( 'Blog' ) || is_single() || is_category() || is_search() || is_archive() && !in_category('37')) {
 ?>
-      <h1>Blog</h1>
-      <?php
+       <h1>Blog</h1>
+       <?php
 }
 elseif( is_404() ) {
   echo '';
 }
 else {
 ?>
-      <h1><?php the_title(); ?></h1>
-      <?php
+       <h1><?php the_title(); ?></h1>
+       <?php
 }
 ?>
