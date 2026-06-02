@@ -171,6 +171,27 @@ export default class FrontEndUtils {
 
     if (!imagesSinglePost.length) return;
 
+    await Promise.all(
+      [...imagesSinglePost].map(
+        (img) =>
+          new Promise((resolve) => {
+            if (img.complete && img.naturalWidth > 0) {
+              resolve();
+              return;
+            }
+
+            img.addEventListener('load', resolve, { once: true });
+            img.addEventListener('error', resolve, { once: true });
+          })
+      )
+    );
+
+    const invalidImages = [...imagesSinglePost].filter(
+      (img) => img.naturalWidth === 0 && img.naturalHeight === 0
+    );
+
+    if (invalidImages.length !== 0) return;
+
     imagesSinglePost.forEach((img) => {
       if (img.closest('a.photoswipe-link')) return;
 
