@@ -185,11 +185,11 @@ export default class FrontEndUtils {
       )
     );
 
-    const validImages = [...imagesSinglePost].filter(
+    const invalidImages = [...imagesSinglePost].filter(
       (img) => img.naturalWidth === 0 && img.naturalHeight === 0
     );
 
-    if (validImages.length !== 0) return;
+    if (invalidImages.length !== 0) return;
 
     imagesSinglePost.forEach((img) => {
       if (img.closest('a.photoswipe-link')) return;
