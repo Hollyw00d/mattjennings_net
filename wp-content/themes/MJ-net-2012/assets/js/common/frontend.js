@@ -4,7 +4,7 @@ export default class FrontEndUtils {
   init() {
     this.sidebar();
     this.portfolioChooser();
-    this.portfolioPopup();
+    this.photoswipeSlideshow();
     this.decryptEmailPhone();
   }
 
@@ -164,23 +164,36 @@ export default class FrontEndUtils {
     });
   }
 
-  async portfolioPopup() {
-    const singlePortfolio = document.querySelector('body.single-portfoliopost');
-    if(!singlePortfolio) return;
+  async photoswipeSlideshow() {
+    const imagesSinglePost = document.querySelectorAll(
+      'body.single-portfoliopost main#main_content img.photoswipe, body.single main#main_content img.photoswipe'
+    );
 
-    if(singlePortfolio) {
-      const { default: PhotoSwipeLightbox } = await import('photoswipe/lightbox');
+    if (!imagesSinglePost.length) return;
 
-      await import ('photoswipe/style.css');
+    imagesSinglePost.forEach((img) => {
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.dataset.pswpWidth = img.naturalWidth;
+      a.dataset.pswpHeight = img.naturalHeight;
+      a.classList.add('photoswipe-link');
 
-      const lightbox = new PhotoSwipeLightbox({
-        gallery: '#gallery',
-        children: 'a',
-        pswpModule: () => import('photoswipe')
-      });
+      const div = document.createElement('div');
+      div.classList.add('photoswipe-container');
 
-      lightbox.init();
-    }
+      img.parentNode?.insertBefore(a, img);
+      a.parentNode?.insertBefore(div, a);
+      a.appendChild(img);
+      div.appendChild(a);
+    });
+
+    const { default: PhotoSwipeLightbox } = await import('photoswipe/lightbox');
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: '#main_content',
+      children: 'a.photoswipe-link',
+      pswpModule: () => import('photoswipe')
+    });
+    lightbox.init();
   }
 
   decryptEmailPhone() {

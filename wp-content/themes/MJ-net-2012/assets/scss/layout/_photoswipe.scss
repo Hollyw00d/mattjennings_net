@@ -1,0 +1,11 @@
+.photoswipe-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+
+  a {
+    &.photoswipe-link {
+      display: inline-block;
+    }
+  }
+}
