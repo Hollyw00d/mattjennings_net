@@ -172,27 +172,75 @@ export default class FrontEndUtils {
     if (!imagesSinglePost.length) return;
 
     imagesSinglePost.forEach((img) => {
+      if (img.closest('a.photoswipe-link')) return;
+
+      const alt = img.getAttribute('alt');
       const a = document.createElement('a');
+      const divContainer = document.createElement('div');
+      let divCaption = null;
+
+      if (alt) {
+        divCaption = document.createElement('div');
+        divCaption.classList.add('photoswipe-caption');
+        divCaption.textContent = alt;
+      }
+
       a.href = img.src;
       a.dataset.pswpWidth = img.naturalWidth;
       a.dataset.pswpHeight = img.naturalHeight;
       a.classList.add('photoswipe-link');
 
-      const div = document.createElement('div');
-      div.classList.add('photoswipe-container');
+      divContainer.classList.add('photoswipe-container');
 
-      img.parentNode?.insertBefore(a, img);
-      a.parentNode?.insertBefore(div, a);
+      img.parentNode?.insertBefore(divContainer, img);
+      divContainer.appendChild(a);
+
+      if (divCaption) {
+        divContainer.appendChild(divCaption);
+      }
+
       a.appendChild(img);
-      div.appendChild(a);
     });
 
     const { default: PhotoSwipeLightbox } = await import('photoswipe/lightbox');
-    const lightbox = new PhotoSwipeLightbox({
+    const options = {
       gallery: '#main_content',
-      children: 'a.photoswipe-link',
+      children: '.photoswipe-container > a.photoswipe-link',
       pswpModule: () => import('photoswipe')
+    };
+
+    const lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.on('uiRegister', function () {
+      lightbox.pswp.ui.registerElement({
+        name: 'custom-caption',
+        order: 9,
+        isButton: false,
+        appendTo: 'root',
+        html: 'Caption text',
+        // eslint-disable-next-line no-unused-vars
+        onInit: (el, pswp) => {
+          lightbox.pswp.on('change', () => {
+            const currSlideElement = lightbox.pswp.currSlide.data.element;
+            let captionHTML = '';
+
+            if (currSlideElement) {
+              const hiddenCaption = currSlideElement.nextElementSibling;
+              if (hiddenCaption) {
+                captionHTML = hiddenCaption.innerHTML;
+              } else {
+                // get caption from alt attribute
+                captionHTML = currSlideElement
+                  .querySelector('img')
+                  .getAttribute('alt');
+              }
+            }
+            el.innerHTML = captionHTML || '';
+          });
+        }
+      });
     });
+
     lightbox.init();
   }
 
