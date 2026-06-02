@@ -1,4 +1,4 @@
-name: Deploy to develop
+name: Deploy to staging
 
 on:
   push:
@@ -41,6 +41,6 @@ jobs:
         uses: wpengine/github-action-wpe-site-deploy@v3
         with:
           WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
-          WPE_ENV: mjnetdev
+          WPE_ENV: mjnetstag
           PHP_LINT: TRUE
           CACHE_CLEAR: TRUE
