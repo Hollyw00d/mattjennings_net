@@ -181,6 +181,7 @@ export default class FrontEndUtils {
             }
 
             img.addEventListener('load', resolve, { once: true });
+            img.addEventListener('error', resolve, { once: true });
           })
       )
     );
