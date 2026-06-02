@@ -1,4 +1,4 @@
-import debounce from 'debounce'; // eslint-disable-line import/no-extraneous-dependencies
+import debounce from 'debounce';
 
 export default class FrontEndUtils {
   init() {
@@ -231,7 +231,7 @@ export default class FrontEndUtils {
 
     for (let i = 0; i < binaryString.length; i++) {
       output += String.fromCharCode(
-        binaryString.charCodeAt(i) ^ key.charCodeAt(i % keyLength) // eslint-disable-line no-bitwise
+        binaryString.charCodeAt(i) ^ key.charCodeAt(i % keyLength)
       );
     }
 
