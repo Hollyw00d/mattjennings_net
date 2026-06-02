@@ -1,4 +1,5 @@
 @use 'colors' as *;
+@use 'variables' as *;
 @use 'mixins' as *;
 
 /***** HTML & BODY Tags *****/
@@ -299,7 +300,7 @@ cite {
   -webkit-padding-end: 20px;
   -webkit-padding-start: 2px;
   user-select: none;
-  background-image: url('../../images/select-mobile-arrow.png');
+  background-image: url('#{$image-path}select-mobile-arrow.png');
   background-position: center right;
   background-repeat: no-repeat;
   background-color: $off-white;
@@ -631,7 +632,7 @@ body.portfoliopost-template-default #blog-spacer {
 }
 
 #logo {
-  background: url('../../images/all-web-pages-sprite.png') top left no-repeat;
+  background: url('#{$image-path}all-web-pages-sprite.png') top left no-repeat;
   display: block;
   position: absolute;
   width: 295px;
@@ -1045,7 +1046,7 @@ body.error404 {
     -webkit-padding-end: 20px;
     -webkit-padding-start: 2px;
     user-select: none;
-    background-image: url('../../images/select-mobile-arrow.png');
+    background-image: url('#{$image-path}/select-mobile-arrow.png');
     background-position: center right;
     background-repeat: no-repeat;
     background-color: $off-white;
