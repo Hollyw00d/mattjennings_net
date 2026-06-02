@@ -1,9 +1,10 @@
-import debounce from 'debounce'; // eslint-disable-line import/no-extraneous-dependencies
+import debounce from 'debounce';
 
 export default class FrontEndUtils {
   init() {
     this.sidebar();
     this.portfolioChooser();
+    this.photoswipeSlideshow();
     this.decryptEmailPhone();
   }
 
@@ -120,23 +121,22 @@ export default class FrontEndUtils {
       const url = new URL(window.location.href);
       const category = url.searchParams.get(queryParamName);
 
-      let selectedOptionText = '';
-      let option = null;
+      const option =
+        category && projectCatsArr.includes(category)
+          ? portfolioSelect.querySelector(
+              `option[data-project-category="${category}"]`
+            )
+          : null;
 
-      if (category && projectCatsArr.includes(category)) {
-        option = portfolioSelect.querySelector(
-          `option[data-project-category="${category}"]`
-        );
-      }
+      const selectedOptionText = option
+        ? option.textContent
+        : portfolioSelectorOptions[0].textContent;
 
       if (option) {
         portfolioSelect.value = option.value;
-        selectedOptionText = option.textContent;
-
         showHideProjects(category);
       } else {
         showFeaturedProjects();
-        selectedOptionText = portfolioSelectorOptions[0].textContent;
       }
 
       projectCatsText(selectedOptionText);
@@ -162,6 +162,107 @@ export default class FrontEndUtils {
     window.addEventListener('popstate', () => {
       queryStringChange(portfolioSelector);
     });
+  }
+
+  async photoswipeSlideshow() {
+    const imagesSinglePost = document.querySelectorAll(
+      'body.single-portfoliopost main#main_content img.photoswipe, body.single main#main_content img.photoswipe'
+    );
+
+    if (!imagesSinglePost.length) return;
+
+    await Promise.all(
+      [...imagesSinglePost].map(
+        (img) =>
+          new Promise((resolve) => {
+            if (img.complete && img.naturalWidth > 0) {
+              resolve();
+              return;
+            }
+
+            img.addEventListener('load', resolve, { once: true });
+            img.addEventListener('error', resolve, { once: true });
+          })
+      )
+    );
+
+    const invalidImages = [...imagesSinglePost].filter(
+      (img) => img.naturalWidth === 0 && img.naturalHeight === 0
+    );
+
+    if (invalidImages.length !== 0) return;
+
+    imagesSinglePost.forEach((img) => {
+      if (img.closest('a.photoswipe-link')) return;
+
+      const alt = img.getAttribute('alt');
+      const a = document.createElement('a');
+      const divContainer = document.createElement('div');
+      let divCaption = null;
+
+      if (alt) {
+        divCaption = document.createElement('div');
+        divCaption.classList.add('photoswipe-caption');
+        divCaption.textContent = alt;
+      }
+
+      a.href = img.src;
+      a.dataset.pswpWidth = img.naturalWidth;
+      a.dataset.pswpHeight = img.naturalHeight;
+      a.classList.add('photoswipe-link');
+
+      divContainer.classList.add('photoswipe-container');
+
+      img.parentNode?.insertBefore(divContainer, img);
+      divContainer.appendChild(a);
+
+      if (divCaption) {
+        divContainer.appendChild(divCaption);
+      }
+
+      a.appendChild(img);
+    });
+
+    const { default: PhotoSwipeLightbox } = await import('photoswipe/lightbox');
+    const options = {
+      gallery: '#main_content',
+      children: '.photoswipe-container > a.photoswipe-link',
+      pswpModule: () => import('photoswipe')
+    };
+
+    const lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.on('uiRegister', function () {
+      lightbox.pswp.ui.registerElement({
+        name: 'custom-caption',
+        order: 9,
+        isButton: false,
+        appendTo: 'root',
+        html: 'Caption text',
+        // eslint-disable-next-line no-unused-vars
+        onInit: (el, pswp) => {
+          lightbox.pswp.on('change', () => {
+            const currSlideElement = lightbox.pswp.currSlide.data.element;
+            let captionHTML = '';
+
+            if (currSlideElement) {
+              const hiddenCaption = currSlideElement.nextElementSibling;
+              if (hiddenCaption) {
+                captionHTML = hiddenCaption.innerHTML;
+              } else {
+                // get caption from alt attribute
+                captionHTML = currSlideElement
+                  .querySelector('img')
+                  .getAttribute('alt');
+              }
+            }
+            el.innerHTML = captionHTML || '';
+          });
+        }
+      });
+    });
+
+    lightbox.init();
   }
 
   decryptEmailPhone() {
@@ -231,7 +332,7 @@ export default class FrontEndUtils {
 
     for (let i = 0; i < binaryString.length; i++) {
       output += String.fromCharCode(
-        binaryString.charCodeAt(i) ^ key.charCodeAt(i % keyLength) // eslint-disable-line no-bitwise
+        binaryString.charCodeAt(i) ^ key.charCodeAt(i % keyLength)
       );
     }
 
