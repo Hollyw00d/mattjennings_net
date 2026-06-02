@@ -4,6 +4,7 @@ export default class FrontEndUtils {
   init() {
     this.sidebar();
     this.portfolioChooser();
+    this.portfolioPopup();
     this.decryptEmailPhone();
   }
 
@@ -161,6 +162,25 @@ export default class FrontEndUtils {
     window.addEventListener('popstate', () => {
       queryStringChange(portfolioSelector);
     });
+  }
+
+  async portfolioPopup() {
+    const singlePortfolio = document.querySelector('body.single-portfoliopost');
+    if(!singlePortfolio) return;
+
+    if(singlePortfolio) {
+      const { default: PhotoSwipeLightbox } = await import('photoswipe/lightbox');
+
+      await import ('photoswipe/style.css');
+
+      const lightbox = new PhotoSwipeLightbox({
+        gallery: '#gallery',
+        children: 'a',
+        pswpModule: () => import('photoswipe')
+      });
+
+      lightbox.init();
+    }
   }
 
   decryptEmailPhone() {
