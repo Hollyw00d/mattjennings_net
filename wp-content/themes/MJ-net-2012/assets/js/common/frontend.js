@@ -120,23 +120,22 @@ export default class FrontEndUtils {
       const url = new URL(window.location.href);
       const category = url.searchParams.get(queryParamName);
 
-      let selectedOptionText = '';
-      let option = null;
+      const option =
+        category && projectCatsArr.includes(category)
+          ? portfolioSelect.querySelector(
+              `option[data-project-category="${category}"]`
+            )
+          : null;
 
-      if (category && projectCatsArr.includes(category)) {
-        option = portfolioSelect.querySelector(
-          `option[data-project-category="${category}"]`
-        );
-      }
+      const selectedOptionText = option
+        ? option.textContent
+        : portfolioSelectorOptions[0].textContent;
 
       if (option) {
         portfolioSelect.value = option.value;
-        selectedOptionText = option.textContent;
-
         showHideProjects(category);
       } else {
         showFeaturedProjects();
-        selectedOptionText = portfolioSelectorOptions[0].textContent;
       }
 
       projectCatsText(selectedOptionText);
