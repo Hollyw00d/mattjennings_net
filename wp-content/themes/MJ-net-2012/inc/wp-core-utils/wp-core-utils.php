@@ -100,6 +100,11 @@ class WPCoreUtils {
 
 		// Enqueue JS
 		wp_enqueue_script('theme-scripts', get_stylesheet_directory_uri().'/build/js/theme.min.js', '', '', true);
+
+		if(is_singular('portfolio-feed')) {
+			wp_enqueue_style('portfolio-feed-styles', get_stylesheet_directory_uri() . '/build/css/photoswipe.min.css', '', '', 'all');
+			wp_enqueue_script('portfolio-feed-scripts', get_stylesheet_directory_uri().'/build/js/portfolioFeed.min.js', '', '', true);
+		}
 	}
 
 	public function wp_admin_enqueue_dequeue() {
@@ -190,92 +195,90 @@ class WPCoreUtils {
 			$text = apply_filters('the_content', $text);
 			$text = str_replace('\]\]\>', ']]&gt;', $text);
 			$text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $text);
-			$text = strip_tags($text, '<p> <em> <strong> <h2> <h3> <a>');
-			$text = $this->remove_all_html_tags_excluding_paragraphs($text);
+$text = strip_tags($text, '<p> <em> <strong>
+   <h2>
+    <h3> <a>');
+      $text = $this->remove_all_html_tags_excluding_paragraphs($text);
 
-			$excerpt_length = 20;
-			$words = explode(' ', $text, $excerpt_length + 1);
-			// $words = $this->remove_all_html_tags_excluding_paragraphs($words);
+      $excerpt_length = 20;
+      $words = explode(' ', $text, $excerpt_length + 1);
+      // $words = $this->remove_all_html_tags_excluding_paragraphs($words);
 
-			if ( count($words) > $excerpt_length ) {
-				array_pop($words);
-				array_push($words, '&hellip;<br /><br /><a class="moretag" href="'. get_permalink($post->ID) . '">Read more</a>');
-				$text = implode(' ', $words);
-			}
-  }
+      if ( count($words) > $excerpt_length ) {
+      array_pop($words);
+      array_push($words, '&hellip;<br /><br /><a class="moretag" href="'. get_permalink($post->ID) . '">Read more</a>');
+      $text = implode(' ', $words);
+      }
+      }
 
-  return $text;
- }
+      return $text;
+      }
 
-	/* 
-	 * Update the_content including:
-		* - Replace an email to protect it spam harvesters
-	 */	
-	public function update_content($content) {
-		$new_content = $this->replace_email_in_content_with_encrypted_str($content);
-		return $new_content;
-	}
+      /*
+      * Update the_content including:
+      * - Replace an email to protect it spam harvesters
+      */
+      public function update_content($content) {
+      $new_content = $this->replace_email_in_content_with_encrypted_str($content);
+      return $new_content;
+      }
 
-	/*
-	* Post updates including:
-	* - Styling first post differently
-	*/
-	public function mark_first_post( $classes ) {
-		remove_filter( current_filter(), __FUNCTION__ );
-		$classes[] = 'first-post';
-		return $classes;
-	}
+      /*
+      * Post updates including:
+      * - Styling first post differently
+      */
+      public function mark_first_post( $classes ) {
+      remove_filter( current_filter(), __FUNCTION__ );
+      $classes[] = 'first-post';
+      return $classes;
+      }
 
-	/**
-	* Private helper methods
-	*/
-	// Replace headings tags (h1 thru h6) with paragraph tags WITHOUT any attributes
-	private function remove_all_html_tags_excluding_paragraphs( $content ) {
- 	$content = preg_replace('/<h[1-6][^>]*>(.*?)<\/h[1-6]>/', '', $content);
-  return $content;
- }
+      /**
+      * Private helper methods
+      */
+      // Replace headings tags (h1 thru h6) with paragraph tags WITHOUT any attributes
+      private function remove_all_html_tags_excluding_paragraphs( $content ) {
+      $content = preg_replace('/<h[1-6][^>]*>(.*?)<\ /h[1-6]>/', '', $content);
+        return $content;
+        }
 
-	private function prevent_xmlrpc_access() {
-			if (strpos($_SERVER['REQUEST_URI'], '/xmlrpc.php') !== false) {
-				http_response_code(403);
-				exit;
-			}
-	}
+        private function prevent_xmlrpc_access() {
+        if (strpos($_SERVER['REQUEST_URI'], '/xmlrpc.php') !== false) {
+        http_response_code(403);
+        exit;
+        }
+        }
 
-	private function xorEncryptString($string, $key) {
-		$output = '';
-		$keyLength = strlen($key);
+        private function xorEncryptString($string, $key) {
+        $output = '';
+        $keyLength = strlen($key);
 
-		for ($i = 0; $i < strlen($string); $i++) {
-			$output .= $string[$i] ^ $key[$i % $keyLength];
-		}
+        for ($i = 0; $i < strlen($string); $i++) { $output .=$string[$i] ^ $key[$i % $keyLength]; } return $output; }
+         private function replace_email_in_content_with_encrypted_str($the_content) {
+         $email_link_or_text_regex='/(?:<a\s+href=["\' ]mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})["\']>
+         (.*?)<\ /a>)|([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/';
 
-		return $output;
-	}
+          $str_replaced = preg_replace_callback($email_link_or_text_regex, function ($matches) {
+          $class_name = '';
+          $json_url = get_template_directory() . '/json/insecure-encryption.json';
+          $json_file = file_get_contents($json_url);
+          $json = json_decode($json_file, true);
+          $xorKey = $json['xorKey'];
 
-	private function replace_email_in_content_with_encrypted_str($the_content) {
-		$email_link_or_text_regex = '/(?:<a\s+href=["\']mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})["\']>(.*?)<\/a>)|([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/'; 
-
-		$str_replaced = preg_replace_callback($email_link_or_text_regex, function ($matches) {
-			$class_name = '';
-			$json_url = get_template_directory() . '/json/insecure-encryption.json';
-			$json_file = file_get_contents($json_url);
-			$json = json_decode($json_file, true);
-			$xorKey = $json['xorKey'];
-
-			if (!empty($matches[1])) {
-				// Matches an email within an anchor tag
-				$class_name = 'email-mj-protect-with-anchor-tag';
-				$email = $matches[1];
-				$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
-			} else {
-				// Matches a plain email without an anchor tag
-				$class_name = 'email-mj-protect-no-anchor-tag';
-				$email = $matches[3];
-				$email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
-			}
-			return "<span aria-hidden=\"true\" class=\"{$class_name}\" style=\"visibility: hidden;\">{$email_encrypted}</span>";
-	}, $the_content);
-		return $str_replaced;
-	}
-}
+          if (!empty($matches[1])) {
+          // Matches an email within an anchor tag
+          $class_name = 'email-mj-protect-with-anchor-tag';
+          $email = $matches[1];
+          $email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
+          } else {
+          // Matches a plain email without an anchor tag
+          $class_name = 'email-mj-protect-no-anchor-tag';
+          $email = $matches[3];
+          $email_encrypted = bin2hex($this->xorEncryptString($email, $xorKey));
+          }
+          return "<span aria-hidden=\"true\" class=\"{$class_name}\" style=\"visibility:
+           hidden;\">{$email_encrypted}</span>";
+          }, $the_content);
+          return $str_replaced;
+          }
+          }
