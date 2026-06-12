@@ -95,6 +95,12 @@ class WPCoreUtils {
 			wp_enqueue_script('jquery-migrate');
 		}		
 
+		// If `portfolio-feed` post
+		if (is_singular('portfoliopost')) {
+			wp_enqueue_style('photoswipe-style', get_stylesheet_directory_uri(). '/build/css/photoswipe.min.css', '', '', 'all');
+			wp_enqueue_script('portfolio-feed-script', get_stylesheet_directory_uri(). '/build/js/portfolioFeed.min.js', '', '', true);
+		}
+
 		// Enqueue CSS
 		wp_enqueue_style( 'theme-styles', get_stylesheet_directory_uri() . '/build/css/theme.min.css', '', '', 'all');
 
