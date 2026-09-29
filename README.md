@@ -15,7 +15,6 @@ __wp-content/themes/MJ-net-2012__
 - For Vite configuration details see (3 files):
   - __wp-content/themes/MJ-net-2012/vite.config.js__  
   - __wp-content/themes/MJ-net-2012/package.json__ (see `scripts` entry)  
-  - __wp-content/themes/MJ-net-2012/.babelrc.json__  
 
 ## Linting and Auto-formatting for JS and SCSS
 See the files below:
