@@ -19,7 +19,7 @@ __wp-content/themes/MJ-net-2012__
 ## Linting and Auto-formatting for JS and SCSS
 See the files below:
 - [ESLint](https://eslint.org/) (for JS)  
-  __wp-content/themes/MJ-net-2012/.eslintrc.json__
+  __wp-content/themes/MJ-net-2012/eslint.config.js__
 - [Stylelint](https://stylelint.io/) (for SCSS)  
   __wp-content/themes/MJ-net-2012/.stylelintrc.json__
 - [Prettier](https://prettier.io/) (auto-formatting of JS and SCSS; 2 files)  

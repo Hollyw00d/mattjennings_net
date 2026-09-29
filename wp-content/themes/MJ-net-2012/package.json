@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "format": "prettier --write \"assets/**/*.js\"",
+    "format": "prettier --write \"assets/**/*.{js,scss}\"",
     "lint": "eslint \"assets/**/*.js\"",
     "build": "vite build",
     "start": "vite build --watch"
