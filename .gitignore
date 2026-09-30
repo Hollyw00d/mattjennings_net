@@ -1,6 +1,8 @@
-# Ignore all files except for the following themes:
-# - BLANK-Theme
-# - MJ-net-2012
+# Ignore all files except for:
+# - gitignore
+# - README
+# - MJ-net-2012 theme
+# - portfolio-feed-posts plugin
 /*
 !.gitignore
 !README.md
@@ -10,6 +12,9 @@
 !/wp-content/themes
 /wp-content/themes/*
 !/wp-content/themes/MJ-net-2012
+!/wp-content/plugins
+/wp-content/plugins/*
+!/wp-content/plugins/portfolio-feed-posts
 
 # Inside themes inside themes listed above
 /wp-content/themes/MJ-net-2012/build
