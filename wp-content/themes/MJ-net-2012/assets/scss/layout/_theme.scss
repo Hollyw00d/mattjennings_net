@@ -610,17 +610,13 @@ body.portfoliopost-template-default #blog-spacer {
 
     .linkedin-icon {
       svg {
-        path {
-          fill: $linkedin-blue;
-        }
+        fill: $linkedin-blue;
       }
     }
 
     .github-icon {
       svg {
-        fill {
-          color: $github-black;
-        }
+        fill: $github-black;
       }
     }
   }
@@ -1391,7 +1387,9 @@ body.error404 {
   }
 
   code {
-    font: 10pt Courier, monospace;
+    font:
+      10pt Courier,
+      monospace;
   }
 
   blockquote {
