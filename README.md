@@ -5,21 +5,21 @@ This repo is code for [mattjennings.net](https://www.mattjennings.net/), the por
 Below are code details about the active WordPress (WP) theme is at:  
 __wp-content/themes/MJ-net-2012__
 
-## webpack
-- [webpack](https://webpack.js.org/) is used to transpile:
+## pnpm and Vite
+- [pnmp](https://pnpm.io/) instead of npm
+- [Vite](https://vite.dev/) is used to transpile:
   - [SCSS](https://sass-lang.com/documentation/syntax/#scss) into CSS at:  
     __wp-content/themes/MJ-net-2012/assets/scss__
   - ES6 and beyond JavaScript (JS) into minified and ES5 (or higher) JS at:  
     __wp-content/themes/MJ-net-2012/assets/js__
-- For webpack configuration details see (3 files):
-  - __wp-content/themes/MJ-net-2012/webpack.config.cjs__
-  - __wp-content/themes/MJ-net-2012/package.json__ (see `scripts` entry)
-  - __wp-content/themes/MJ-net-2012/.babelrc.json__  
+- For Vite configuration details see (3 files):
+  - __wp-content/themes/MJ-net-2012/vite.config.js__  
+  - __wp-content/themes/MJ-net-2012/package.json__ (see `scripts` entry)  
 
 ## Linting and Auto-formatting for JS and SCSS
 See the files below:
 - [ESLint](https://eslint.org/) (for JS)  
-  __wp-content/themes/MJ-net-2012/.eslintrc.json__
+  __wp-content/themes/MJ-net-2012/eslint.config.js__
 - [Stylelint](https://stylelint.io/) (for SCSS)  
   __wp-content/themes/MJ-net-2012/.stylelintrc.json__
 - [Prettier](https://prettier.io/) (auto-formatting of JS and SCSS; 2 files)  
@@ -45,17 +45,17 @@ See the files below:
 1. To update CSS or JS in the WP active theme (both are located at __wp-content/themes/MJ-net-2012/assets__ and I use [SCSS](https://sass-lang.com/documentation/syntax/#scss), which is enhanced CSS), in your terminal go to:  
   __wp-content/themes/MJ-net-2012__
 
-2. Then install npm packages (including [webpack](https://webpack.js.org/)) do:  
-   `npm i`
+2. Then install npm packages (including [webpack](https://webpack.js.org/)) do with pnpm:  
+   `pnpm i`
 
 3. To build CSS and JS for the theme do:  
-   `npm run build`
+   `pnpm build`
 
 4. When doing localhost development on the website, do:  
-   `npm start`
+   `pnpm start`
 
 5. Additional useful terminal commands in the active theme are below:
    - Lint WP theme JS located at __wp-content/themes/MJ-net-2012/assets/js__ by running:  
-     `npm run lint`
+     `pnpm lint`
    - Reformat JS located at __wp-content/themes/MJ-net-2012/assets/js__ by running:  
-     `npm run format`
+     `pnpm format`
