@@ -610,17 +610,13 @@ body.portfoliopost-template-default #blog-spacer {
 
     .linkedin-icon {
       svg {
-        path {
-          fill: $linkedin-blue;
-        }
+        fill: $linkedin-blue;
       }
     }
 
     .github-icon {
       svg {
-        fill {
-          color: $github-black;
-        }
+        fill: $github-black;
       }
     }
   }
@@ -835,8 +831,6 @@ body {
 
 .blog-site-content-container {
   overflow: visible !important;
-  overflow-x: visible !important;
-  -ms-overflow-x: visible !important;
 }
 
 /***** Footer *****/
@@ -1037,8 +1031,6 @@ body.error404 {
   }
 
   #categories-dropdown-2 select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
     border: 2px solid $lighter-gray;
     border-radius: 0;
@@ -1347,7 +1339,7 @@ body.error404 {
   }
 
   #comments {
-    page-break-before: always;
+    break-before: page;
   }
 
   body {
@@ -1391,7 +1383,9 @@ body.error404 {
   }
 
   code {
-    font: 10pt Courier, monospace;
+    font:
+      10pt Courier,
+      monospace;
   }
 
   blockquote {
@@ -1438,7 +1432,7 @@ body.error404 {
   }
 
   tr {
-    page-break-inside: avoid;
+    break-inside: avoid;
   }
 
   a {
