@@ -59,3 +59,16 @@ See the files below:
      `pnpm lint`
    - Reformat JS located at __wp-content/themes/MJ-net-2012/assets/js__ by running:  
      `pnpm format`
+
+## Tests
+[Playwright](https://playwright.dev/) tests for [mattjennings.net](https://www.mattjennings.net/) are included. To use them:
+1. Go to __wp-content/themes/MJ-net-2012__ and follow the `Setup` instructions above
+
+2. Then still inside of __wp-content/themes/MJ-net-2012__, do:  
+   `pnpm test`
+
+3. Then you will see test results like the example below that appear in your terminal or browser:  
+   - Terminal Example:  
+     ![Playwright test results in the terminal](./images/playwright-test-results-in-the-terminal.png)
+   - Browser example:  
+     ![Playwright test results in the browser](./images/playwright-test-results-in-the-browser.png)
