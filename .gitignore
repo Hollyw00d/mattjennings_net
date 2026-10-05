@@ -1,12 +1,15 @@
 # Ignore all files except for:
 # - gitignore
 # - README
+# - image folder in root
 # - MJ-net-2012 theme
 # - portfolio-feed-posts plugin
 /*
 !.gitignore
 !README.md
 !/.github
+!/images/
+!/images/**
 !/wp-content
 /wp-content/*
 !/wp-content/themes
