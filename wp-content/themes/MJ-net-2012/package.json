@@ -9,7 +9,10 @@
     "lint:js": "eslint \"assets/**/*.js\"",
     "lint:scss": "stylelint \"assets/**/*.scss\"",
     "build": "vite build",
-    "start": "vite build --watch"
+    "start": "vite build --watch",
+    "test": "run-s test:*",
+    "test:exec": "exec playwright test",
+    "test:report": "exec playwright show-report"
   },
   "keywords": [],
   "author": "",
