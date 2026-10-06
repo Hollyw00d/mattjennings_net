@@ -1,5 +1,37 @@
-import type { Page } from '@playwright/test';
+import 'dotenv/config';
+import type { Page, Expect } from '@playwright/test';
 
 export async function goToHomepage(page: Page) {
-  await page.goto('https://www.mattjennings.net/');
+  const homeURL = process.env.HOME_URL;
+
+  if (!homeURL) {
+    throw new Error('URL environment variable is not defined');
+  }
+
+  await page.goto(homeURL);
+}
+
+export async function selectReactFromDropdown(page: Page, expect: Expect) {
+  await page.waitForLoadState('domcontentloaded');
+
+  await page.getByLabel('Choose Portfolio Project').selectOption('React');
+  await expect(page).toHaveURL(`${process.env.HOME_URL}?portfolio=react`);
+}
+
+export async function goToPortfolioPage(page: Page, expect: Expect) {
+  await page.getByRole('link', { name: 'Weekly Meetings Block' }).click();
+  await expect(page).toHaveURL(
+    `${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`
+  );
+}
+
+export async function goToResumePageViewPDFResume(page: Page, expect: Expect) {
+  await page.getByRole('link', { name: 'Resume', exact: true }).click();
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('link', { name: 'PDF' }).first().click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe(
+    'resume_front-end-software-engineer_matt-jennings.pdf'
+  );
 }

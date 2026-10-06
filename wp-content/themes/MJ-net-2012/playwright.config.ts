@@ -24,7 +24,8 @@ export default defineConfig({
   /* Shared settings for all projects */
   use: {
     /* Collect trace when retrying a failed test */
-    trace: 'on-first-retry'
+    trace: 'on-first-retry',
+    ignoreHTTPSErrors: true
   },
 
   /* Configure projects for major browsers */
