@@ -24,3 +24,14 @@ export async function goToPortfolioPage(page: Page, expect: Expect) {
     `${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`
   );
 }
+
+export async function goToResumePageViewPDFResume(page: Page, expect: Expect) {
+  await page.getByRole('link', { name: 'Resume', exact: true }).click();
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('link', { name: 'PDF' }).first().click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe(
+    'resume_front-end-software-engineer_matt-jennings.pdf'
+  );
+}
