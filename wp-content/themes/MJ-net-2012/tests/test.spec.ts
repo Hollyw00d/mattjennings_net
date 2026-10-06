@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import { test, expect } from '@playwright/test';
-// import AxeBuilder from '@axe-core/playwright';
 import { goToHomepage } from './helpers/navigation';
 import { viewFooterText } from './helpers/visibility';
 import { a11yTest } from './helpers/accessibility';
