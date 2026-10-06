@@ -1,20 +1,18 @@
 import 'dotenv/config';
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+// import AxeBuilder from '@axe-core/playwright';
 import { goToHomepage } from './helpers/navigation';
 import { viewFooterText } from './helpers/visibility';
+import { a11yTest } from './helpers/accessibility';
 
 test('homepage has footer copyright', async ({ page }) => {
   await goToHomepage(page);
-
   await viewFooterText(page, expect);
 });
 
 test('homepage passes accessibility tests', async ({ page }) => {
   await goToHomepage(page);
-  const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-
-  expect(accessibilityScanResults.violations).toEqual([]);
+  await a11yTest(page, expect);
 });
 
 test('homepage select REACT from drop-down & go to portfolio page', async ({
