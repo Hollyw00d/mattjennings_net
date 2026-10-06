@@ -17,3 +17,10 @@ export async function selectReactFromDropdown(page: Page, expect: Expect) {
   await page.getByLabel('Choose Portfolio Project').selectOption('React');
   await expect(page).toHaveURL(`${process.env.HOME_URL}?portfolio=react`);
 }
+
+export async function goToPortfolioPage(page: Page, expect: Expect) {
+  await page.getByRole('link', { name: 'Weekly Meetings Block' }).click();
+  await expect(page).toHaveURL(
+    `${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`
+  );
+}
