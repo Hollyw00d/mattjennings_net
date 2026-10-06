@@ -64,10 +64,16 @@ See the files below:
 [Playwright](https://playwright.dev/) tests for [mattjennings.net](https://www.mattjennings.net/) are included. To use them:
 1. Go to __wp-content/themes/MJ-net-2012__ and follow the `Setup` instructions above
 
-2. Then still inside of __wp-content/themes/MJ-net-2012__, do:  
+2. Then inside of __wp-content/themes/MJ-net-2012__ create an `.env` file with the sammple code like below to test on [mattjennings.net](https://www.mattjennings.net/):
+   ```
+   # .env file
+   HOME_URL=https://www.mattjennings.net/
+   ```
+
+3. Then still inside of __wp-content/themes/MJ-net-2012__, do: 
    `pnpm test`
 
-3. Then you will see test results like the example below that appear in your terminal or browser:  
+4. Then you will see test results like the example below that appear in your terminal or browser:  
    - Terminal Example:  
      ![Playwright test results in the terminal](./images/playwright-test-results-in-the-terminal.png)
    - Browser example:  
