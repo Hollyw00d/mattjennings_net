@@ -23,13 +23,7 @@ test('homepage select REACT from drop-down & go to portfolio page', async ({
 }) => {
   await goToHomepage(page);
   await selectReactFromDropdown(page, expect);
-
-  // await page.getByRole('link', { name: 'Weekly Meetings Block' }).click();
-  // await expect(page).toHaveURL(
-  //   `${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`
-  // );
   await goToPortfolioPage(page, expect);
-
   await viewFooterText(page, expect);
 });
 
