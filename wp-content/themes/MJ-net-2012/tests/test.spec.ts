@@ -4,6 +4,7 @@ import { viewFooterText } from './helpers/visibility';
 
 test('homepage has footer copyright', async ({ page }) => {
   await goToHomepage(page);
+
   await viewFooterText(page, expect);
 });
 
@@ -18,12 +19,15 @@ test('homepage select REACT from drop-down & go to portfolio page', async ({
   await expect(page).toHaveURL(
     'https://www.mattjennings.net/portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react'
   );
+
   await viewFooterText(page, expect);
 });
 
 test('from homepage download PDF resume', async ({ page }) => {
-  await page.goto('https://www.mattjennings.net/');
+  await goToHomepage(page);
+
   await page.getByRole('link', { name: 'Resume', exact: true }).click();
+
   await viewFooterText(page, expect);
 
   const downloadPromise = page.waitForEvent('download');
