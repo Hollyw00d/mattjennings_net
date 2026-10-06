@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { goToHomepage } from './helpers/navigation';
@@ -22,10 +23,10 @@ test('homepage select REACT from drop-down & go to portfolio page', async ({
   await goToHomepage(page);
 
   await page.getByLabel('Choose Portfolio Project').selectOption('React');
-  await expect(page).toHaveURL('https://www.mattjennings.net/?portfolio=react');
+  await expect(page).toHaveURL(`${process.env.HOME_URL}?portfolio=react`);
   await page.getByRole('link', { name: 'Weekly Meetings Block' }).click();
   await expect(page).toHaveURL(
-    'https://www.mattjennings.net/portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react'
+    `${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`
   );
 
   await viewFooterText(page, expect);
