@@ -70,10 +70,18 @@ See the files below:
    HOME_URL=https://www.mattjennings.net/
    ```
 
-3. Then still inside of __wp-content/themes/MJ-net-2012__, do: 
+3. To test a password-protect site (like an Nginx site on [WP Engine](https://wpengine.com/)), inside of __wp-content/themes/MJ-net-2012__ create an `.env` file with the sammple code like below:
+   ```
+   # .env file
+   HOME_URL=https://staging.wpengine.com/
+   UN=staging_username
+   PW=staging_password
+   ``` 
+
+4. Then still inside of __wp-content/themes/MJ-net-2012__, do:  
    `pnpm test`
 
-4. Then you will see test results like the example below that appear in your terminal or browser:  
+5. Then you will see test results like the example below that appear in your terminal or browser:  
    - Terminal Example:  
      ![Playwright test results in the terminal](./images/playwright-test-results-in-the-terminal.png)
    - Browser example:  
