@@ -1,9 +1,21 @@
+import 'dotenv/config';
 import { defineConfig, devices } from '@playwright/test';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  /* Shared settings for all projects */
+  use: {
+    httpCredentials: {
+      username: process.env.UN ?? '',
+      password: process.env.PW ?? ''
+    },
+    /* Collect trace when retrying a failed test */
+    trace: 'on-first-retry',
+    ignoreHTTPSErrors: true
+  },
+
   testDir: './tests',
 
   /* Run tests in files in parallel */
@@ -20,13 +32,6 @@ export default defineConfig({
 
   /* Reporter to use */
   reporter: 'html',
-
-  /* Shared settings for all projects */
-  use: {
-    /* Collect trace when retrying a failed test */
-    trace: 'on-first-retry',
-    ignoreHTTPSErrors: true
-  },
 
   /* Configure projects for major browsers */
   projects: [
