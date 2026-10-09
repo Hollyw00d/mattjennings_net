@@ -10,7 +10,9 @@ import {
 import { viewFooterText } from './helpers/visibility';
 import { a11yTest } from './helpers/accessibility';
 
-test('homepage has footer copyright', async ({ page }) => {
+test(`${process.env.HOME_URL}: homepage has footer copyright`, async ({
+  page
+}) => {
   await goToHomepage(page);
   await viewFooterText(page, expect);
 });
