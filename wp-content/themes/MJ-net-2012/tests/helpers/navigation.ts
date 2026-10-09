@@ -26,7 +26,11 @@ export async function goToPortfolioPage(page: Page, expect: Expect) {
   );
 }
 
-export async function goToResumePageViewPDFResume(page: Page, expect: Expect) {
+export async function goToResumePage(page: Page) {
+  await page.getByRole('link', { name: 'Resume', exact: true }).click();
+}
+
+export async function goToResumePDF(page: Page, expect: Expect) {
   await page.getByRole('link', { name: 'Resume', exact: true }).click();
   const pdfLink = page.getByRole('link', { name: 'PDF' }).first();
   const pdfURL = await pdfLink.getAttribute('href');

@@ -3,7 +3,8 @@ import { test, expect } from '@playwright/test';
 import {
   goToHomepage,
   goToPortfolioPage,
-  goToResumePageViewPDFResume,
+  goToResumePage,
+  goToResumePDF,
   selectReactFromDropdown
 } from './helpers/navigation';
 import { viewFooterText } from './helpers/visibility';
@@ -30,6 +31,7 @@ test('homepage select REACT from drop-down & go to portfolio page', async ({
 
 test('from homepage download PDF resume', async ({ page }) => {
   await goToHomepage(page);
-  await goToResumePageViewPDFResume(page, expect);
+  await goToResumePage(page);
+  await goToResumePDF(page, expect);
   await viewFooterText(page, expect);
 });
