@@ -10,22 +10,22 @@ import {
 import { viewFooterText } from './helpers/visibility';
 import { a11yTest } from './helpers/accessibility';
 
-test(`${process.env.HOME_URL}: homepage has footer copyright`, async ({
-  page
-}) => {
-  await goToHomepage(page);
+const homeURL = process.env.HOME_URL;
+
+test(`${homeURL}: homepage has footer copyright`, async ({ page }) => {
+  await goToHomepage(page, homeURL);
   await viewFooterText(page, expect);
 });
 
 test('homepage passes accessibility tests', async ({ page }) => {
-  await goToHomepage(page);
+  await goToHomepage(page, homeURL);
   await a11yTest(page, expect);
 });
 
 test(`homepage select REACT from drop-down & go to portfolio page: ${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`, async ({
   page
 }) => {
-  await goToHomepage(page);
+  await goToHomepage(page, homeURL);
   await selectReactFromDropdown(page, expect);
   await goToPortfolioPage(page, expect);
   await viewFooterText(page, expect);
@@ -34,14 +34,14 @@ test(`homepage select REACT from drop-down & go to portfolio page: ${process.env
 test(`portfolio page accessiblity test: ${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`, async ({
   page
 }) => {
-  await goToHomepage(page);
+  await goToHomepage(page, homeURL);
   await selectReactFromDropdown(page, expect);
   await goToPortfolioPage(page, expect);
   await a11yTest(page, expect);
 });
 
 test('from homepage download PDF resume on Resume page', async ({ page }) => {
-  await goToHomepage(page);
+  await goToHomepage(page, homeURL);
   await goToResumePage(page);
   await goToResumePDF(page, expect);
   await viewFooterText(page, expect);

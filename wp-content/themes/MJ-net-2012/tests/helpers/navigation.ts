@@ -2,9 +2,7 @@ import 'dotenv/config';
 import { PDFParse } from 'pdf-parse';
 import type { Page, Expect } from '@playwright/test';
 
-export async function goToHomepage(page: Page) {
-  const homeURL = process.env.HOME_URL;
-
+export async function goToHomepage(page: Page, homeURL: string | undefined) {
   if (!homeURL) {
     throw new Error('URL environment variable is not defined');
   }
