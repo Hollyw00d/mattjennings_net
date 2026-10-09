@@ -52,10 +52,7 @@ export async function goToResumePageViewPDFResume(page: Page, expect: Expect) {
     const result = await parser.getText();
     const text = result.text.replace(/\s+/g, ' ');
     expect(text).toContain('Matt Jennings');
-
-    // Add additional assertions for resume content here.
-    // expect.soft(text).toContain('Software Engineer');
-    // expect.soft(text).toContain('WordPress');
+    expect(text).toContain('Sleep Doctor');
   } finally {
     await parser.destroy();
   }
