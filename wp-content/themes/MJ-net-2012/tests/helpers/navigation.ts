@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { PDFParse } from 'pdf-parse';
 import type { Page, Expect } from '@playwright/test';
 
 export async function goToHomepage(page: Page) {
@@ -27,11 +28,35 @@ export async function goToPortfolioPage(page: Page, expect: Expect) {
 
 export async function goToResumePageViewPDFResume(page: Page, expect: Expect) {
   await page.getByRole('link', { name: 'Resume', exact: true }).click();
+  const pdfLink = page.getByRole('link', { name: 'PDF' }).first();
+  const pdfURL = await pdfLink.getAttribute('href');
+  expect(pdfURL).not.toBeNull();
 
-  const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('link', { name: 'PDF' }).first().click();
-  const download = await downloadPromise;
-  expect(download.suggestedFilename()).toBe(
-    'resume_front-end-software-engineer_matt-jennings.pdf'
+  const expectedFilename =
+    'resume_front-end-software-engineer_matt-jennings.pdf';
+  expect(new URL(pdfURL!, page.url()).pathname).toMatch(
+    new RegExp(`${expectedFilename.replaceAll('.', '\\.')}$`)
   );
+
+  const response = await page.request.get(
+    new URL(pdfURL!, page.url()).toString()
+  );
+
+  expect(response.ok()).toBeTruthy();
+  expect(response.headers()['content-type']).toContain('application/pdf');
+
+  const pdfBuffer = await response.body();
+  const parser = new PDFParse({ data: pdfBuffer });
+
+  try {
+    const result = await parser.getText();
+    const text = result.text.replace(/\s+/g, ' ');
+    expect(text).toContain('Matt Jennings');
+
+    // Add additional assertions for resume content here.
+    // expect.soft(text).toContain('Software Engineer');
+    // expect.soft(text).toContain('WordPress');
+  } finally {
+    await parser.destroy();
+  }
 }
