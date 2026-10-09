@@ -11,6 +11,7 @@ import { viewFooterText } from './helpers/visibility';
 import { a11yTest } from './helpers/accessibility';
 
 const homeURL = process.env.HOME_URL;
+const reactSelectedHomeDropdown = `${process.env.HOME_URL}?portfolio=react`;
 
 test(`${homeURL}: homepage has footer copyright`, async ({ page }) => {
   await goToHomepage(page, homeURL);
@@ -22,11 +23,11 @@ test('homepage passes accessibility tests', async ({ page }) => {
   await a11yTest(page, expect);
 });
 
-test(`homepage select REACT from drop-down & go to portfolio page: ${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`, async ({
+test(`homepage select REACT from drop-down & go to portfolio page: ${reactSelectedHomeDropdown}`, async ({
   page
 }) => {
   await goToHomepage(page, homeURL);
-  await selectReactFromDropdown(page, expect);
+  await selectReactFromDropdown(page, expect, reactSelectedHomeDropdown);
   await goToPortfolioPage(page, expect);
   await viewFooterText(page, expect);
 });
@@ -35,7 +36,7 @@ test(`portfolio page accessiblity test: ${process.env.HOME_URL}portfolio-feed/we
   page
 }) => {
   await goToHomepage(page, homeURL);
-  await selectReactFromDropdown(page, expect);
+  await selectReactFromDropdown(page, expect, reactSelectedHomeDropdown);
   await goToPortfolioPage(page, expect);
   await a11yTest(page, expect);
 });

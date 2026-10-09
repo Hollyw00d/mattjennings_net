@@ -10,11 +10,15 @@ export async function goToHomepage(page: Page, homeURL: string | undefined) {
   await page.goto(homeURL);
 }
 
-export async function selectReactFromDropdown(page: Page, expect: Expect) {
+export async function selectReactFromDropdown(
+  page: Page,
+  expect: Expect,
+  reactSelectedHomeDropdown: string | undefined
+) {
   await page.waitForLoadState('domcontentloaded');
 
   await page.getByLabel('Choose Portfolio Project').selectOption('React');
-  await expect(page).toHaveURL(`${process.env.HOME_URL}?portfolio=react`);
+  await expect(page).toHaveURL(`${reactSelectedHomeDropdown}`);
 }
 
 export async function goToPortfolioPage(page: Page, expect: Expect) {
