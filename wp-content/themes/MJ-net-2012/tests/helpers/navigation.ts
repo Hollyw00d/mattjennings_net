@@ -21,11 +21,13 @@ export async function selectReactFromDropdown(
   await expect(page).toHaveURL(`${reactSelectedHomeDropdown}`);
 }
 
-export async function goToPortfolioPage(page: Page, expect: Expect) {
+export async function goToPortfolioPage(
+  page: Page,
+  expect: Expect,
+  portfolioPage: string | undefined
+) {
   await page.getByRole('link', { name: 'Weekly Meetings Block' }).click();
-  await expect(page).toHaveURL(
-    `${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`
-  );
+  await expect(page).toHaveURL(`${portfolioPage}`);
 }
 
 export async function goToResumePage(page: Page) {
