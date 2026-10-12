@@ -80,9 +80,22 @@ test(`Blog page has footer copyright: ${blogPage}`, async ({ page }) => {
   await viewFooterText(page, expect);
 });
 
+test(`Blog page accessibility test: ${blogPage}`, async ({ page }) => {
+  await goToHomepage(page, homeURL);
+  await goToBlogPage(page);
+  await a11yTest(page, expect);
+});
+
 test(`Blog post has footer copyright: ${blogPost}`, async ({ page }) => {
   await goToHomepage(page, homeURL);
   await goToBlogPage(page);
   await goToBlogPost(page);
   await viewFooterText(page, expect);
+});
+
+test(`Blog post accessibility test: ${blogPost}`, async ({ page }) => {
+  await goToHomepage(page, homeURL);
+  await goToBlogPage(page);
+  await goToBlogPost(page);
+  await a11yTest(page, expect);
 });
