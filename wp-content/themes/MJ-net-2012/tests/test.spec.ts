@@ -5,7 +5,8 @@ import {
   goToPortfolioPage,
   goToResumePage,
   goToResumePDF,
-  selectReactFromDropdown
+  selectReactFromDropdown,
+  goToContactPage
 } from './helpers/navigation';
 import { viewFooterText } from './helpers/visibility';
 import { a11yTest } from './helpers/accessibility';
@@ -14,6 +15,7 @@ const homeURL = process.env.HOME_URL;
 const reactSelectedHomeDropdown = `${process.env.HOME_URL}?portfolio=react`;
 const portfolioPage = `${process.env.HOME_URL}portfolio-feed/weekly-meetings-block-wordpress-plugin-using-react`;
 const resumePage = `${process.env.HOME_URL}resume`;
+const contactPage = `${process.env.HOME_URL}contact`;
 
 test(`homepage has footer copyright: ${homeURL}`, async ({ page }) => {
   await goToHomepage(page, homeURL);
@@ -53,5 +55,17 @@ test(`from homepage download PDF resume on Resume page: ${resumePage}`, async ({
 test(`Resume page accessibility test: ${resumePage}`, async ({ page }) => {
   await goToHomepage(page, homeURL);
   await goToResumePage(page);
+  await a11yTest(page, expect);
+});
+
+test(`Contact page has footer copyright: ${contactPage}`, async ({ page }) => {
+  await goToHomepage(page, homeURL);
+  await goToContactPage(page);
+  await viewFooterText(page, expect);
+});
+
+test(`Contact page accessibility test: ${contactPage}`, async ({ page }) => {
+  await goToHomepage(page, homeURL);
+  await goToContactPage(page);
   await a11yTest(page, expect);
 });

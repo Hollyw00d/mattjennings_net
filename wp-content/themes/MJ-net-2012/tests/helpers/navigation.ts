@@ -85,3 +85,7 @@ export async function goToResumePDF(page: Page, expect: Expect) {
     await parser.destroy();
   }
 }
+
+export async function goToContactPage(page: Page) {
+  await page.getByRole('link', { name: 'Contact', exact: true }).click();
+}
