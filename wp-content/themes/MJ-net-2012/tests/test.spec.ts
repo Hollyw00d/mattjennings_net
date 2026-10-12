@@ -49,3 +49,9 @@ test(`from homepage download PDF resume on Resume page: ${resumePage}`, async ({
   await goToResumePDF(page, expect);
   await viewFooterText(page, expect);
 });
+
+test(`Resume page accessibility test: ${resumePage}`, async ({ page }) => {
+  await goToHomepage(page, homeURL);
+  await goToResumePage(page);
+  await a11yTest(page, expect);
+});
