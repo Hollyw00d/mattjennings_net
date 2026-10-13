@@ -85,3 +85,20 @@ export async function goToResumePDF(page: Page, expect: Expect) {
     await parser.destroy();
   }
 }
+
+export async function goToContactPage(page: Page) {
+  await page.getByRole('link', { name: 'Contact', exact: true }).click();
+}
+
+export async function goToBlogPage(page: Page) {
+  await page.getByRole('link', { name: 'Blog', exact: true }).click();
+}
+
+export async function goToBlogPost(page: Page) {
+  await page
+    .getByRole('link', {
+      name: 'Extracting all URLs on a Web Page with Chrome Developer Tools',
+      exact: true
+    })
+    .click();
+}
