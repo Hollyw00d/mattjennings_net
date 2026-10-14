@@ -54,7 +54,7 @@
   <div class="container-narrow">
 
    <?php // Main navigation START ?>
-   <div role="navigation">
+   <div role="navigation" aria-label="Main navigation">
     <?php wp_nav_menu( array( 
 	'sort_column' => 'menu_order', 
 	'container_class' => 'menu-header', 

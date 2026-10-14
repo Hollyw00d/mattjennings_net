@@ -2,7 +2,9 @@ import 'dotenv/config';
 import { PDFParse } from 'pdf-parse';
 import type { Page, Expect } from '@playwright/test';
 
-export async function goToHomepage(page: Page, homeURL: string | undefined) {
+type OptionalString = string | undefined;
+
+export async function goToHomepage(page: Page, homeURL: OptionalString) {
   if (!homeURL) {
     throw new Error('URL environment variable is not defined');
   }
@@ -13,7 +15,7 @@ export async function goToHomepage(page: Page, homeURL: string | undefined) {
 export async function selectReactFromDropdown(
   page: Page,
   expect: Expect,
-  reactSelectedHomeDropdown: string | undefined
+  reactSelectedHomeDropdown: OptionalString
 ) {
   await page.waitForLoadState('domcontentloaded');
 
@@ -24,7 +26,7 @@ export async function selectReactFromDropdown(
 export async function goToPortfolioPage(
   page: Page,
   expect: Expect,
-  portfolioPage: string | undefined
+  portfolioPage: OptionalString
 ) {
   await page.getByRole('link', { name: 'Weekly Meetings Block' }).click();
   await expect(page).toHaveURL(`${portfolioPage}`);
