@@ -4,12 +4,19 @@ import type { Page, Expect } from '@playwright/test';
 
 type OptionalString = string | undefined;
 
-export async function goToHomepage(page: Page, homeURL: OptionalString) {
+export async function goToHomepage(
+  page: Page,
+  expect: Expect,
+  homeURL: OptionalString
+) {
   if (!homeURL) {
     throw new Error('URL environment variable is not defined');
   }
 
-  await page.goto(homeURL);
+  const response = await page.goto(homeURL);
+
+  expect(response).not.toBeNull();
+  expect(response?.status()).toBe(200);
 }
 
 export async function selectReactFromDropdown(
